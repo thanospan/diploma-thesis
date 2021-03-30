@@ -43,6 +43,14 @@ const { Amea } = require('../models/amea');
   const savedPermission3 = await newPermission3.save();
   console.log(JSON.stringify(savedPermission3, null, 2));
 
+  const newPermission4 = new Permission({
+    "endpoint": "/masked/permissions",
+    "methods": [permissionMethods.POST],
+    "status": permissionStatus.ACTIVE
+  });
+  const savedPermission4 = await newPermission4.save();
+  console.log(JSON.stringify(savedPermission4, null, 2));
+
   // Policies
   const newPolicy1 = new Policy({
     "resource": "amea",
@@ -56,7 +64,7 @@ const { Amea } = require('../models/amea');
   // Roles
   const adminRole = new Role({
     "name": "admin",
-    "permissions": [savedPermission1, savedPermission2, savedPermission3],
+    "permissions": [savedPermission1, savedPermission2, savedPermission3, newPermission4],
     "policies": [savedPolicy1],
     "status": roleStatus.ACTIVE
   });

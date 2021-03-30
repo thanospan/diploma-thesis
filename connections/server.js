@@ -6,8 +6,8 @@ const app = express();
 
 const setup = () => {
   const usersRouter = require('../routes/users');
+  const permissionsRouter = require('../routes/permissions');
   // const rolesRouter = require('../routes/roles');
-  // const permissionsRouter = require('../routes/permissions');
   // const policiesRouter = require('../routes/policies');
   // const ameaRouter = require('../routes/amea');
 
@@ -16,8 +16,8 @@ const setup = () => {
 
   // Routes
   app.use('/masked/users', usersRouter);
+  app.use('/masked/permissions', permissionsRouter);
   // app.use('/masked/roles', rolesRouter);
-  // app.use('/masked/permissions', permissionsRouter);
   // app.use('/masked/policies', policiesRouter);
   // app.use('/masked/amea', ameaRouter);
 
