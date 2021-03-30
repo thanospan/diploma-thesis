@@ -101,7 +101,7 @@ exports.validateStatus = (req, res, next) => {
   return next();
 };
 
-exports.validatePermissionId = (req, res, next) => {
+exports.validateId = (req, res, next) => {
   let { permissionId } = req.params;
   let response;
 

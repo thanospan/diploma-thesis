@@ -68,3 +68,35 @@ exports.create = async (req, res, next) => {
     return next(err);
   }
 };
+
+exports.deleteById = async (req, res, next) => {
+  try {
+    const { permissionId } = req.params;
+    let response;
+
+    // Delete permission with the provided permissionId
+    const dbResponse = await permissionDbUtil.deleteById(permissionId);
+
+    // Check if permissionId matches an existing permission
+    if (!dbResponse) {
+      response = {
+        "statusCode": 404,
+        "message": "permissionId does not match any existing permission"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    // Send response
+    response = {
+      "statusCode": 200,
+      "message": "Permission deleted successfully"
+    };
+    console.log(response);
+    res.status(response.statusCode).json(response);
+    return;
+  } catch (err) {
+    return next(err);
+  }
+};

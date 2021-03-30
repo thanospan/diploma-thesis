@@ -15,3 +15,9 @@ exports.save = async (permission) => {
 
   return savedPermission;
 };
+
+exports.deleteById = async (permissionId) => {
+  const deletedPermission = await Permission.findByIdAndRemove(permissionId);
+
+  return deletedPermission;
+};

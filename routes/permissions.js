@@ -26,4 +26,12 @@ router.post('/',
   permissionsController.create
 );
 
+router.delete('/:permissionId/',
+  userValidator.validateToken,
+  auth.authenticateToken,
+  permissionValidator.validateId,
+  auth.authorize,
+  permissionsController.deleteById
+);
+
 module.exports = router;
