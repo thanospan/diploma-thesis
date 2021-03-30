@@ -41,4 +41,12 @@ router.get('/',
   usersController.getAll
 );
 
+router.delete('/:userId/',
+  userValidator.validateToken,
+  auth.authenticateToken,
+  userValidator.validateUserId(reqParamOptions.PARAMS),
+  auth.authorize,
+  usersController.deleteById
+);
+
 module.exports = router;

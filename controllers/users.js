@@ -234,3 +234,35 @@ exports.getAll = async (req, res, next) => {
     return next(err);
   }
 };
+
+exports.deleteById = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    let response;
+
+    // Delete user with the provided userId
+    const dbResponse = await userDbUtil.deleteById(userId);
+
+    // Check if userId matches a registered user
+    if (!dbResponse) {
+      response = {
+        "statusCode": 404,
+        "message": "userId does not match any registered user"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    // Send response
+    response = {
+      "statusCode": 200,
+      "message": "User deleted successfully"
+    };
+    console.log(response);
+    res.status(response.statusCode).json(response);
+    return;
+  } catch (err) {
+    return next(err);
+  }
+};

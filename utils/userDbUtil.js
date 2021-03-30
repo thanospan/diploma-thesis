@@ -116,3 +116,9 @@ exports.save = async (user) => {
 
   return savedUser;
 };
+
+exports.deleteById = async (userId) => {
+  const deletedUser = await User.findByIdAndRemove(userId);
+
+  return deletedUser;
+};

@@ -111,6 +111,12 @@ exports.authorize = async (req, res, next) => {
     let reqEndpoint = req.baseUrl + req.path;
     const reqMethod = req.method;
 
+    // Check if userId parameter is passed
+    if (req.params.userId) {
+      // Replace userId with :userId
+      reqEndpoint = reqEndpoint.replace(req.params.userId, ":userId");
+    }
+
     // Remove trailing slash
     if (reqEndpoint.endsWith("/")) {
       reqEndpoint = reqEndpoint.slice(0, -1);
