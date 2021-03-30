@@ -69,6 +69,45 @@ exports.create = async (req, res, next) => {
   }
 };
 
+exports.setStatus = async (req, res, next) => {
+  try {
+    const { permissionId } = req.params;
+    const { status } = req.body;
+    let response;
+
+    // Search for permission with the provided permissionId
+    const dbResponse = await permissionDbUtil.getById(permissionId);
+
+    // Check if there is a permission with this permissionId
+    if (!dbResponse.permission) {
+      response = {
+        "statusCode": 404,
+        "message": dbResponse.message
+      };
+    console.log(response);
+    res.status(response.statusCode).json(response);
+    return;
+    }
+
+    // Update permission's status
+    dbResponse.permission.status = status;
+
+    // Update the permission's document in the database
+    await permissionDbUtil.save(dbResponse.permission);
+
+    // Send response
+    response = {
+      "statusCode": 200,
+      "message": `Permission's status set to ${dbResponse.permission.status}`
+    };
+    console.log(response);
+    res.status(response.statusCode).json(response);
+    return;
+  } catch (err) {
+    return next(err);
+  }
+};
+
 exports.deleteById = async (req, res, next) => {
   try {
     const { permissionId } = req.params;

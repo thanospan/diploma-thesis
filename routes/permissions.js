@@ -26,6 +26,15 @@ router.post('/',
   permissionsController.create
 );
 
+router.post('/:permissionId/status',
+  userValidator.validateToken,
+  auth.authenticateToken,
+  permissionValidator.validateId,
+  auth.authorize,
+  permissionValidator.validateStatus,
+  permissionsController.setStatus
+);
+
 router.delete('/:permissionId/',
   userValidator.validateToken,
   auth.authenticateToken,
