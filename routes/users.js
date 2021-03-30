@@ -41,6 +41,15 @@ router.get('/',
   usersController.getAll
 );
 
+router.post('/:userId/roles',
+  userValidator.validateToken,
+  auth.authenticateToken,
+  userValidator.validateUserId(reqParamOptions.PARAMS),
+  auth.authorize,
+  userValidator.validateRoles,
+  usersController.setRoles
+);
+
 router.delete('/:userId/',
   userValidator.validateToken,
   auth.authenticateToken,

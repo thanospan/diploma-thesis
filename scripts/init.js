@@ -44,12 +44,20 @@ const { Amea } = require('../models/amea');
   console.log(JSON.stringify(savedPermission3, null, 2));
 
   // Policies
+  const newPolicy1 = new Policy({
+    "resource": "amea",
+    "excluded": ["owner"],
+    "masked": ["name", "email", "phoneNumber"],
+    "status": policyStatus.ACTIVE
+  })
+  const savedPolicy1 = await newPolicy1.save();
+  console.log(JSON.stringify(savedPolicy1, null, 2));
 
   // Roles
   const adminRole = new Role({
     "name": "admin",
     "permissions": [savedPermission1, savedPermission2, savedPermission3],
-    "policies": [],
+    "policies": [savedPolicy1],
     "status": roleStatus.ACTIVE
   });
   const savedAdminRole = await adminRole.save();

@@ -235,6 +235,45 @@ exports.getAll = async (req, res, next) => {
   }
 };
 
+exports.setRoles = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const roles = res.locals.roles;
+    let response;
+
+    // Search for registered user with the provided userId
+    const dbResponse = await userDbUtil.getById(userId);
+
+    // Check if there is a user with this userId
+    if (!dbResponse.user) {
+      response = {
+        "statusCode": 404,
+        "message": dbResponse.message
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    // Set user's roles
+    dbResponse.user.roles = roles;
+
+    // Update the user's document in the database
+    await userDbUtil.save(dbResponse.user);
+
+    // Send response
+    response = {
+      "statusCode": 200,
+      "message": "User's roles updated successfully"
+    };
+    console.log(response);
+    res.status(response.statusCode).json(response);
+    return;
+  } catch (err) {
+    return next(err);
+  }
+};
+
 exports.deleteById = async (req, res, next) => {
   try {
     const { userId } = req.params;

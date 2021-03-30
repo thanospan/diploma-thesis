@@ -4,6 +4,7 @@ const validator = require('validator');
 
 const reqParamOptions = require('../constants/reqParamOptions');
 const tokenUtil = require('../utils/token');
+const roleDbUtil = require('../utils/roleDbUtil');
 
 exports.validateEmailValue = (req, res, next) => {
   let { email } = req.body;
@@ -146,6 +147,83 @@ exports.validateToken = (req, res, next) => {
   }
 
   return next();
+};
+
+exports.validateRoles = async (req, res, next) => {
+  try {
+    let reqRoles = req.body.roles;
+    let response;
+
+    // Check if roles body parameter is passed
+    if (!reqRoles) {
+      response = {
+        "statusCode": 400,
+        "message": "No roles provided"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    // Check if roles is an array
+    if (!Array.isArray(reqRoles)) {
+      response = {
+        "statusCode": 400,
+        "message": "roles is not an array"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    // Remove duplicate roles
+    reqRoles = [...new Set(reqRoles)];
+
+    // Get all existing roles from the database
+    const roles = await roleDbUtil.getAll();
+
+    // Save all existing roles names into an array
+    let rolesNames = [];
+    roles.forEach(role => {
+      rolesNames.push(role.name);
+    });
+
+    // Check if the requested roles are valid
+    let isValidRole = true;
+    for (const reqRole of reqRoles) {
+      if (!rolesNames.includes(reqRole)) {
+        isValidRole = false;
+        break;
+      }
+    }
+
+    if (!isValidRole) {
+      response = {
+        "statusCode": 400,
+        "message": "Invalid roles"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    // Change reqRoles from names to ObjectIDs
+    reqRoles.forEach((reqRole, i) => {
+      for (const role of roles) {
+        if (role.name === reqRole) {
+          reqRoles[i] = role._id
+          break;
+        }
+      }
+    });
+
+    // Pass the array with the ObjectIDs of the requested roles to res.locals
+    res.locals.roles = reqRoles;
+
+    return next();
+  } catch (err) {
+    return next(err);
+  }
 };
 
 const getReqParam = (param, req, reqParamOption) => {
