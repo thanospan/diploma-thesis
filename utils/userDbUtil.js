@@ -37,6 +37,36 @@ exports.getByEmail = async (email) => {
   return response;
 };
 
+exports.getById = async (userId) => {
+  let response;
+
+  // Search for user with the provided userId
+  const user = await User.findOne({ "_id": userId })
+    .populate({
+      path: 'roles',
+      populate: [
+        { path: 'permissions' },
+        { path: 'policies' }
+      ]
+    })
+    .exec();
+
+  // Check if there is a user with this userId
+  if (!user) {
+    response = {
+      "user": null,
+      "message": "userId does not match any registered user"
+    };
+  } else {
+    response = {
+      "user": user,
+      "message": "userId matches a registered user"
+    };
+  }
+
+  return response;
+};
+
 exports.save = async (user) => {
   const savedUser = await user.save();
 

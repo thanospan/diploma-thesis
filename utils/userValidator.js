@@ -2,6 +2,8 @@
 
 const validator = require('validator');
 
+const reqParamOptions = require('../constants/reqParamOptions');
+
 exports.validateEmailValue = (req, res, next) => {
   let { email } = req.body;
   let response;
@@ -72,4 +74,61 @@ exports.validatePassword = (req, res, next) => {
   }
 
   return next();
+};
+
+exports.validateUserId = (reqParamOption) => {
+  return (req, res, next) => {
+    let userId = getReqParam('userId', req, reqParamOption);
+    let response;
+
+    // Check if userId is provided
+    if (!userId) {
+      response = {
+        "statusCode": 400,
+        "message": "No userId provided"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    userId = userId + '';
+
+    // Validate userId
+    // userId should be a valid MongoDB ObjectID
+    if (!validator.isMongoId(userId)) {
+      response = {
+        "statusCode": 400,
+        "message": "Invalid userId format"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    return next();
+  }
+};
+
+const getReqParam = (param, req, reqParamOption) => {
+  let reqParam;
+
+  switch (reqParamOption) {
+    case reqParamOptions.BODY:
+      reqParam = req.body[param];
+      break;
+    case reqParamOptions.QUERY:
+      reqParam = req.query[param];
+      break;
+    case reqParamOptions.PARAMS:
+      reqParam = req.params[param];
+      break;
+    case reqParamOptions.HEADERS:
+      reqParam = req.headers[param.toLowerCase()];
+      break;
+    default:
+      break;
+  }
+
+  return reqParam;
 };
