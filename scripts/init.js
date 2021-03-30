@@ -45,7 +45,7 @@ const { Amea } = require('../models/amea');
 
   const newPermission4 = new Permission({
     "endpoint": "/masked/permissions",
-    "methods": [permissionMethods.POST],
+    "methods": [permissionMethods.GET, permissionMethods.POST],
     "status": permissionStatus.ACTIVE
   });
   const savedPermission4 = await newPermission4.save();

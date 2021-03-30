@@ -4,6 +4,24 @@ const permissionDbUtil = require('../utils/permissionDbUtil');
 const arrayUtil = require('../utils/array');
 const { Permission } = require('../models/permission');
 
+exports.getAll = async (req, res, next) => {
+  try {
+    let response;
+
+    const permissions = await permissionDbUtil.getAll();
+
+    response = {
+      "statusCode": 200,
+      "message": permissions
+    };
+    console.log(JSON.stringify(response, null, 2));
+    res.status(response.statusCode).json(response.message);
+    return;
+  } catch(err) {
+    return next(err);
+  }
+};
+
 exports.create = async (req, res, next) => {
   try {
     const { endpoint, role, status } = req.body;
