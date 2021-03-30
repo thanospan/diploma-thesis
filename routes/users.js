@@ -34,4 +34,11 @@ router.post('/logout',
   usersController.logout
 );
 
+router.get('/',
+  userValidator.validateToken,
+  auth.authenticateToken,
+  auth.authorize,
+  usersController.getAll
+);
+
 module.exports = router;

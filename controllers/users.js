@@ -214,3 +214,23 @@ exports.logout = async (req, res, next) => {
     return next(err);
   }
 };
+
+exports.getAll = async (req, res, next) => {
+  try {
+    let response;
+
+    // Search for registered users
+    const users = await userDbUtil.getAll();
+
+    // Send response
+    response = {
+      "statusCode": 200,
+      "message": users
+    };
+    console.log(JSON.stringify(response, null, 2));
+    res.status(response.statusCode).json(response.message);
+    return;
+  } catch (err) {
+    return next(err);
+  }
+};

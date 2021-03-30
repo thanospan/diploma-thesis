@@ -97,6 +97,20 @@ exports.getByToken = async (token) => {
   return response;
 };
 
+exports.getAll = async () => {
+  const users = await User.find()
+    .populate({
+      path: 'roles',
+      populate: [
+        { path: 'permissions' },
+        { path: 'policies' }
+      ]
+    })
+    .exec();
+
+  return users;
+};
+
 exports.save = async (user) => {
   const savedUser = await user.save();
 

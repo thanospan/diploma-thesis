@@ -20,19 +20,35 @@ const { Amea } = require('../models/amea');
 
   // Permissions
   const newPermission1 = new Permission({
-    "endpoint": "/masked/users/",
-    "methods": ["GET"],
+    "endpoint": "/masked/users",
+    "methods": [permissionMethods.GET],
     "status": permissionStatus.ACTIVE
   });
   const savedPermission1 = await newPermission1.save();
   console.log(JSON.stringify(savedPermission1, null, 2));
+
+  const newPermission2 = new Permission({
+    "endpoint": "/masked/users/:userId",
+    "methods": [permissionMethods.DELETE],
+    "status": permissionStatus.ACTIVE
+  });
+  const savedPermission2 = await newPermission2.save();
+  console.log(JSON.stringify(savedPermission2, null, 2));
+
+  const newPermission3 = new Permission({
+    "endpoint": "/masked/users/:userId/roles",
+    "methods": [permissionMethods.POST],
+    "status": permissionStatus.ACTIVE
+  });
+  const savedPermission3 = await newPermission3.save();
+  console.log(JSON.stringify(savedPermission3, null, 2));
 
   // Policies
 
   // Roles
   const adminRole = new Role({
     "name": "admin",
-    "permissions": [savedPermission1],
+    "permissions": [savedPermission1, savedPermission2, savedPermission3],
     "policies": [],
     "status": roleStatus.ACTIVE
   });

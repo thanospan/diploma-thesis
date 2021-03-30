@@ -3,6 +3,8 @@
 const userDbUtil = require('../utils/userDbUtil');
 const hashUtil = require('../utils/hash');
 const tokenUtil = require('../utils/token');
+const { roleStatus } = require('../models/role');
+const { permissionStatus } = require('../models/permission');
 
 exports.authenticateEmailPass = async (req, res, next) => {
   try {
@@ -90,6 +92,67 @@ exports.authenticateToken = async (req, res, next) => {
     // Successful token authentication
     res.locals.authenticatedUser = dbResponse.user;
 
+    return next();
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.authorize = async (req, res, next) => {
+  try {
+    const { token } = req.headers;
+    let response;
+
+    // Authenticated user
+    const authenticatedUser = res.locals.authenticatedUser;
+    // console.log(JSON.stringify(authenticatedUser, null, 2));
+
+    // Request parameters
+    let reqEndpoint = req.baseUrl + req.path;
+    const reqMethod = req.method;
+
+    // Remove trailing slash
+    if (reqEndpoint.endsWith("/")) {
+      reqEndpoint = reqEndpoint.slice(0, -1);
+    }
+
+    // console.log(reqEndpoint);
+    // console.log(reqMethod);
+
+    // Check if the user is authorized
+    let isAuthorized = false;
+    let authorizedRoles = [];
+
+    authenticatedUser.roles.forEach(role => {
+      if (role.status === roleStatus.ACTIVE) {
+        role.permissions.forEach(permission => {
+          if ((permission.status === permissionStatus.ACTIVE) &&
+              permission.endpoint === reqEndpoint &&
+              permission.methods.includes(reqMethod))
+          {
+            isAuthorized = true;
+            authorizedRoles.push(role);
+          }
+        });
+      }
+    });
+
+    // console.log(isAuthorized);
+    // console.log(JSON.stringify(authorizedRoles, null, 2));
+
+    if (!isAuthorized) {
+      response = {
+        "statusCode": 403,
+        "message": "Unauthorized user"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    // Successful authorization
+    res.locals.authorizedUser = authenticatedUser;
+    res.locals.authorizedRoles = authorizedRoles;
     return next();
   } catch (err) {
     return next(err);
