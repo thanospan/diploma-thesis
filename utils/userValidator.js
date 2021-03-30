@@ -78,7 +78,7 @@ exports.validatePassword = (req, res, next) => {
   return next();
 };
 
-exports.validateUserId = (reqParamOption) => {
+exports.validateId = (reqParamOption) => {
   return (req, res, next) => {
     let userId = getReqParam('userId', req, reqParamOption);
     let response;

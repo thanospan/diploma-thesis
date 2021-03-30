@@ -17,7 +17,7 @@ router.post('/signup',
 );
 
 router.post('/email-verification',
-  userValidator.validateUserId(reqParamOptions.QUERY),
+  userValidator.validateId(reqParamOptions.QUERY),
   emailTokenValidator.validateEmailTokenValue,
   usersController.verifyEmail  
 );
@@ -44,7 +44,7 @@ router.get('/',
 router.post('/:userId/roles',
   userValidator.validateToken,
   auth.authenticateToken,
-  userValidator.validateUserId(reqParamOptions.PARAMS),
+  userValidator.validateId(reqParamOptions.PARAMS),
   auth.authorize,
   userValidator.validateRoles,
   usersController.setRoles
@@ -53,7 +53,7 @@ router.post('/:userId/roles',
 router.delete('/:userId/',
   userValidator.validateToken,
   auth.authenticateToken,
-  userValidator.validateUserId(reqParamOptions.PARAMS),
+  userValidator.validateId(reqParamOptions.PARAMS),
   auth.authorize,
   usersController.deleteById
 );
