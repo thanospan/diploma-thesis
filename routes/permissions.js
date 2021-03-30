@@ -35,6 +35,15 @@ router.post('/:permissionId/status',
   permissionsController.setStatus
 );
 
+router.post('/:permissionId/methods',
+  userValidator.validateToken,
+  auth.authenticateToken,
+  permissionValidator.validateId,
+  auth.authorize,
+  permissionValidator.validateMethods,
+  permissionsController.setMethods
+);
+
 router.delete('/:permissionId/',
   userValidator.validateToken,
   auth.authenticateToken,
