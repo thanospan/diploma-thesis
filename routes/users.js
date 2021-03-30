@@ -28,4 +28,10 @@ router.post('/login',
   usersController.login
 );
 
+router.post('/logout',
+  userValidator.validateToken,
+  auth.authenticateToken,
+  usersController.logout
+);
+
 module.exports = router;

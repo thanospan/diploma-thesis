@@ -3,6 +3,7 @@
 const validator = require('validator');
 
 const reqParamOptions = require('../constants/reqParamOptions');
+const tokenUtil = require('../utils/token');
 
 exports.validateEmailValue = (req, res, next) => {
   let { email } = req.body;
@@ -108,6 +109,43 @@ exports.validateUserId = (reqParamOption) => {
 
     return next();
   }
+};
+
+exports.validateToken = (req, res, next) => {
+  let { token } = req.headers;
+  let response;
+
+  // Check if token is provided
+  if (!token) {
+    response = {
+      "statusCode": 400,
+      "message": "No token provided"
+    };
+    console.log(response);
+    res.status(response.statusCode).json(response);
+    return;
+  }
+
+  token = token + '';
+
+  // Check if token is the default token
+  if (token === tokenUtil.DEFAULT_TOKEN) {
+    return next();
+  }
+
+  // Validate token
+  // token should be a valid v4 UUID
+  if (!validator.isUUID(token, 4)) {
+    response = {
+      "statusCode": 400,
+      "message": "Invalid token format"
+    };
+    console.log(response);
+    res.status(response.statusCode).json(response);
+    return;
+  }
+
+  return next();
 };
 
 const getReqParam = (param, req, reqParamOption) => {

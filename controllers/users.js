@@ -188,3 +188,29 @@ exports.login = async (req, res, next) => {
     return next(err);
   }
 };
+
+exports.logout = async (req, res, next) => {
+  try {
+    let response;
+
+    // Authenticated user
+    const user = res.locals.authenticatedUser;
+
+    // Set user's token to the default token - Log out
+    user.token = tokenUtil.DEFAULT_TOKEN;
+
+    // Update the user's document in the database
+    await userDbUtil.save(user);
+
+    // Send response
+    response = {
+      "statusCode": 200,
+      "message": "User has been logged out"
+    };
+    console.log(response);
+    res.status(response.statusCode).json(response);
+    return;
+  } catch (err) {
+    return next(err);
+  }
+};

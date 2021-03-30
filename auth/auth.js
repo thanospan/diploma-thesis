@@ -2,6 +2,7 @@
 
 const userDbUtil = require('../utils/userDbUtil');
 const hashUtil = require('../utils/hash');
+const tokenUtil = require('../utils/token');
 
 exports.authenticateEmailPass = async (req, res, next) => {
   try {
@@ -47,6 +48,46 @@ exports.authenticateEmailPass = async (req, res, next) => {
     }
 
     // Successful email, password authentication
+    res.locals.authenticatedUser = dbResponse.user;
+
+    return next();
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.authenticateToken = async (req, res, next) => {
+  try {
+    const { token } = req.headers;
+    let response;
+
+    // Check if the user is not logged in
+    // Logged out users have the default token
+    if (token === tokenUtil.DEFAULT_TOKEN) {
+      response = {
+        "statusCode": 404,
+        "message": "User is not logged in"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    // Search for user with the provided token
+    const dbResponse = await userDbUtil.getByToken(token);
+
+    // Check if there is a user with this token
+    if (!dbResponse.user) {
+      response = {
+        "statusCode": 404,
+        "message": dbResponse.message
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    // Successful token authentication
     res.locals.authenticatedUser = dbResponse.user;
 
     return next();

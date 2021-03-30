@@ -67,6 +67,36 @@ exports.getById = async (userId) => {
   return response;
 };
 
+exports.getByToken = async (token) => {
+  let response;
+
+  // Search for user with the provided token
+  const user = await User.findOne({ "token": token })
+    .populate({
+      path: 'roles',
+      populate: [
+        { path: 'permissions' },
+        { path: 'policies' }
+      ]
+    })
+    .exec();
+
+  // Check if there is a user with this token
+  if (!user) {
+    response = {
+      "user": null,
+      "message": "token does not match any registered user"
+    };
+  } else {
+    response = {
+      "user": user,
+      "message": "token matches a registered user"
+    };
+  }
+
+  return response;
+};
+
 exports.save = async (user) => {
   const savedUser = await user.save();
 
