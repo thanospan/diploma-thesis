@@ -6,6 +6,7 @@ const usersController = require('../controllers/users');
 const userValidator = require('../utils/userValidator');
 const emailTokenValidator = require('../utils/emailTokenValidator');
 const reqParamOptions = require('../constants/reqParamOptions');
+const auth = require('../auth/auth')
 
 const router = express.Router();
 
@@ -19,6 +20,12 @@ router.post('/email-verification',
   userValidator.validateUserId(reqParamOptions.QUERY),
   emailTokenValidator.validateEmailTokenValue,
   usersController.verifyEmail  
+);
+
+router.post('/login',
+  userValidator.validateEmailValue,
+  auth.authenticateEmailPass,
+  usersController.login
 );
 
 module.exports = router;

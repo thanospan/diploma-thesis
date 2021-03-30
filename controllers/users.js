@@ -138,6 +138,53 @@ exports.verifyEmail = async (req, res, next) => {
   } catch (err) {
     return next(err);
   }
-  console.log('Verify Email');
-  res.send('Verify Email');
+};
+
+exports.login = async (req, res, next) => {
+  try {
+    let response;
+
+    // Authenticated user
+    const user = res.locals.authenticatedUser;
+
+    // Check if the user's email address is verified
+    if (user.email.status !== emailStatus.ACCEPTED) {
+      response = {
+        "statusCode": 403,
+        "message": "Verify email address in order to login"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    // Check if the user is already logged in
+    // Logged out users have the default token
+    if (user.token !== tokenUtil.DEFAULT_TOKEN) {
+      response = {
+        "statusCode": 200,
+        "message": "User is already logged in"
+      };
+      console.log(response);
+      res.set('token', user.token).status(response.statusCode).json(response);
+      return;
+    }
+
+    // Generate token and update user's document - Log in
+    user.token = tokenUtil.generate();
+
+    // Update the user's document in the database
+    await userDbUtil.save(user);
+
+    // Send response
+    response = {
+      "statusCode": 200,
+      "message": "User is now logged in"
+    };
+    console.log(response);
+    res.set('token', user.token).status(response.statusCode).json(response);
+    return;
+  } catch (err) {
+    return next(err);
+  }
 };
