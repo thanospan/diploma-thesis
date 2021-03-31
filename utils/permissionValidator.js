@@ -3,6 +3,7 @@
 const validator = require('validator');
 
 const { permissionMethods, permissionStatus } = require('../models/permission');
+const endpoints = require('../constants/endpoints');
 
 exports.validateEndpoint = (req, res, next) => {
   let { endpoint } = req.body;
@@ -13,6 +14,17 @@ exports.validateEndpoint = (req, res, next) => {
     response = {
       "statusCode": 400,
       "message": "No endpoint provided"
+    };
+    console.log(response);
+    res.status(response.statusCode).json(response);
+    return;
+  }
+
+  // Validate endpoint
+  if (!endpoints.includes(endpoint)) {
+    response = {
+      "statusCode": 400,
+      "message": "Invalid endpoint"
     };
     console.log(response);
     res.status(response.statusCode).json(response);

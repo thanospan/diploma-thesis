@@ -3,6 +3,7 @@
 const mongoose = require('mongoose');
 
 const safeameaMaskedConn = require('../connections/safeameaMaskedDb');
+const endpoints = require('../constants/endpoints');
 
 const permissionStatus = {
   "ACTIVE": "active",
@@ -20,7 +21,7 @@ const permissionMethods = {
 const Schema = mongoose.Schema;
 
 const permissionSchema = new Schema({
-  endpoint: { type: String, required: true },
+  endpoint: { type: String, enum: endpoints, required: true },
   methods: { type: [String], enum: Object.values(permissionMethods), required: true },
   status: { type: String, enum: Object.values(permissionStatus), default: permissionStatus.ACTIVE }
 }, { timestamps: true });
