@@ -5,6 +5,7 @@ const validator = require('validator');
 const reqParamOptions = require('../constants/reqParamOptions');
 const tokenUtil = require('../utils/token');
 const roleDbUtil = require('../utils/roleDbUtil');
+const arrayUtil = require('../utils/array');
 
 exports.validateEmailValue = (req, res, next) => {
   let { email } = req.body;
@@ -177,7 +178,7 @@ exports.validateRoles = async (req, res, next) => {
     }
 
     // Remove duplicate roles
-    reqRoles = [...new Set(reqRoles)];
+    reqRoles = arrayUtil.removeDuplicates(reqRoles);
 
     // Get all existing roles from the database
     const roles = await roleDbUtil.getAll();

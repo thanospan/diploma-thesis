@@ -29,7 +29,7 @@ exports.create = async (req, res, next) => {
     let response;
 
     // Remove duplicate methods
-    methods = [...new Set(methods)];
+    methods = arrayUtil.removeDuplicates(methods);
 
     // Check if there is an existing permission with the same methods on the provided endpoint
     const permissions = await permissionDbUtil.getAll();
@@ -115,7 +115,7 @@ exports.setMethods = async (req, res, next) => {
     let response;
 
     // Remove duplicate methods
-    methods = [...new Set(methods)];
+    methods = arrayUtil.removeDuplicates(methods);
 
     // Search for permission with the provided permissionId
     const dbResponse = await permissionDbUtil.getById(permissionId);

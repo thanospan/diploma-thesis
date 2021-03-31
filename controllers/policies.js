@@ -29,10 +29,10 @@ exports.create = async (req, res, next) => {
     let response;
 
     // Remove duplicate excluded fields
-    excluded = [...new Set(excluded)];
+    excluded = arrayUtil.removeDuplicates(excluded);
 
     // Remove duplicate masked fields
-    masked = [...new Set(masked)];
+    masked = arrayUtil.removeDuplicates(masked);
 
     // Check if there is an existing policy with the same excluded and masked fields on the provided resource
     const policies = await policyDbUtil.getAll();
@@ -83,7 +83,7 @@ exports.setExcluded = async (req, res, next) => {
     let response;
 
     // Remove duplicate excluded fields
-    excluded = [...new Set(excluded)];
+    excluded = arrayUtil.removeDuplicates(excluded);
 
     // Search for policy with the provided policyId
     const dbResponse = await policyDbUtil.getById(policyId);
@@ -143,7 +143,7 @@ exports.setMasked = async (req, res, next) => {
     let response;
 
     // Remove duplicate masked fields
-    masked = [...new Set(masked)];
+    masked = arrayUtil.removeDuplicates(masked);
 
     // Search for policy with the provided policyId
     const dbResponse = await policyDbUtil.getById(policyId);
