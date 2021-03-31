@@ -9,6 +9,13 @@ const auth = require('../auth/auth');
 
 const router = express.Router();
 
+router.get('/',
+  userValidator.validateToken,
+  auth.authenticateToken,
+  auth.authorize,
+  policiesController.getAll
+);
+
 router.post('/',
   userValidator.validateToken,
   auth.authenticateToken,

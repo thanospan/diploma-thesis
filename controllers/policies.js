@@ -4,6 +4,24 @@ const policyDbUtil = require('../utils/policyDbUtil');
 const arrayUtil = require('../utils/array');
 const { Policy } = require('../models/policy');
 
+exports.getAll = async (req, res, next) => {
+  try {
+    let response;
+
+    const policies = await policyDbUtil.getAll();
+
+    response = {
+      "statusCode": 200,
+      "message": policies
+    };
+    console.log(JSON.stringify(response, null, 2));
+    res.status(response.statusCode).json(response.message);
+    return;
+  } catch (err) {
+    return next(err);
+  }
+};
+
 exports.create = async (req, res, next) => {
   try {
     const { resource, status } = req.body;
