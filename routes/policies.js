@@ -27,6 +27,15 @@ router.post('/',
   policiesController.create
 );
 
+router.post('/:policyId/excluded',
+  userValidator.validateToken,
+  auth.authenticateToken,
+  policyValidator.validateId,
+  auth.authorize,
+  policyValidator.validateExcluded,
+  policiesController.setExcluded
+);
+
 router.post('/:policyId/status',
   userValidator.validateToken,
   auth.authenticateToken,
