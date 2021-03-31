@@ -1,5 +1,7 @@
 'use strict';
 
+const validator = require('validator');
+
 const resources = require('../constants/resources');
 const { policyStatus } = require('../models/policy');
 
@@ -150,6 +152,38 @@ exports.validateStatus = (req, res, next) => {
     response = {
       "statusCode": 400,
       "message": "Invalid policy status"
+    };
+    console.log(response);
+    res.status(response.statusCode).json(response);
+    return;
+  }
+
+  return next();
+};
+
+exports.validateId = (req, res, next) => {
+  let { policyId } = req.params;
+  let response;
+
+  // Check if policyId is provided
+  if (!policyId) {
+    response = {
+      "statusCode": 400,
+      "message": "No policyId provided"
+    };
+    console.log(response);
+    res.status(response.statusCode).json(response);
+    return;
+  }
+
+  policyId = policyId + '';
+
+  // Validate policyId
+  // policyId should be a valid MongoDB ObjectID
+  if (!validator.isMongoId(policyId)) {
+    response = {
+      "statusCode": 400,
+      "message": "Invalid policyId format"
     };
     console.log(response);
     res.status(response.statusCode).json(response);

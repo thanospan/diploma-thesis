@@ -111,16 +111,22 @@ exports.authorize = async (req, res, next) => {
     let reqEndpoint = req.baseUrl + req.path;
     const reqMethod = req.method;
 
-    // Check if userId parameter is passed
+    // Check if userId parameter is provided
     if (req.params.userId) {
       // Replace userId with :userId
       reqEndpoint = reqEndpoint.replace(req.params.userId, ":userId");
     }
 
-    // Check if permissionId parameter is passed
+    // Check if permissionId parameter is provided
     if (req.params.permissionId) {
       // Replace permissionId with :permissionId
       reqEndpoint = reqEndpoint.replace(req.params.permissionId, ":permissionId");
+    }
+
+    // Check if policyId parameter is provided
+    if (req.params.policyId) {
+      // Replace policyId with :policyId
+      reqEndpoint = reqEndpoint.replace(req.params.policyId, ":policyId");
     }
 
     // Remove trailing slash

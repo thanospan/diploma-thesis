@@ -27,4 +27,12 @@ router.post('/',
   policiesController.create
 );
 
+router.delete('/:policyId/',
+  userValidator.validateToken,
+  auth.authenticateToken,
+  policyValidator.validateId,
+  auth.authorize,
+  policiesController.deleteById
+);
+
 module.exports = router;

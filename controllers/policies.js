@@ -75,3 +75,35 @@ exports.create = async (req, res, next) => {
     return next(err);
   }
 };
+
+exports.deleteById = async (req, res, next) => {
+  try {
+    const { policyId } = req.params;
+    let response;
+
+    // Delete policy with the provided policyId
+    const dbResponse = await policyDbUtil.deleteById(policyId);
+
+    // Check if policyId matches an existing policy
+    if (!dbResponse) {
+      response = {
+        "statusCode": 404,
+        "message": "policyId does not match any existing policy"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    // Send response
+    response = {
+      "statusCode": 200,
+      "message": "Policy deleted successfully"
+    };
+    console.log(response);
+    res.status(response.statusCode).json(response);
+    return;
+  } catch (err) {
+    return next(err);
+  }
+};

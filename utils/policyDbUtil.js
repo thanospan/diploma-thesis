@@ -15,3 +15,9 @@ exports.save = async (policy) => {
 
   return savedPolicy;
 };
+
+exports.deleteById = async (policyId) => {
+  const deletedPolicy = await Policy.findByIdAndRemove(policyId);
+
+  return deletedPolicy;
+};
