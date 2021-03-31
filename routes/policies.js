@@ -36,6 +36,15 @@ router.post('/:policyId/excluded',
   policiesController.setExcluded
 );
 
+router.post('/:policyId/masked',
+  userValidator.validateToken,
+  auth.authenticateToken,
+  policyValidator.validateId,
+  auth.authorize,
+  policyValidator.validateMasked,
+  policiesController.setMasked
+);
+
 router.post('/:policyId/status',
   userValidator.validateToken,
   auth.authenticateToken,

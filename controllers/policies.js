@@ -126,7 +126,67 @@ exports.setExcluded = async (req, res, next) => {
     // Send response
     response = {
       "statusCode": 200,
-      "message": `Policy's methods set to [${dbResponse.policy.excluded}]`
+      "message": `Policy's excluded fields set to [${dbResponse.policy.excluded}]`
+    };
+    console.log(response);
+    res.status(response.statusCode).json(response);
+    return;
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.setMasked = async (req, res, next) => {
+  try {
+    const { policyId } = req.params;
+    let { masked } = req.body;
+    let response;
+
+    // Remove duplicate masked fields
+    masked = [...new Set(masked)];
+
+    // Search for policy with the provided policyId
+    const dbResponse = await policyDbUtil.getById(policyId);
+
+    // Check if there is a policy with this policyId
+    if (!dbResponse.policy) {
+      response = {
+        "statusCode": 404,
+        "message": dbResponse.message
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    // Check if there is an existing policy with the same excluded and masked fields on the provided resource
+    const policies = await policyDbUtil.getAll();
+
+    for (const policy of policies) {
+      if ((policy.resource === dbResponse.policy.resource) &&
+          arrayUtil.areEqual(policy.excluded, dbResponse.policy.excluded) &&
+          arrayUtil.areEqual(policy.masked, masked))
+      {
+        response = {
+          "statusCode": 200,
+          "message": `Policy already exists. (policyId: ${policy._id}`
+        };
+        console.log(response);
+        res.status(response.statusCode).json(response);
+        return;
+      }
+    }
+
+    // Update the policy's masked fields
+    dbResponse.policy.masked = masked;
+
+    // Update the policy's document in the database
+    await policyDbUtil.save(dbResponse.policy);
+
+    // Send response
+    response = {
+      "statusCode": 200,
+      "message": `Policy's masked fields set to [${dbResponse.policy.masked}]`
     };
     console.log(response);
     res.status(response.statusCode).json(response);
