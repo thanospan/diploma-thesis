@@ -3,6 +3,7 @@
 const mongoose = require('mongoose');
 
 const safeameaMaskedConn = require('../connections/safeameaMaskedDb');
+const resources = require('../constants/resources');
 
 const policyStatus = {
   "ACTIVE": "active",
@@ -12,9 +13,9 @@ const policyStatus = {
 const Schema = mongoose.Schema;
 
 const policySchema = new Schema({
-  resource: { type: String, required: true },
-  excluded: { type: [String], required: true },
-  masked: { type: [String], required: true },
+  resource: { type: String, enum: Object.keys(resources), required: true },
+  excluded: { type: [String], enum: Object.values(resources.amea), required: true },
+  masked: { type: [String], enum: Object.values(resources.amea), required: true },
   status: { type: String, enum: Object.values(policyStatus), default: policyStatus.ACTIVE }
 });
 
