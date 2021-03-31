@@ -27,6 +27,15 @@ router.post('/',
   policiesController.create
 );
 
+router.post('/:policyId/status',
+  userValidator.validateToken,
+  auth.authenticateToken,
+  policyValidator.validateId,
+  auth.authorize,
+  policyValidator.validateStatus,
+  policiesController.setStatus
+);
+
 router.delete('/:policyId/',
   userValidator.validateToken,
   auth.authenticateToken,

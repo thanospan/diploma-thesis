@@ -76,6 +76,45 @@ exports.create = async (req, res, next) => {
   }
 };
 
+exports.setStatus = async (req, res, next) => {
+  try {
+    const { policyId } = req.params;
+    const { status } = req.body;
+    let response;
+
+    // Search for policy with the provided policyId
+    const dbResponse = await policyDbUtil.getById(policyId);
+
+    // Check if there is a policy with this policyId
+    if (!dbResponse.policy) {
+      response = {
+        "statusCode": 404,
+        "message": dbResponse.message
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    // Update policy's status
+    dbResponse.policy.status = status;
+
+    // Update the policy's document in the database
+    await policyDbUtil.save(dbResponse.policy);
+
+    // Send response
+    response = {
+      "statusCode": 200,
+      "message": `Policy's status set to ${dbResponse.policy.status}`
+    };
+    console.log(response);
+    res.status(response.statusCode).json(response);
+    return;
+  } catch (err) {
+    return next(err);
+  }
+};
+
 exports.deleteById = async (req, res, next) => {
   try {
     const { policyId } = req.params;
