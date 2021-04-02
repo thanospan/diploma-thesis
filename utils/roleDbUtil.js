@@ -13,3 +13,15 @@ exports.getAll = async () => {
 
   return roles;
 };
+
+exports.getAllNames = async () => {
+  const roles = await Role.find({}, 'name').exec();
+
+  return roles;
+};
+
+exports.save = async (role) => {
+  const savedRole = await role.save();
+
+  return savedRole;
+};
