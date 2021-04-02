@@ -11,7 +11,8 @@ const endpoints = [
   "/masked/policies/:policyId/excluded",
   "/masked/policies/:policyId/masked",
   "/masked/policies/:policyId/status",
-  "/masked/roles"
+  "/masked/roles",
+  "/masked/roles/:roleId"
 ];
 
 module.exports = endpoints;

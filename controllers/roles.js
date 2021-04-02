@@ -72,3 +72,35 @@ exports.create = async (req, res, next) => {
     return next(err);
   }
 };
+
+exports.deleteById = async (req, res, next) => {
+  try {
+    const { roleId } = req.params;
+    let response;
+
+    // Delete role with the provided roleId
+    const dbResponse = await roleDbUtil.deleteById(roleId);
+
+    // Check if roleId matches an existing role
+    if (!dbResponse) {
+      response = {
+        "statusCode": 404,
+        "message": "roleId does not match any existing role"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    // Send response
+    response = {
+      "statusCode": 200,
+      "message": "Role deleted successfully"
+    };
+    console.log(response);
+    res.status(response.statusCode).json(response);
+    return;
+  } catch (err) {
+    return next(err);
+  }
+};

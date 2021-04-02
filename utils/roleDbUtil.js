@@ -25,3 +25,9 @@ exports.save = async (role) => {
 
   return savedRole;
 };
+
+exports.deleteById = async (roleId) => {
+  const deletedRole = await Role.findByIdAndRemove(roleId);
+
+  return deletedRole;
+};

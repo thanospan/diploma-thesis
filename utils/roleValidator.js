@@ -179,3 +179,35 @@ exports.validateStatus = (req, res, next) => {
 
   return next();
 };
+
+exports.validateId = (req, res, next) => {
+  let { roleId } = req.params;
+  let response;
+
+  // Check if roleId is provided
+  if (!roleId) {
+    response = {
+      "statusCode": 400,
+      "message": "No roleId provided"
+    };
+    console.log(response);
+    res.status(response.statusCode).json(response);
+    return;
+  }
+
+  roleId = roleId + '';
+
+  // Validate roleId
+  // roleId should be a valid MongoDB ObjectID
+  if (!validator.isMongoId(roleId)) {
+    response = {
+      "statusCode": 400,
+      "message": "Invalid roleId format"
+    };
+    console.log(response);
+    res.status(response.statusCode).json(response);
+    return;
+  }
+
+  return next();
+};

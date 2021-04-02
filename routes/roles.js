@@ -27,4 +27,12 @@ router.post('/',
   rolesController.create
 );
 
+router.delete('/:roleId/',
+  userValidator.validateToken,
+  auth.authenticateToken,
+  roleValidator.validateId,
+  auth.authorize,
+  rolesController.deleteById
+);
+
 module.exports = router;

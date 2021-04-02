@@ -129,6 +129,12 @@ exports.authorize = async (req, res, next) => {
       reqEndpoint = reqEndpoint.replace(req.params.policyId, ":policyId");
     }
 
+    // Check if roleId parameter is provided
+    if (req.params.roleId) {
+      // Replace roleId with :roleId
+      reqEndpoint = reqEndpoint.replace(req.params.roleId, ":roleId");
+    }
+
     // Remove trailing slash
     if (reqEndpoint.endsWith("/")) {
       reqEndpoint = reqEndpoint.slice(0, -1);
