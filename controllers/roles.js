@@ -115,6 +115,48 @@ exports.setPermissions = async (req, res, next) => {
   }
 };
 
+exports.setPolicies = async (req, res, next) => {
+  try {
+    const { roleId } = req.params;
+    let { policies } = req.body;
+    let response;
+
+    // Remove duplicate policies
+    policies = arrayUtil.removeDuplicates(policies);
+
+    // Search for role with the provided roleId
+    const dbResponse = await roleDbUtil.getById(roleId);
+
+    // Check if there is a role with this roleId
+    if (!dbResponse.role) {
+      response = {
+        "statusCode": 404,
+        "message": dbResponse.message
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    // Update role's policies
+    dbResponse.role.policies = policies;
+
+    // Update role's document in the database
+    await roleDbUtil.save(dbResponse.role);
+
+    // Send response
+    response = {
+      "statusCode": 200,
+      "message": `Role's policies set to [${dbResponse.role.policies}]`
+    };
+    console.log(response);
+    res.status(response.statusCode).json(response);
+    return;
+  } catch (err) {
+    return next(err);
+  }
+};
+
 exports.setStatus = async (req, res, next) => {
   try {
     const { roleId } = req.params;

@@ -14,6 +14,7 @@ const endpoints = [
   "/masked/roles",
   "/masked/roles/:roleId",
   "/masked/roles/:roleId/permissions",
+  "/masked/roles/:roleId/policies",
   "/masked/roles/:roleId/status"
 ];
 

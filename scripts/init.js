@@ -147,6 +147,14 @@ const { Amea } = require('../models/amea');
   const savedPermission16 = await newPermission16.save();
   console.log(JSON.stringify(savedPermission16, null, 2));
 
+  const newPermission17 = new Permission({
+    "endpoint": "/masked/roles/:roleId/policies",
+    "methods": [permissionMethods.POST],
+    "status": permissionStatus.ACTIVE
+  });
+  const savedPermission17 = await newPermission17.save();
+  console.log(JSON.stringify(savedPermission17, null, 2));
+
   // Policies
   const newPolicy1 = new Policy({
     "resource": "amea",
@@ -164,7 +172,7 @@ const { Amea } = require('../models/amea');
       savedPermission4, savedPermission5, savedPermission6, savedPermission7,
       savedPermission8, savedPermission9, savedPermission10, savedPermission11,
       savedPermission12, savedPermission13, savedPermission14, savedPermission15,
-      savedPermission16],
+      savedPermission16, savedPermission17],
     "policies": [savedPolicy1],
     "status": roleStatus.ACTIVE
   });

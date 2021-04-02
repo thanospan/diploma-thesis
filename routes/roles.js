@@ -36,6 +36,15 @@ router.post('/:roleId/permissions',
   rolesController.setPermissions
 );
 
+router.post('/:roleId/policies',
+  userValidator.validateToken,
+  auth.authenticateToken,
+  roleValidator.validateId,
+  auth.authorize,
+  roleValidator.validatePolicies,
+  rolesController.setPolicies
+);
+
 router.post('/:roleId/status',
   userValidator.validateToken,
   auth.authenticateToken,
