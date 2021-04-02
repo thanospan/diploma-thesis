@@ -5,7 +5,7 @@ const express = require('express');
 const usersController = require('../controllers/users');
 const userValidator = require('../utils/userValidator');
 const emailTokenValidator = require('../utils/emailTokenValidator');
-const reqParamOptions = require('../constants/reqParamOptions');
+const reqParamOptions = require('../utils/reqParamOptions');
 const auth = require('../auth/auth')
 
 const router = express.Router();

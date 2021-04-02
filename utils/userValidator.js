@@ -2,7 +2,7 @@
 
 const validator = require('validator');
 
-const reqParamOptions = require('../constants/reqParamOptions');
+const reqParamOptions = require('./reqParamOptions');
 const tokenUtil = require('../utils/token');
 const roleDbUtil = require('../utils/roleDbUtil');
 const arrayUtil = require('../utils/array');
