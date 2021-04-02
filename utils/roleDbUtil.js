@@ -20,6 +20,12 @@ exports.getAllNames = async () => {
   return roles;
 };
 
+exports.getAllIds = async () => {
+  const roles = await Role.find({}, '_id').exec();
+
+  return roles;
+};
+
 exports.getById = async (roleId) => {
   let response;
 

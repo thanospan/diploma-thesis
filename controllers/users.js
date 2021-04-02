@@ -5,6 +5,7 @@ const emailTokenDbUtil = require('../utils/emailTokenDbUtil');
 const hashUtil = require('../utils/hash');
 const tokenUtil = require('../utils/token');
 const emailUtil = require('../utils/email');
+const arrayUtil = require('../utils/array');
 const { emailStatus, User } = require('../models/user');
 const { EmailToken } = require('../models/emailToken');
 
@@ -238,8 +239,11 @@ exports.getAll = async (req, res, next) => {
 exports.setRoles = async (req, res, next) => {
   try {
     const { userId } = req.params;
-    const roles = res.locals.roles;
+    let { roles } = req.body;
     let response;
+
+    // Remove duplicate roles
+    roles = arrayUtil.removeDuplicates(roles);
 
     // Search for registered user with the provided userId
     const dbResponse = await userDbUtil.getById(userId);
@@ -264,7 +268,7 @@ exports.setRoles = async (req, res, next) => {
     // Send response
     response = {
       "statusCode": 200,
-      "message": "User's roles updated successfully"
+      "message": `User's roles set to [${dbResponse.user.roles}]`
     };
     console.log(response);
     res.status(response.statusCode).json(response);

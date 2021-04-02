@@ -155,11 +155,11 @@ exports.validateRoles = async (req, res, next) => {
     let reqRoles = req.body.roles;
     let response;
 
-    // Check if roles body parameter is passed
+    // Check if roles array is provided
     if (!reqRoles) {
       response = {
         "statusCode": 400,
-        "message": "No roles provided"
+        "message": "No roles array provided"
       };
       console.log(response);
       res.status(response.statusCode).json(response);
@@ -177,22 +177,14 @@ exports.validateRoles = async (req, res, next) => {
       return;
     }
 
-    // Remove duplicate roles
-    reqRoles = arrayUtil.removeDuplicates(reqRoles);
+    // Get all existing roles ObjectIDs from the database
+    let roles = await roleDbUtil.getAllIds();
+    roles = roles.map(role => role._id.toString());
 
-    // Get all existing roles from the database
-    const roles = await roleDbUtil.getAll();
-
-    // Save all existing roles names into an array
-    let rolesNames = [];
-    roles.forEach(role => {
-      rolesNames.push(role.name);
-    });
-
-    // Check if the requested roles are valid
+    // Validate the provided roles
     let isValidRole = true;
     for (const reqRole of reqRoles) {
-      if (!rolesNames.includes(reqRole)) {
+      if (!roles.includes(reqRole)) {
         isValidRole = false;
         break;
       }
@@ -207,19 +199,6 @@ exports.validateRoles = async (req, res, next) => {
       res.status(response.statusCode).json(response);
       return;
     }
-
-    // Change reqRoles from names to ObjectIDs
-    reqRoles.forEach((reqRole, i) => {
-      for (const role of roles) {
-        if (role.name === reqRole) {
-          reqRoles[i] = role._id
-          break;
-        }
-      }
-    });
-
-    // Pass the array with the ObjectIDs of the requested roles to res.locals
-    res.locals.roles = reqRoles;
 
     return next();
   } catch (err) {
