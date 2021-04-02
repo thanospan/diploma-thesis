@@ -27,6 +27,24 @@ router.post('/',
   rolesController.create
 );
 
+router.post('/:roleId/permissions',
+  userValidator.validateToken,
+  auth.authenticateToken,
+  roleValidator.validateId,
+  auth.authorize,
+  roleValidator.validatePermissions,
+  rolesController.setPermissions
+);
+
+router.post('/:roleId/status',
+  userValidator.validateToken,
+  auth.authenticateToken,
+  roleValidator.validateId,
+  auth.authorize,
+  roleValidator.validateStatus,
+  rolesController.setStatus
+);
+
 router.delete('/:roleId/',
   userValidator.validateToken,
   auth.authenticateToken,

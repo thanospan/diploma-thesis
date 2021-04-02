@@ -73,6 +73,87 @@ exports.create = async (req, res, next) => {
   }
 };
 
+exports.setPermissions = async (req, res, next) => {
+  try {
+    const { roleId } = req.params;
+    let { permissions } = req.body;
+    let response;
+
+    // Remove duplicate permissions
+    permissions = arrayUtil.removeDuplicates(permissions);
+
+    // Search for role with the provided roleId
+    const dbResponse = await roleDbUtil.getById(roleId);
+
+    // Check if there is a role with this roleId
+    if (!dbResponse.role) {
+      response = {
+        "statusCode": 404,
+        "message": dbResponse.message
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    // Update role's permissions
+    dbResponse.role.permissions = permissions;
+
+    // Update role's document in the database
+    await roleDbUtil.save(dbResponse.role);
+
+    // Send response
+    response = {
+      "statusCode": 200,
+      "message": `Role's permissions set to [${dbResponse.role.permissions}]`
+    };
+    console.log(response);
+    res.status(response.statusCode).json(response);
+    return;
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.setStatus = async (req, res, next) => {
+  try {
+    const { roleId } = req.params;
+    const { status } = req.body;
+    let response;
+
+    // Search for role with the provided roleId
+    const dbResponse = await roleDbUtil.getById(roleId);
+
+    // Check if there is a role with this roleId
+    if (!dbResponse.role) {
+      response = {
+        "statusCode": 404,
+        "message": dbResponse.message
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    // Update role's status
+    dbResponse.role.status = status;
+
+    // Update role's document in the database
+    await roleDbUtil.save(dbResponse.role);
+
+    // Send response
+    response = {
+      "statusCode": 200,
+      "message": `Role's status set to ${dbResponse.role.status}`
+    };
+    console.log(response);
+    res.status(response.statusCode).json(response);
+    return;
+  } catch (err) {
+    return next(err);
+  }
+};
+
 exports.deleteById = async (req, res, next) => {
   try {
     const { roleId } = req.params;
