@@ -5,20 +5,20 @@ const express = require('express');
 const app = express();
 
 const setup = () => {
-  const usersRouter = require('../routes/users');
   const permissionsRouter = require('../routes/permissions');
   const policiesRouter = require('../routes/policies');
-  // const rolesRouter = require('../routes/roles');
+  const rolesRouter = require('../routes/roles');
+  const usersRouter = require('../routes/users');
   // const ameaRouter = require('../routes/amea');
 
   // Middleware
   app.use(express.json());
 
   // Routes
-  app.use('/masked/users', usersRouter);
   app.use('/masked/permissions', permissionsRouter);
   app.use('/masked/policies', policiesRouter);
-  // app.use('/masked/roles', rolesRouter);
+  app.use('/masked/roles', rolesRouter);
+  app.use('/masked/users', usersRouter);
   // app.use('/masked/amea', ameaRouter);
 
   app.use((req, res, next) => {

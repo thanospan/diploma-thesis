@@ -10,6 +10,12 @@ exports.getAll = async () => {
   return permissions;
 };
 
+exports.getAllIds = async () => {
+  const permissions = await Permission.find({}, '_id').exec();
+
+  return permissions;
+};
+
 exports.getById = async (permissionId) => {
   let response;
 

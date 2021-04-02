@@ -10,6 +10,12 @@ exports.getAll = async () => {
   return policies;
 };
 
+exports.getAllIds = async () => {
+  const policies = await Policy.find({}, '_id').exec();
+
+  return policies;
+};
+
 exports.getById = async (policyId) => {
   let response;
 
