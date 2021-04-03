@@ -160,10 +160,10 @@ const { Amea } = require('../models/amea');
     "resource": "amea",
     "excluded": ["owner", "__enc_surname", "updated",
       "created", "disabilitiesDesc", "caretaker.caredescription",
-      "__v", "__enc_surname", "_id"],
+      "__v", "_id"],
     "masked": ["name", "surname", "caretaker.carename", "caretaker.caresurname",
-      "email", "caretaker.careemail", "caretaker.carephone", "address",
-      "phoneNumber", "loc.coordinates", "birthday"],
+      "email.value", "caretaker.careemail", "caretaker.carephone", "address",
+      "phoneNumber.value", "loc.coordinates", "birthday"],
     "status": policyStatus.ACTIVE
   })
   const savedPolicy1 = await newPolicy1.save();
