@@ -1,3 +1,5 @@
+'use strict';
+
 const endpoints = [
   "/masked/users",
   "/masked/users/:userId",

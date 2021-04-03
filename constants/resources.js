@@ -1,56 +1,49 @@
-const resources = {
-  "amea": [
-    "_id",
-    "email",
-    "email.value",
-    "email.active",
-    "phoneNumber",
-    "phoneNumber.value",
-    "phoneNumber.active",
-    "disabilities",
-    "disabilities.name",
-    "disabilities.sub",
-    "disabilities.sub.name",
-    "disabilities.sub.value",
-    "owner",
-    "club",
-    "club._id",
-    "club.loc",
-    "club.loc.coordinates",
-    "club.loc.type",
-    "club.created",
-    "club.updated",
-    "club.name",
-    "club.phoneNumber",
-    "club.region",
-    "club.region.administrative",
-    "club.region.municipality",
-    "club.address",
-    "club.status",
-    "club.__v",
-    "created",
-    "name",
-    "surname",
-    "loc",
-    "loc.coordinates",
-    "loc.type",
-    "region",
-    "region.administrative",
-    "region.municipality",
-    "disabilitiesDesc",
-    "floor",
-    "birthday",
-    "updated",
-    "address",
-    "caretaker.carename",
-    "caretaker.caresurname",
-    "caretaker.careemail",
-    "caretaker.carephone",
-    "caretaker.caredescription",
-    "status",
-    "__enc_surname",
-    "__v"
-  ]
+'use strict';
+
+const { Amea } = require('../models/amea');
+const { Club } = require('../models/club');
+
+const ameaFields = [...new Set([
+  ...Object.keys(Amea.schema.paths),
+  ...Object.keys(Amea.schema.nested),
+  ...["__enc_surname"]
+])];
+
+const clubFields = [...new Set([
+  ...Object.keys(Club.schema.paths),
+  ...Object.keys(Club.schema.nested)
+])];
+
+const resources = [
+  {
+    "name": "amea",
+    "fields": ameaFields
+  },
+  {
+    "name": "club",
+    "fields": clubFields
+  }
+];
+
+exports.resources = resources;
+
+exports.getAllNames = () => {
+  return [...new Set(resources.map(resource => resource.name))];
 };
 
-module.exports = resources;
+exports.getAllFields = () => {
+  return [...new Set([].concat(...resources.map(resource => resource.fields)))];
+};
+
+exports.getResourceFields = (resourceName) => {
+  let resourceFields;
+
+  for (const resource of resources) {
+    if (resource.name === resourceName) {
+      resourceFields = resource.fields;
+      break;
+    }
+  }
+
+  return resourceFields;
+};

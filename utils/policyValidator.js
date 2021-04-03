@@ -21,7 +21,7 @@ exports.validateResource = (req, res, next) => {
   }
 
   // Validate resource
-  if (!Object.keys(resources).includes(resource)) {
+  if (!resources.getAllNames().includes(resource)) {
     response = {
       "statusCode": 400,
       "message": "Invalid resource"
@@ -35,6 +35,7 @@ exports.validateResource = (req, res, next) => {
 };
 
 exports.validateExcluded = (req, res, next) => {
+  const { resource } = req.body;
   let { excluded } = req.body;
   let response;
 
@@ -63,7 +64,7 @@ exports.validateExcluded = (req, res, next) => {
   // Validate excluded array
   let isValidExcludedField = true;
   for (const excludedField of excluded) {
-    if (!resources.amea.includes(excludedField)) {
+    if (!resources.getResourceFields(resource).includes(excludedField)) {
       isValidExcludedField = false;
       break;
     }
@@ -83,6 +84,7 @@ exports.validateExcluded = (req, res, next) => {
 };
 
 exports.validateMasked = (req, res, next) => {
+  const { resource } = req.body;
   let { masked } = req.body;
   let response;
 
@@ -111,7 +113,7 @@ exports.validateMasked = (req, res, next) => {
   // Validate masked array
   let isValidMaskedField = true;
   for (const maskedField of masked) {
-    if (!resources.amea.includes(maskedField)) {
+    if (!resources.getResourceFields(resource).includes(maskedField)) {
       isValidMaskedField = false;
       break;
     }

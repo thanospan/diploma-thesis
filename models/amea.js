@@ -9,6 +9,7 @@ const Schema = mongoose.Schema;
 const ameaSchema = new Schema({
   name: { type: String },
   surname: { type: String },
+  owner: [{ type: Schema.Types.ObjectId }],
   email: {
     value: { type: String },
     active: { type: Number }
