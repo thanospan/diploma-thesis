@@ -145,7 +145,7 @@ exports.authorize = async (req, res, next) => {
 
     // Check if the user is authorized
     let isAuthorized = false;
-    let authorizedRoles = [];
+    let authorizedUserRoles = [];
 
     authenticatedUser.roles.forEach(role => {
       if (role.status === roleStatus.ACTIVE) {
@@ -155,14 +155,14 @@ exports.authorize = async (req, res, next) => {
               permission.methods.includes(reqMethod))
           {
             isAuthorized = true;
-            authorizedRoles.push(role);
+            authorizedUserRoles.push(role);
           }
         });
       }
     });
 
     // console.log(isAuthorized);
-    // console.log(JSON.stringify(authorizedRoles, null, 2));
+    // console.log(JSON.stringify(authorizedUserRoles, null, 2));
 
     if (!isAuthorized) {
       response = {
@@ -176,7 +176,7 @@ exports.authorize = async (req, res, next) => {
 
     // Successful authorization
     res.locals.authorizedUser = authenticatedUser;
-    res.locals.authorizedRoles = authorizedRoles;
+    res.locals.authorizedUserRoles = authorizedUserRoles;
     return next();
   } catch (err) {
     return next(err);
