@@ -4,6 +4,7 @@ const validator = require('validator');
 
 const { permissionMethods, permissionStatus } = require('../models/permission');
 const endpoints = require('../constants/endpoints');
+const permissionDbUtil = require('./permissionDbUtil');
 
 exports.validateEndpoint = (req, res, next) => {
   let { endpoint } = req.body;
@@ -42,7 +43,7 @@ exports.validateMethods = (req, res, next) => {
   if (!methods) {
     response = {
       "statusCode": 400,
-      "message": "No methods provided"
+      "message": "No methods array provided"
     };
     console.log(response);
     res.status(response.statusCode).json(response);
@@ -113,34 +114,53 @@ exports.validateStatus = (req, res, next) => {
   return next();
 };
 
-exports.validateId = (req, res, next) => {
-  let { permissionId } = req.params;
-  let response;
+exports.validateId = async (req, res, next) => {
+  try {
+    let { permissionId } = req.params;
+    let response;
 
-  // Check if permissionId is provided
-  if (!permissionId) {
-    response = {
-      "statusCode": 400,
-      "message": "No permissionId provided"
-    };
-    console.log(response);
-    res.status(response.statusCode).json(response);
-    return;
+    // Check if permissionId is provided
+    if (!permissionId) {
+      response = {
+        "statusCode": 400,
+        "message": "No permissionId provided"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    permissionId = permissionId + '';
+
+    // Validate permissionId
+    // permissionId should be a valid MongoDB ObjectID
+    if (!validator.isMongoId(permissionId)) {
+      response = {
+        "statusCode": 400,
+        "message": "Invalid permissionId format"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    // Search for permission with the provided permissionId
+    const dbResponse = await permissionDbUtil.getById(permissionId);
+
+    // Check if there is a permission with this permissionId
+    if (!dbResponse.permission) {
+      response = {
+        "statusCode": 404,
+        "message": dbResponse.message
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    res.locals.permission = dbResponse.permission;
+    return next();
+  } catch (err) {
+    return next(err);
   }
-
-  permissionId = permissionId + '';
-
-  // Validate permissionId
-  // permissionId should be a valid MongoDB ObjectID
-  if (!validator.isMongoId(permissionId)) {
-    response = {
-      "statusCode": 400,
-      "message": "Invalid permissionId format"
-    };
-    console.log(response);
-    res.status(response.statusCode).json(response);
-    return;
-  }
-
-  return next();
 };

@@ -26,29 +26,29 @@ router.post('/',
   permissionsController.create
 );
 
-router.post('/:permissionId/status',
-  userValidator.validateToken,
-  auth.authenticateToken,
-  permissionValidator.validateId,
-  auth.authorize,
-  permissionValidator.validateStatus,
-  permissionsController.setStatus
-);
-
 router.post('/:permissionId/methods',
   userValidator.validateToken,
   auth.authenticateToken,
-  permissionValidator.validateId,
   auth.authorize,
+  permissionValidator.validateId,
   permissionValidator.validateMethods,
   permissionsController.setMethods
+);
+
+router.post('/:permissionId/status',
+  userValidator.validateToken,
+  auth.authenticateToken,
+  auth.authorize,
+  permissionValidator.validateId,
+  permissionValidator.validateStatus,
+  permissionsController.setStatus
 );
 
 router.delete('/:permissionId/',
   userValidator.validateToken,
   auth.authenticateToken,
-  permissionValidator.validateId,
   auth.authorize,
+  permissionValidator.validateId,
   permissionsController.deleteById
 );
 

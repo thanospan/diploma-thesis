@@ -5,7 +5,7 @@ const express = require('express');
 const usersController = require('../controllers/users');
 const userValidator = require('../utils/userValidator');
 const emailTokenValidator = require('../utils/emailTokenValidator');
-const reqParamOptions = require('../utils/reqParamOptions');
+const { paramOptions } = require('../utils/param');
 const auth = require('../auth/auth')
 
 const router = express.Router();
@@ -17,9 +17,9 @@ router.post('/signup',
 );
 
 router.post('/email-verification',
-  userValidator.validateId(reqParamOptions.QUERY),
+  userValidator.validateId({ userId: paramOptions.REQ_QUERY }),
   emailTokenValidator.validateEmailTokenValue,
-  usersController.verifyEmail  
+  usersController.verifyEmail
 );
 
 router.post('/login',
@@ -44,8 +44,8 @@ router.get('/',
 router.post('/:userId/roles',
   userValidator.validateToken,
   auth.authenticateToken,
-  userValidator.validateId(reqParamOptions.PARAMS),
   auth.authorize,
+  userValidator.validateId({ userId: paramOptions.REQ_PARAMS }),
   userValidator.validateRoles,
   usersController.setRoles
 );
@@ -53,8 +53,8 @@ router.post('/:userId/roles',
 router.delete('/:userId/',
   userValidator.validateToken,
   auth.authenticateToken,
-  userValidator.validateId(reqParamOptions.PARAMS),
   auth.authorize,
+  userValidator.validateId({ userId: paramOptions.REQ_PARAMS }),
   usersController.deleteById
 );
 

@@ -69,6 +69,7 @@ exports.verifyEmail = async (req, res, next) => {
   try {
     const { userId } = req.query;
     const emailToken = req.header('emailToken');
+    const user = res.locals.user;
     let response;
     let dbResponse;
 
@@ -97,22 +98,8 @@ exports.verifyEmail = async (req, res, next) => {
       return;
     }
 
-    // Search for registered user with the provided userIdd
-    dbResponse = await userDbUtil.getById(userId);
-
-    // Check if there is a user with this userId
-    if (!dbResponse.user) {
-      response = {
-        "statusCode": 404,
-        "message": dbResponse.message
-      };
-      console.log(response);
-      res.status(response.statusCode).json(response);
-      return;
-    }
-
     // Check if the email address is already verified
-    if (dbResponse.user.email.status === emailStatus.ACCEPTED) {
+    if (user.email.status === emailStatus.ACCEPTED) {
       response = {
         "statusCode": 200,
         "message": `Email address is already verified`
@@ -123,10 +110,10 @@ exports.verifyEmail = async (req, res, next) => {
     }
 
     // Verify email address
-    dbResponse.user.email.status = emailStatus.ACCEPTED;
+    user.email.status = emailStatus.ACCEPTED;
 
     // Update the user's document in the database
-    await userDbUtil.save(dbResponse.user);
+    await userDbUtil.save(user);
 
     // Send response
     response = {
@@ -240,35 +227,22 @@ exports.setRoles = async (req, res, next) => {
   try {
     const { userId } = req.params;
     let { roles } = req.body;
+    const user = res.locals.user;
     let response;
 
     // Remove duplicate roles
     roles = arrayUtil.removeDuplicates(roles);
 
-    // Search for registered user with the provided userId
-    const dbResponse = await userDbUtil.getById(userId);
-
-    // Check if there is a user with this userId
-    if (!dbResponse.user) {
-      response = {
-        "statusCode": 404,
-        "message": dbResponse.message
-      };
-      console.log(response);
-      res.status(response.statusCode).json(response);
-      return;
-    }
-
     // Set user's roles
-    dbResponse.user.roles = roles;
+    user.roles = roles;
 
     // Update the user's document in the database
-    await userDbUtil.save(dbResponse.user);
+    await userDbUtil.save(user);
 
     // Send response
     response = {
       "statusCode": 200,
-      "message": `User's roles set to [${dbResponse.user.roles}]`
+      "message": `User's roles set to [${user.roles}]`
     };
     console.log(response);
     res.status(response.statusCode).json(response);
@@ -285,17 +259,6 @@ exports.deleteById = async (req, res, next) => {
 
     // Delete user with the provided userId
     const dbResponse = await userDbUtil.deleteById(userId);
-
-    // Check if userId matches a registered user
-    if (!dbResponse) {
-      response = {
-        "statusCode": 404,
-        "message": "userId does not match any registered user"
-      };
-      console.log(response);
-      res.status(response.statusCode).json(response);
-      return;
-    }
 
     // Send response
     response = {

@@ -69,73 +69,21 @@ exports.create = async (req, res, next) => {
   }
 };
 
-exports.setStatus = async (req, res, next) => {
-  try {
-    const { permissionId } = req.params;
-    const { status } = req.body;
-    let response;
-
-    // Search for permission with the provided permissionId
-    const dbResponse = await permissionDbUtil.getById(permissionId);
-
-    // Check if there is a permission with this permissionId
-    if (!dbResponse.permission) {
-      response = {
-        "statusCode": 404,
-        "message": dbResponse.message
-      };
-      console.log(response);
-      res.status(response.statusCode).json(response);
-      return;
-    }
-
-    // Update permission's status
-    dbResponse.permission.status = status;
-
-    // Update the permission's document in the database
-    await permissionDbUtil.save(dbResponse.permission);
-
-    // Send response
-    response = {
-      "statusCode": 200,
-      "message": `Permission's status set to ${dbResponse.permission.status}`
-    };
-    console.log(response);
-    res.status(response.statusCode).json(response);
-    return;
-  } catch (err) {
-    return next(err);
-  }
-};
-
 exports.setMethods = async (req, res, next) => {
   try {
     const { permissionId } = req.params;
+    // The permission with this permissionId is saved to res.locals.permission during permissionId validation
     let { methods } = req.body;
     let response;
 
     // Remove duplicate methods
     methods = arrayUtil.removeDuplicates(methods);
 
-    // Search for permission with the provided permissionId
-    const dbResponse = await permissionDbUtil.getById(permissionId);
-
-    // Check if there is a permission with this permissionId
-    if (!dbResponse.permission) {
-      response = {
-        "statusCode": 404,
-        "message": dbResponse.message
-      };
-      console.log(response);
-      res.status(response.statusCode).json(response);
-      return;
-    }
-
     // Check if there is an existing permission with the same methods on the provided endpoint
     const permissions = await permissionDbUtil.getAll();
 
     for (const permission of permissions) {
-      if ((permission.endpoint === dbResponse.permission.endpoint) && arrayUtil.areEqual(permission.methods, methods)) {
+      if ((permission.endpoint === res.locals.permission.endpoint) && arrayUtil.areEqual(permission.methods, methods)) {
         response = {
           "statusCode": 200,
           "message": `Permission already exists. (permissionId: ${permission._id})`
@@ -147,15 +95,41 @@ exports.setMethods = async (req, res, next) => {
     }
 
     // Update permission's methods
-    dbResponse.permission.methods = methods;
+    res.locals.permission.methods = methods;
 
     // Update the permission's document in the database
-    await permissionDbUtil.save(dbResponse.permission);
+    await permissionDbUtil.save(res.locals.permission);
 
     // Send response
     response = {
       "statusCode": 200,
-      "message": `Permission's methods set to [${dbResponse.permission.methods}]`
+      "message": `Permission's methods set to [${res.locals.permission.methods}]`
+    };
+    console.log(response);
+    res.status(response.statusCode).json(response);
+    return;
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.setStatus = async (req, res, next) => {
+  try {
+    const { permissionId } = req.params;
+    // The permission with this permissionId is saved to res.locals.permission during permissionId validation
+    const { status } = req.body;
+    let response;
+
+    // Update permission's status
+    res.locals.permission.status = status;
+
+    // Update the permission's document in the database
+    await permissionDbUtil.save(res.locals.permission);
+
+    // Send response
+    response = {
+      "statusCode": 200,
+      "message": `Permission's status set to ${res.locals.permission.status}`
     };
     console.log(response);
     res.status(response.statusCode).json(response);
@@ -168,21 +142,11 @@ exports.setMethods = async (req, res, next) => {
 exports.deleteById = async (req, res, next) => {
   try {
     const { permissionId } = req.params;
+    // The permission with this permissionId is saved to res.locals.permission during permissionId validation
     let response;
 
     // Delete permission with the provided permissionId
     const dbResponse = await permissionDbUtil.deleteById(permissionId);
-
-    // Check if permissionId matches an existing permission
-    if (!dbResponse) {
-      response = {
-        "statusCode": 404,
-        "message": "permissionId does not match any existing permission"
-      };
-      console.log(response);
-      res.status(response.statusCode).json(response);
-      return;
-    }
 
     // Send response
     response = {

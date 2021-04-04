@@ -2,8 +2,9 @@
 
 const validator = require('validator');
 
-const reqParamOptions = require('./reqParamOptions');
+const { getParam } = require('./param');
 const tokenUtil = require('../utils/token');
+const userDbUtil = require('../utils/userDbUtil');
 const roleDbUtil = require('../utils/roleDbUtil');
 const arrayUtil = require('../utils/array');
 
@@ -79,37 +80,60 @@ exports.validatePassword = (req, res, next) => {
   return next();
 };
 
-exports.validateId = (reqParamOption) => {
-  return (req, res, next) => {
-    let userId = getReqParam('userId', req, reqParamOption);
-    let response;
+exports.validateId = (options) => {
+  return async (req, res, next) => {
+    try {
+      let userId = getParam({
+        param: "userId",
+        option: options.userId,
+        obj: req
+      });
+      let response;
 
-    // Check if userId is provided
-    if (!userId) {
-      response = {
-        "statusCode": 400,
-        "message": "No userId provided"
-      };
-      console.log(response);
-      res.status(response.statusCode).json(response);
-      return;
+      // Check if userId is provided
+      if (!userId) {
+        response = {
+          "statusCode": 400,
+          "message": "No userId provided"
+        };
+        console.log(response);
+        res.status(response.statusCode).json(response);
+        return;
+      }
+
+      userId = userId + '';
+
+      // Validate userId
+      // userId should be a valid MongoDB ObjectID
+      if (!validator.isMongoId(userId)) {
+        response = {
+          "statusCode": 400,
+          "message": "Invalid userId format"
+        };
+        console.log(response);
+        res.status(response.statusCode).json(response);
+        return;
+      }
+
+      // Search for registered user with the provided userId
+      const dbResponse = await userDbUtil.getById(userId);
+
+      // Check if there is a user with this userId
+      if (!dbResponse.user) {
+        response = {
+          "statusCode": 404,
+          "message": dbResponse.message
+        };
+        console.log(response);
+        res.status(response.statusCode).json(response);
+        return;
+      }
+
+      res.locals.user = dbResponse.user;
+      return next();
+    } catch (err) {
+      return next(err);
     }
-
-    userId = userId + '';
-
-    // Validate userId
-    // userId should be a valid MongoDB ObjectID
-    if (!validator.isMongoId(userId)) {
-      response = {
-        "statusCode": 400,
-        "message": "Invalid userId format"
-      };
-      console.log(response);
-      res.status(response.statusCode).json(response);
-      return;
-    }
-
-    return next();
   }
 };
 
@@ -204,27 +228,4 @@ exports.validateRoles = async (req, res, next) => {
   } catch (err) {
     return next(err);
   }
-};
-
-const getReqParam = (param, req, reqParamOption) => {
-  let reqParam;
-
-  switch (reqParamOption) {
-    case reqParamOptions.BODY:
-      reqParam = req.body[param];
-      break;
-    case reqParamOptions.QUERY:
-      reqParam = req.query[param];
-      break;
-    case reqParamOptions.PARAMS:
-      reqParam = req.params[param];
-      break;
-    case reqParamOptions.HEADERS:
-      reqParam = req.headers[param.toLowerCase()];
-      break;
-    default:
-      break;
-  }
-
-  return reqParam;
 };
