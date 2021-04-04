@@ -5,6 +5,7 @@ const validator = require('validator');
 const { roleStatus } = require('../models/role');
 const permissionDbUtil = require('./permissionDbUtil');
 const policyDbUtil = require('./policyDbUtil');
+const roleDbUtil = require('./roleDbUtil');
 
 exports.validateName = (req, res, next) => {
   let { name } = req.body;
@@ -180,34 +181,53 @@ exports.validateStatus = (req, res, next) => {
   return next();
 };
 
-exports.validateId = (req, res, next) => {
-  let { roleId } = req.params;
-  let response;
+exports.validateId = async (req, res, next) => {
+  try {
+    let { roleId } = req.params;
+    let response;
 
-  // Check if roleId is provided
-  if (!roleId) {
-    response = {
-      "statusCode": 400,
-      "message": "No roleId provided"
-    };
-    console.log(response);
-    res.status(response.statusCode).json(response);
-    return;
+    // Check if roleId is provided
+    if (!roleId) {
+      response = {
+        "statusCode": 400,
+        "message": "No roleId provided"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    roleId = roleId + '';
+
+    // Validate roleId
+    // roleId should be a valid MongoDB ObjectID
+    if (!validator.isMongoId(roleId)) {
+      response = {
+        "statusCode": 400,
+        "message": "Invalid roleId format"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    // Search for role with the provided roleId
+    const dbResponse = await roleDbUtil.getById(roleId);
+
+    // Check if there is a role with this roleId
+    if (!dbResponse.role) {
+      response = {
+        "statusCode": 404,
+        "message": dbResponse.message
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    res.locals.role = dbResponse.role;
+    return next();
+  } catch (err) {
+    return next(err);
   }
-
-  roleId = roleId + '';
-
-  // Validate roleId
-  // roleId should be a valid MongoDB ObjectID
-  if (!validator.isMongoId(roleId)) {
-    response = {
-      "statusCode": 400,
-      "message": "Invalid roleId format"
-    };
-    console.log(response);
-    res.status(response.statusCode).json(response);
-    return;
-  }
-
-  return next();
 };

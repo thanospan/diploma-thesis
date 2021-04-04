@@ -76,36 +76,23 @@ exports.create = async (req, res, next) => {
 exports.setPermissions = async (req, res, next) => {
   try {
     const { roleId } = req.params;
+    const role = res.locals.role;
     let { permissions } = req.body;
     let response;
 
     // Remove duplicate permissions
     permissions = arrayUtil.removeDuplicates(permissions);
 
-    // Search for role with the provided roleId
-    const dbResponse = await roleDbUtil.getById(roleId);
-
-    // Check if there is a role with this roleId
-    if (!dbResponse.role) {
-      response = {
-        "statusCode": 404,
-        "message": dbResponse.message
-      };
-      console.log(response);
-      res.status(response.statusCode).json(response);
-      return;
-    }
-
     // Update role's permissions
-    dbResponse.role.permissions = permissions;
+    role.permissions = permissions;
 
     // Update role's document in the database
-    await roleDbUtil.save(dbResponse.role);
+    await roleDbUtil.save(role);
 
     // Send response
     response = {
       "statusCode": 200,
-      "message": `Role's permissions set to [${dbResponse.role.permissions}]`
+      "message": `Role's permissions set to [${role.permissions}]`
     };
     console.log(response);
     res.status(response.statusCode).json(response);
@@ -118,36 +105,23 @@ exports.setPermissions = async (req, res, next) => {
 exports.setPolicies = async (req, res, next) => {
   try {
     const { roleId } = req.params;
+    const role = res.locals.role;
     let { policies } = req.body;
     let response;
 
     // Remove duplicate policies
     policies = arrayUtil.removeDuplicates(policies);
 
-    // Search for role with the provided roleId
-    const dbResponse = await roleDbUtil.getById(roleId);
-
-    // Check if there is a role with this roleId
-    if (!dbResponse.role) {
-      response = {
-        "statusCode": 404,
-        "message": dbResponse.message
-      };
-      console.log(response);
-      res.status(response.statusCode).json(response);
-      return;
-    }
-
     // Update role's policies
-    dbResponse.role.policies = policies;
+    role.policies = policies;
 
     // Update role's document in the database
-    await roleDbUtil.save(dbResponse.role);
+    await roleDbUtil.save(role);
 
     // Send response
     response = {
       "statusCode": 200,
-      "message": `Role's policies set to [${dbResponse.role.policies}]`
+      "message": `Role's policies set to [${role.policies}]`
     };
     console.log(response);
     res.status(response.statusCode).json(response);
@@ -160,33 +134,20 @@ exports.setPolicies = async (req, res, next) => {
 exports.setStatus = async (req, res, next) => {
   try {
     const { roleId } = req.params;
+    const role = res.locals.role;
     const { status } = req.body;
     let response;
 
-    // Search for role with the provided roleId
-    const dbResponse = await roleDbUtil.getById(roleId);
-
-    // Check if there is a role with this roleId
-    if (!dbResponse.role) {
-      response = {
-        "statusCode": 404,
-        "message": dbResponse.message
-      };
-      console.log(response);
-      res.status(response.statusCode).json(response);
-      return;
-    }
-
     // Update role's status
-    dbResponse.role.status = status;
+    role.status = status;
 
     // Update role's document in the database
-    await roleDbUtil.save(dbResponse.role);
+    await roleDbUtil.save(role);
 
     // Send response
     response = {
       "statusCode": 200,
-      "message": `Role's status set to ${dbResponse.role.status}`
+      "message": `Role's status set to ${role.status}`
     };
     console.log(response);
     res.status(response.statusCode).json(response);
@@ -203,17 +164,6 @@ exports.deleteById = async (req, res, next) => {
 
     // Delete role with the provided roleId
     const dbResponse = await roleDbUtil.deleteById(roleId);
-
-    // Check if roleId matches an existing role
-    if (!dbResponse) {
-      response = {
-        "statusCode": 404,
-        "message": "roleId does not match any existing role"
-      };
-      console.log(response);
-      res.status(response.statusCode).json(response);
-      return;
-    }
 
     // Send response
     response = {

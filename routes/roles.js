@@ -30,8 +30,8 @@ router.post('/',
 router.post('/:roleId/permissions',
   userValidator.validateToken,
   auth.authenticateToken,
-  roleValidator.validateId,
   auth.authorize,
+  roleValidator.validateId,
   roleValidator.validatePermissions,
   rolesController.setPermissions
 );
@@ -39,8 +39,8 @@ router.post('/:roleId/permissions',
 router.post('/:roleId/policies',
   userValidator.validateToken,
   auth.authenticateToken,
-  roleValidator.validateId,
   auth.authorize,
+  roleValidator.validateId,
   roleValidator.validatePolicies,
   rolesController.setPolicies
 );
@@ -48,8 +48,8 @@ router.post('/:roleId/policies',
 router.post('/:roleId/status',
   userValidator.validateToken,
   auth.authenticateToken,
-  roleValidator.validateId,
   auth.authorize,
+  roleValidator.validateId,
   roleValidator.validateStatus,
   rolesController.setStatus
 );
@@ -57,8 +57,8 @@ router.post('/:roleId/status',
 router.delete('/:roleId/',
   userValidator.validateToken,
   auth.authenticateToken,
-  roleValidator.validateId,
   auth.authorize,
+  roleValidator.validateId,
   rolesController.deleteById
 );
 
