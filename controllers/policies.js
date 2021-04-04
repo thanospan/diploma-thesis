@@ -79,33 +79,20 @@ exports.create = async (req, res, next) => {
 exports.setExcluded = async (req, res, next) => {
   try {
     const { policyId } = req.params;
+    // The policy with this policyId is saved to res.locals.policy during policyId validation
     let { excluded } = req.body;
     let response;
 
     // Remove duplicate excluded fields
     excluded = arrayUtil.removeDuplicates(excluded);
 
-    // Search for policy with the provided policyId
-    const dbResponse = await policyDbUtil.getById(policyId);
-
-    // Check if there is a policy with this policyId
-    if (!dbResponse.policy) {
-      response = {
-        "statusCode": 404,
-        "message": dbResponse.message
-      };
-      console.log(response);
-      res.status(response.statusCode).json(response);
-      return;
-    }
-
     // Check if there is an existing policy with the same excluded and masked fields on the provided resource
     const policies = await policyDbUtil.getAll();
 
     for (const policy of policies) {
-      if ((policy.resource === dbResponse.policy.resource) &&
+      if ((policy.resource === res.locals.policy.resource) &&
           arrayUtil.areEqual(policy.excluded, excluded) &&
-          arrayUtil.areEqual(policy.masked, dbResponse.policy.masked))
+          arrayUtil.areEqual(policy.masked, res.locals.policy.masked))
       {
         response = {
           "statusCode": 200,
@@ -118,15 +105,15 @@ exports.setExcluded = async (req, res, next) => {
     }
 
     // Update the policy's excluded fields
-    dbResponse.policy.excluded = excluded;
+    res.locals.policy.excluded = excluded;
 
     // Update the policy's document in the database
-    await policyDbUtil.save(dbResponse.policy);
+    await policyDbUtil.save(res.locals.policy);
 
     // Send response
     response = {
       "statusCode": 200,
-      "message": `Policy's excluded fields set to [${dbResponse.policy.excluded}]`
+      "message": `Policy's excluded fields set to [${res.locals.policy.excluded}]`
     };
     console.log(response);
     res.status(response.statusCode).json(response);
@@ -139,32 +126,19 @@ exports.setExcluded = async (req, res, next) => {
 exports.setMasked = async (req, res, next) => {
   try {
     const { policyId } = req.params;
+    // The policy with this policyId is saved to res.locals.policy during policyId validation
     let { masked } = req.body;
     let response;
 
     // Remove duplicate masked fields
     masked = arrayUtil.removeDuplicates(masked);
 
-    // Search for policy with the provided policyId
-    const dbResponse = await policyDbUtil.getById(policyId);
-
-    // Check if there is a policy with this policyId
-    if (!dbResponse.policy) {
-      response = {
-        "statusCode": 404,
-        "message": dbResponse.message
-      };
-      console.log(response);
-      res.status(response.statusCode).json(response);
-      return;
-    }
-
     // Check if there is an existing policy with the same excluded and masked fields on the provided resource
     const policies = await policyDbUtil.getAll();
 
     for (const policy of policies) {
-      if ((policy.resource === dbResponse.policy.resource) &&
-          arrayUtil.areEqual(policy.excluded, dbResponse.policy.excluded) &&
+      if ((policy.resource === res.locals.policy.resource) &&
+          arrayUtil.areEqual(policy.excluded, res.locals.policy.excluded) &&
           arrayUtil.areEqual(policy.masked, masked))
       {
         response = {
@@ -178,15 +152,15 @@ exports.setMasked = async (req, res, next) => {
     }
 
     // Update the policy's masked fields
-    dbResponse.policy.masked = masked;
+    res.locals.policy.masked = masked;
 
     // Update the policy's document in the database
-    await policyDbUtil.save(dbResponse.policy);
+    await policyDbUtil.save(res.locals.policy);
 
     // Send response
     response = {
       "statusCode": 200,
-      "message": `Policy's masked fields set to [${dbResponse.policy.masked}]`
+      "message": `Policy's masked fields set to [${res.locals.policy.masked}]`
     };
     console.log(response);
     res.status(response.statusCode).json(response);
@@ -199,33 +173,20 @@ exports.setMasked = async (req, res, next) => {
 exports.setStatus = async (req, res, next) => {
   try {
     const { policyId } = req.params;
+    // The policy with this policyId is saved to res.locals.policy during policyId validation
     const { status } = req.body;
     let response;
 
-    // Search for policy with the provided policyId
-    const dbResponse = await policyDbUtil.getById(policyId);
-
-    // Check if there is a policy with this policyId
-    if (!dbResponse.policy) {
-      response = {
-        "statusCode": 404,
-        "message": dbResponse.message
-      };
-      console.log(response);
-      res.status(response.statusCode).json(response);
-      return;
-    }
-
     // Update policy's status
-    dbResponse.policy.status = status;
+    res.locals.policy.status = status;
 
     // Update the policy's document in the database
-    await policyDbUtil.save(dbResponse.policy);
+    await policyDbUtil.save(res.locals.policy);
 
     // Send response
     response = {
       "statusCode": 200,
-      "message": `Policy's status set to ${dbResponse.policy.status}`
+      "message": `Policy's status set to ${res.locals.policy.status}`
     };
     console.log(response);
     res.status(response.statusCode).json(response);
@@ -238,21 +199,11 @@ exports.setStatus = async (req, res, next) => {
 exports.deleteById = async (req, res, next) => {
   try {
     const { policyId } = req.params;
+    // The policy with this policyId is saved to res.locals.policy during policyId validation
     let response;
 
     // Delete policy with the provided policyId
     const dbResponse = await policyDbUtil.deleteById(policyId);
-
-    // Check if policyId matches an existing policy
-    if (!dbResponse) {
-      response = {
-        "statusCode": 404,
-        "message": "policyId does not match any existing policy"
-      };
-      console.log(response);
-      res.status(response.statusCode).json(response);
-      return;
-    }
 
     // Send response
     response = {

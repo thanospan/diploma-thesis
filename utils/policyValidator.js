@@ -2,8 +2,10 @@
 
 const validator = require('validator');
 
+const { getParam } = require('./param');
 const resources = require('../constants/resources');
 const { policyStatus } = require('../models/policy');
+const policyDbUtil = require('./policyDbUtil');
 
 exports.validateResource = (req, res, next) => {
   let { resource } = req.body;
@@ -34,102 +36,114 @@ exports.validateResource = (req, res, next) => {
   return next();
 };
 
-exports.validateExcluded = (req, res, next) => {
-  const { resource } = req.body;
-  let { excluded } = req.body;
-  let response;
+exports.validateExcluded = (options) => {
+  return (req, res, next) => {
+    const resource = getParam({
+      param: "resource",
+      option: options.resource,
+      obj: (options.resource.split(".")[0] === "req") ? req : res
+    });
+    let { excluded } = req.body;
+    let response;
 
-  // Check if excluded array is provided
-  if (!excluded) {
-    response = {
-      "statusCode": 400,
-      "message": "No excluded array provided"
-    };
-    console.log(response);
-    res.status(response.statusCode).json(response);
-    return;
-  }
-
-  // Check if excluded parameter is an array
-  if (!Array.isArray(excluded)) {
-    response = {
-      "statusCode": 400,
-      "message": "excluded is not an array"
-    };
-    console.log(response);
-    res.status(response.statusCode).json(response);
-    return;
-  }
-
-  // Validate excluded array
-  let isValidExcludedField = true;
-  for (const excludedField of excluded) {
-    if (!resources.getResourceFields(resource).includes(excludedField)) {
-      isValidExcludedField = false;
-      break;
+    // Check if excluded array is provided
+    if (!excluded) {
+      response = {
+        "statusCode": 400,
+        "message": "No excluded array provided"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
     }
-  }
 
-  if (!isValidExcludedField) {
-    response = {
-      "statusCode": 400,
-      "message": "Invalid excluded fields"
-    };
-    console.log(response);
-    res.status(response.statusCode).json(response);
-    return;
-  }
+    // Check if excluded parameter is an array
+    if (!Array.isArray(excluded)) {
+      response = {
+        "statusCode": 400,
+        "message": "excluded is not an array"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
 
-  return next();
+    // Validate excluded array
+    let isValidExcludedField = true;
+    for (const excludedField of excluded) {
+      if (!resources.getResourceFields(resource).includes(excludedField)) {
+        isValidExcludedField = false;
+        break;
+      }
+    }
+
+    if (!isValidExcludedField) {
+      response = {
+        "statusCode": 400,
+        "message": "Invalid excluded fields"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    return next();
+  }
 };
 
-exports.validateMasked = (req, res, next) => {
-  const { resource } = req.body;
-  let { masked } = req.body;
-  let response;
+exports.validateMasked = (options) => {
+  return (req, res, next) => {
+    const resource = getParam({
+      param: "resource",
+      option: options.resource,
+      obj: (options.resource.split(".")[0] === "req") ? req : res
+    });
+    let { masked } = req.body;
+    let response;
 
-  // Check if masked array is provided
-  if (!masked) {
-    response = {
-      "statusCode": 400,
-      "message": "No masked array provided"
-    };
-    console.log(response);
-    res.status(response.statusCode).json(response);
-    return;
-  }
-
-  // Check if masked parameter is an array
-  if (!Array.isArray(masked)) {
-    response = {
-      "statusCode": 400,
-      "message": "masked is not an array"
-    };
-    console.log(response);
-    res.status(response.statusCode).json(response);
-    return;
-  }
-
-  // Validate masked array
-  let isValidMaskedField = true;
-  for (const maskedField of masked) {
-    if (!resources.getResourceFields(resource).includes(maskedField)) {
-      isValidMaskedField = false;
-      break;
+    // Check if masked array is provided
+    if (!masked) {
+      response = {
+        "statusCode": 400,
+        "message": "No masked array provided"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
     }
-  }
 
-  if (!isValidMaskedField) {
-    response = {
-      "statusCode": 400,
-      "message": "Invalid masked fields"
-    };
-    console.log(response);
-    res.status(response.statusCode).json(response);
-    return;
-  }
+    // Check if masked parameter is an array
+    if (!Array.isArray(masked)) {
+      response = {
+        "statusCode": 400,
+        "message": "masked is not an array"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
 
-  return next();
+    // Validate masked array
+    let isValidMaskedField = true;
+    for (const maskedField of masked) {
+      if (!resources.getResourceFields(resource).includes(maskedField)) {
+        isValidMaskedField = false;
+        break;
+      }
+    }
+
+    if (!isValidMaskedField) {
+      response = {
+        "statusCode": 400,
+        "message": "Invalid masked fields"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    return next();
+  }
 };
 
 exports.validateStatus = (req, res, next) => {
@@ -163,34 +177,55 @@ exports.validateStatus = (req, res, next) => {
   return next();
 };
 
-exports.validateId = (req, res, next) => {
-  let { policyId } = req.params;
-  let response;
+exports.validateId = async (req, res, next) => {
+  try {
+    let { policyId } = req.params;
+    let response;
 
-  // Check if policyId is provided
-  if (!policyId) {
-    response = {
-      "statusCode": 400,
-      "message": "No policyId provided"
-    };
-    console.log(response);
-    res.status(response.statusCode).json(response);
-    return;
+    // Check if policyId is provided
+    if (!policyId) {
+      response = {
+        "statusCode": 400,
+        "message": "No policyId provided"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    policyId = policyId + '';
+
+    // Validate policyId
+    // policyId should be a valid MongoDB ObjectID
+    if (!validator.isMongoId(policyId)) {
+      response = {
+        "statusCode": 400,
+        "message": "Invalid policyId format"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    // Search for policy with the provided policyId
+    const dbResponse = await policyDbUtil.getById(policyId);
+
+    // Check if there is a policy with this policyId
+    if (!dbResponse.policy) {
+      response = {
+        "statusCode": 404,
+        "message": dbResponse.message
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
+    }
+
+    res.locals.policy = dbResponse.policy;
+    // res.locals.resource is used for excluded and masked arrays validation above
+    res.locals.resource = dbResponse.policy.resource;
+    return next();
+  } catch (err) {
+    return next(err);
   }
-
-  policyId = policyId + '';
-
-  // Validate policyId
-  // policyId should be a valid MongoDB ObjectID
-  if (!validator.isMongoId(policyId)) {
-    response = {
-      "statusCode": 400,
-      "message": "Invalid policyId format"
-    };
-    console.log(response);
-    res.status(response.statusCode).json(response);
-    return;
-  }
-
-  return next();
 };

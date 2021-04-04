@@ -86,7 +86,7 @@ exports.validateId = (options) => {
       let userId = getParam({
         param: "userId",
         option: options.userId,
-        obj: req
+        obj: (options.userId.split(".")[0] === "req") ? req : res
       });
       let response;
 
