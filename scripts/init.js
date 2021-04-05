@@ -155,8 +155,34 @@ const { Amea } = require('../models/amea');
   const savedPermission17 = await newPermission17.save();
   console.log(JSON.stringify(savedPermission17, null, 2));
 
+  const newPermission18 = new Permission({
+    "endpoint": "/masked/amea",
+    "methods": [permissionMethods.GET],
+    "status": permissionStatus.ACTIVE
+  });
+  const savedPermission18 = await newPermission18.save();
+  console.log(JSON.stringify(savedPermission18, null, 2));
+
   // Policies
   const newPolicy1 = new Policy({
+    "resource": "amea",
+    "excluded": [],
+    "masked": [],
+    "status": policyStatus.ACTIVE
+  })
+  const savedPolicy1 = await newPolicy1.save();
+  console.log(JSON.stringify(savedPolicy1, null, 2));
+
+  const newPolicy2 = new Policy({
+    "resource": "club",
+    "excluded": [],
+    "masked": [],
+    "status": policyStatus.ACTIVE
+  })
+  const savedPolicy2 = await newPolicy2.save();
+  console.log(JSON.stringify(savedPolicy2, null, 2));
+
+  const newPolicy3 = new Policy({
     "resource": "amea",
     "excluded": ["owner", "__enc_surname", "updated",
       "created", "disabilitiesDesc", "caretaker.caredescription",
@@ -166,17 +192,17 @@ const { Amea } = require('../models/amea');
       "phoneNumber.value", "loc.coordinates", "birthday"],
     "status": policyStatus.ACTIVE
   })
-  const savedPolicy1 = await newPolicy1.save();
-  console.log(JSON.stringify(savedPolicy1, null, 2));
+  const savedPolicy3 = await newPolicy3.save();
+  console.log(JSON.stringify(savedPolicy3, null, 2));
 
-  const newPolicy2 = new Policy({
+  const newPolicy4 = new Policy({
     "resource": "club",
     "excluded": ["_id", "__v", "updated", "created"],
     "masked": [],
     "status": policyStatus.ACTIVE
   })
-  const savedPolicy2 = await newPolicy2.save();
-  console.log(JSON.stringify(savedPolicy2, null, 2));
+  const savedPolicy4 = await newPolicy4.save();
+  console.log(JSON.stringify(savedPolicy4, null, 2));
 
   // Roles
   const adminRole = new Role({
@@ -185,8 +211,8 @@ const { Amea } = require('../models/amea');
       savedPermission4, savedPermission5, savedPermission6, savedPermission7,
       savedPermission8, savedPermission9, savedPermission10, savedPermission11,
       savedPermission12, savedPermission13, savedPermission14, savedPermission15,
-      savedPermission16, savedPermission17],
-    "policies": [],
+      savedPermission16, savedPermission17, savedPermission18],
+    "policies": [savedPolicy1, savedPolicy2],
     "status": roleStatus.ACTIVE
   });
   const savedAdminRole = await adminRole.save();

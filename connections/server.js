@@ -9,7 +9,7 @@ const setup = () => {
   const policiesRouter = require('../routes/policies');
   const rolesRouter = require('../routes/roles');
   const usersRouter = require('../routes/users');
-  // const ameaRouter = require('../routes/amea');
+  const ameaRouter = require('../routes/amea');
 
   // Middleware
   app.use(express.json());
@@ -19,7 +19,7 @@ const setup = () => {
   app.use('/masked/policies', policiesRouter);
   app.use('/masked/roles', rolesRouter);
   app.use('/masked/users', usersRouter);
-  // app.use('/masked/amea', ameaRouter);
+  app.use('/masked/amea', ameaRouter);
 
   app.use((req, res, next) => {
     const response = {
