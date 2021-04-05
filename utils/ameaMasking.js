@@ -160,7 +160,6 @@ exports.buildPipeline = (policy) => {
       { "$set": careSurnameMask },
       { "$set": careEmailMask },
       { "$set": carePhoneMask },
-      { "$set": careDescriptionMask },
       { "$unset": ["owner", "updated", "created", "_id", "disabilitiesDesc",
         "caretaker.caredescription", "__enc_surname", "__v"]
       }
