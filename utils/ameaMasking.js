@@ -40,34 +40,27 @@ rand: random float between 0 and 1
 Round to 7 decimal places
 */
 const locCoordinatesMask = {
-  "loc.coordinates": [
-    { $round: [
-      { $add: [
-        { $arrayElemAt: ["$loc.coordinates", 0] },
-        { $add: [
-          { $multiply: [
-            { $rand: {} },
-            ( 0.0025 - 0.0015 )
+  "loc.coordinates": {
+    $map: {
+      input: "$loc.coordinates",
+      as: "coord",
+      in: {
+        $round: [
+          { $add: [
+            "$$coord",
+            { $add: [
+              { $multiply: [
+                { $rand: {} },
+                ( 0.0025 - 0.0015 )
+              ]},
+              0.0015
+            ]}
           ]},
-          0.0015
-        ]}
-      ]},
-      7
-    ]},
-    { $round: [
-      { $add: [
-        { $arrayElemAt: ["$loc.coordinates", 1] },
-        { $add: [
-          { $multiply: [
-            { $rand: {} },
-            ( 0.0025 - 0.0015 )
-          ]},
-          0.0015
-        ]}
-      ]},
-      7
-    ]}
-  ]
+          7
+        ]
+      }
+    }
+  }
 };
 
 const disabilitiesDescMask = {
@@ -81,7 +74,6 @@ floor(rand * (max - min) + min)
 min: 1*365*24*60*60*1000 (1 year)
 max: 3*365*24*60*60*1000 (3 years)
 rand: random float between 0 and 1
-Round to 7 decimal places
 */
 const birthdayMask = {
   "birthday": {
@@ -107,7 +99,6 @@ floor(rand * (max - min) + min)
 min: 0.5*365*24*60*60*1000 (0.5 year)
 max: 1*365*24*60*60*1000 (1 years)
 rand: random float between 0 and 1
-Round to 7 decimal places
 */
 const createdMask = {
   "created": {
@@ -133,7 +124,6 @@ floor(rand * (max - min) + min)
 min: 0.5*365*24*60*60*1000 (0.5 year)
 max: 1*365*24*60*60*1000 (1 years)
 rand: random float between 0 and 1
-Round to 7 decimal places
 */
 const updatedMask = {
   "updated": {
