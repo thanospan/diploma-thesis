@@ -26,8 +26,8 @@ exports.getAll = async (policies) => {
 
   /*
   ameaPipeline and clubPipeline are [] only if the role has policies for the amea and clubs resources
-  with both excluded and masked array fields set to []. That means that he can access the resources without any constraint.
-  If the role does not have a policy the resource, the buildPipeline function will apply the default data masking.
+  with both excluded and masked array fields set to []. That means that the user can access the resources without any constraint.
+  If the role does not have a policy for the resource, the buildPipeline function will apply the default data masking.
   */
   if ((ameaPipeline.length === 0) && (clubPipeline.length === 0)) {
     amea = await Amea.find().populate('club').exec();
