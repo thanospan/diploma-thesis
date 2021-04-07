@@ -6,6 +6,7 @@ const { roleStatus } = require('../models/role');
 const permissionDbUtil = require('./permissionDbUtil');
 const policyDbUtil = require('./policyDbUtil');
 const roleDbUtil = require('./roleDbUtil');
+const arrayUtil = require('./array');
 
 exports.validateName = (req, res, next) => {
   let { name } = req.body;
@@ -65,23 +66,33 @@ exports.validatePermissions = async (req, res, next) => {
       return;
     }
 
-    // Get all existing permissions ObjectIDs from the database
-    let permissions = await permissionDbUtil.getAllIds();
-    permissions = permissions.map(permission => permission._id.toString());
+    // Get all existing permissions from the database
+    const permissions = await permissionDbUtil.getAll();
 
-    // Validate the provided permissions
-    let isValidPermission = true;
+    // Validate the provided permissions' ObjectIDs
+    const permissionsIds = permissions.map(permission => permission._id.toString());
     for (const reqPermission of reqPermissions) {
-      if (!permissions.includes(reqPermission)) {
-        isValidPermission = false;
-        break;
+      if (!permissionsIds.includes(reqPermission)) {
+        response = {
+          "statusCode": 400,
+          "message": "Invalid permissions"
+        };
+        console.log(response);
+        res.status(response.statusCode).json(response);
+        return;
       }
     }
 
-    if (!isValidPermission) {
+    // Check if the provided permissions array contains multiple permissions for the same endpoint
+    reqPermissions = arrayUtil.removeDuplicates(reqPermissions);
+    const endpoints = reqPermissions.map(reqPermission => {
+      return permissions.find(permission => (permission._id.toString() === reqPermission)).endpoint;
+    });
+
+    if (endpoints.length !== arrayUtil.removeDuplicates(endpoints).length) {
       response = {
         "statusCode": 400,
-        "message": "Invalid permissions"
+        "message": "permissions array should not contain multiple permissions for the same endpoint"
       };
       console.log(response);
       res.status(response.statusCode).json(response);
