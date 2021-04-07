@@ -132,23 +132,33 @@ exports.validatePolicies = async (req, res, next) => {
       return;
     }
 
-    // Get all existing policies ObjectIDs from the database
-    let policies = await policyDbUtil.getAllIds();
-    policies = policies.map(policy => policy._id.toString());
+    // Get all existing policies from the database
+    const policies = await policyDbUtil.getAll();
 
     // Validate the provided policies
-    let isValidPolicy = true;
+    const policiesIds = policies.map(policy => policy._id.toString());
     for (const reqPolicy of reqPolicies) {
-      if (!policies.includes(reqPolicy)) {
-        isValidPolicy = false;
-        break;
+      if (!policiesIds.includes(reqPolicy)) {
+        response = {
+          "statusCode": 400,
+          "message": "Invalid policies"
+        };
+        console.log(response);
+        res.status(response.statusCode).json(response);
+        return;
       }
     }
 
-    if (!isValidPolicy) {
+    // Check if the provided policies array contains multiple policies for the same resource
+    reqPolicies = arrayUtil.removeDuplicates(reqPolicies);
+    const resources = reqPolicies.map(reqPolicy => {
+      return policies.find(policy => (policy._id.toString() === reqPolicy)).resource;
+    });
+
+    if (resources.length !== arrayUtil.removeDuplicates(resources).length) {
       response = {
         "statusCode": 400,
-        "message": "Invalid policies"
+        "message": "policies array should not contain multiple policies for the same resource"
       };
       console.log(response);
       res.status(response.statusCode).json(response);
