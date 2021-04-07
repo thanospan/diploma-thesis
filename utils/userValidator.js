@@ -206,22 +206,16 @@ exports.validateRoles = async (req, res, next) => {
     roles = roles.map(role => role._id.toString());
 
     // Validate the provided roles
-    let isValidRole = true;
     for (const reqRole of reqRoles) {
       if (!roles.includes(reqRole)) {
-        isValidRole = false;
-        break;
+        response = {
+          "statusCode": 400,
+          "message": "Invalid roles"
+        };
+        console.log(response);
+        res.status(response.statusCode).json(response);
+        return;
       }
-    }
-
-    if (!isValidRole) {
-      response = {
-        "statusCode": 400,
-        "message": "Invalid roles"
-      };
-      console.log(response);
-      res.status(response.statusCode).json(response);
-      return;
     }
 
     return next();

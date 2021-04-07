@@ -62,22 +62,16 @@ exports.validateMethods = (req, res, next) => {
   }
 
   // Validate methods
-  let isValidMethod = true;
   for (const method of methods) {
     if (!Object.values(permissionMethods).includes(method)) {
-      isValidMethod = false;
-      break;
+      response = {
+        "statusCode": 400,
+        "message": "Invalid methods"
+      };
+      console.log(response);
+      res.status(response.statusCode).json(response);
+      return;
     }
-  }
-
-  if (!isValidMethod) {
-    response = {
-      "statusCode": 400,
-      "message": "Invalid methods"
-    };
-    console.log(response);
-    res.status(response.statusCode).json(response);
-    return;
   }
 
   return next();

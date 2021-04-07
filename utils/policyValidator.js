@@ -69,22 +69,16 @@ exports.validateExcluded = (options) => {
     }
 
     // Validate excluded array
-    let isValidExcludedField = true;
     for (const excludedField of excluded) {
       if (!resources.getResourceFields(resource).includes(excludedField)) {
-        isValidExcludedField = false;
-        break;
+        response = {
+          "statusCode": 400,
+          "message": "Invalid excluded fields"
+        };
+        console.log(response);
+        res.status(response.statusCode).json(response);
+        return;
       }
-    }
-
-    if (!isValidExcludedField) {
-      response = {
-        "statusCode": 400,
-        "message": "Invalid excluded fields"
-      };
-      console.log(response);
-      res.status(response.statusCode).json(response);
-      return;
     }
 
     return next();
@@ -124,22 +118,16 @@ exports.validateMasked = (options) => {
     }
 
     // Validate masked array
-    let isValidMaskedField = true;
     for (const maskedField of masked) {
       if (!resources.getResourceFields(resource).includes(maskedField)) {
-        isValidMaskedField = false;
-        break;
+        response = {
+          "statusCode": 400,
+          "message": "Invalid masked fields"
+        };
+        console.log(response);
+        res.status(response.statusCode).json(response);
+        return;
       }
-    }
-
-    if (!isValidMaskedField) {
-      response = {
-        "statusCode": 400,
-        "message": "Invalid masked fields"
-      };
-      console.log(response);
-      res.status(response.statusCode).json(response);
-      return;
     }
 
     return next();
