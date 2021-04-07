@@ -25,10 +25,12 @@ const resources = [
   }
 ];
 
-exports.resources = resources;
+exports.getAll = () => {
+  return resources;
+};
 
 exports.getAllNames = () => {
-  return [...new Set(resources.map(resource => resource.name))];
+  return resources.map(resource => resource.name);
 };
 
 exports.getAllFields = () => {
@@ -36,14 +38,5 @@ exports.getAllFields = () => {
 };
 
 exports.getResourceFields = (resourceName) => {
-  let resourceFields;
-
-  for (const resource of resources) {
-    if (resource.name === resourceName) {
-      resourceFields = resource.fields;
-      break;
-    }
-  }
-
-  return resourceFields;
+  return resources.find(resource => resource.name === resourceName).fields;
 };
