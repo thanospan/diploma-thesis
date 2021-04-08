@@ -299,6 +299,54 @@ Default Data Masking (User with no policies for the amea and clubs resources)
 </tr>
 
 <tr>
+  <td>owner</td>
+
+  <td>
+
+    "owner": [
+      ObjectId("606ec04bb61a5574b9ab87be")
+    ]
+
+  </td>
+
+  <td></td>
+</tr>
+
+<tr>
+  <td>name</td>
+
+  <td>
+
+    "name": "Δημήτρης"
+
+  </td>
+
+  <td>
+
+    "name": "Δ"
+
+  </td>
+</tr>
+
+<tr>
+  <td>surname</td>
+
+  <td>
+
+    "surname": "4710474e81a1230e54269c77c4
+      92eea6:e2c7c8153764488d11d0fe457dce7
+      8b2c5a34f76b93f5bff085b4a0e8c537fef"
+
+  </td>
+
+  <td>
+
+    "surname": "4"
+
+  </td>
+</tr>
+
+<tr>
   <td>email</td>
 
   <td>
@@ -389,119 +437,15 @@ Default Data Masking (User with no policies for the amea and clubs resources)
 </tr>
 
 <tr>
-  <td>owner</td>
+  <td>disabilitiesDesc</td>
 
   <td>
 
-    "owner": [
-      ObjectId("606ec04bb61a5574b9ab87be")
-    ]
+    "disabilitiesDesc": "Description text"
 
   </td>
 
   <td></td>
-</tr>
-
-<tr>
-  <td>club</td>
-
-  <td>
-
-    "club": [
-      {
-        "_id" : ObjectId("606ec04ab61a552b02ab87b5"),
-        "loc" : {
-          "coordinates" : [ 
-            21.7401209, 
-            38.2478087
-          ],
-          "type" : "Point"
-        },
-        "created" : ISODate("2021-04-08T08:35:12.906Z"),
-        "updated" : ISODate("2021-04-08T08:35:12.906Z"),
-        "name" : "Σύλλογος Μαχητές",
-        "phoneNumber" : "6974037899",
-        "region" : {
-          "administrative" : "ΔΥΤΙΚΗΣ ΕΛΛΑΔΑΣ",
-          "municipality" : "ΠΑΤΡΕΩΝ"
-        },
-        "address" : "Ρηγα Φεραίου 44, ΤΚ 26226",
-        "status" : "accepted",
-        "__v" : 0
-      }
-    ]
-
-  </td>
-
-  <td>
-
-    "club": [
-      {
-        "loc": {
-          "coordinates": [
-            21.7401209,
-            38.2478087
-          ],
-          "type": "Point"
-        },
-        "name": "Σύλλογος Μαχητές",
-        "phoneNumber": "6974037899",
-        "region": {
-          "administrative": "ΔΥΤΙΚΗΣ ΕΛΛΑΔΑΣ",
-          "municipality": "ΠΑΤΡΕΩΝ"
-        },
-        "address": "Ρηγα Φεραίου 44, ΤΚ 26226",
-        "status": "accepted"
-      }
-    ]
-
-  </td>
-</tr>
-
-<tr>
-  <td>created</td>
-
-  <td>
-
-    "created": ISODate("2021-04-08T08:35:12.988Z")
-
-  </td>
-
-  <td></td>
-</tr>
-
-<tr>
-  <td>name</td>
-
-  <td>
-
-    "name": "Δημήτρης"
-
-  </td>
-
-  <td>
-
-    "name": "Δ"
-
-  </td>
-</tr>
-
-<tr>
-  <td>surname</td>
-
-  <td>
-
-    "surname": "4710474e81a1230e54269c77c4
-      92eea6:e2c7c8153764488d11d0fe457dce7
-      8b2c5a34f76b93f5bff085b4a0e8c537fef"
-
-  </td>
-
-  <td>
-
-    "surname": "4"
-
-  </td>
 </tr>
 
 <tr>
@@ -533,6 +477,38 @@ Default Data Masking (User with no policies for the amea and clubs resources)
 </tr>
 
 <tr>
+  <td>address</td>
+
+  <td>
+
+    "address": "Αρτης 44"
+
+  </td>
+
+  <td>
+
+    "address": "xxxxxxxxxx"
+
+  </td>
+</tr>
+
+<tr>
+  <td>floor</td>
+
+  <td>
+
+    "floor": 4
+
+  </td>
+
+  <td>
+
+    "floor": 4
+
+  </td>
+</tr>
+
+<tr>
   <td>region</td>
 
   <td>
@@ -555,73 +531,37 @@ Default Data Masking (User with no policies for the amea and clubs resources)
 </tr>
 
 <tr>
-  <td>disabilitiesDesc</td>
+  <td>club</td>
 
   <td>
 
-    "disabilitiesDesc": "Description text"
-
-  </td>
-
-  <td></td>
-</tr>
-
-<tr>
-  <td>floor</td>
-
-  <td>
-
-    "floor": 4
+    "club": [
+      ObjectId("606ec04ab61a552b02ab87b5")
+    ]
 
   </td>
 
   <td>
 
-    "floor": 4
-
-  </td>
-</tr>
-
-<tr>
-  <td>birthday</td>
-
-  <td>
-
-    "birthday": ISODate("1979-05-15T00:00:00.000Z")
-
-  </td>
-
-  <td>
-
-    "birthday": "1977-06-09T04:49:12.977Z"
-
-  </td>
-</tr>
-
-<tr>
-  <td>updated</td>
-
-  <td>
-
-    "updated": ISODate("2021-04-08T08:35:23.233Z")
-
-  </td>
-
-  <td></td>
-</tr>
-
-<tr>
-  <td>address</td>
-
-  <td>
-
-    "address": "Αρτης 44"
-
-  </td>
-
-  <td>
-
-    "address": "xxxxxxxxxx"
+    "club": [
+      {
+        "loc": {
+          "coordinates": [
+            21.7401209,
+            38.2478087
+          ],
+          "type": "Point"
+        },
+        "name": "Σύλλογος Μαχητές",
+        "phoneNumber": "6974037899",
+        "region": {
+          "administrative": "ΔΥΤΙΚΗΣ ΕΛΛΑΔΑΣ",
+          "municipality": "ΠΑΤΡΕΩΝ"
+        },
+        "address": "Ρηγα Φεραίου 44, ΤΚ 26226",
+        "status": "accepted"
+      }
+    ]
 
   </td>
 </tr>
@@ -651,6 +591,46 @@ Default Data Masking (User with no policies for the amea and clubs resources)
     }
 
   </td>
+</tr>
+
+<tr>
+  <td>birthday</td>
+
+  <td>
+
+    "birthday": ISODate("1979-05-15T00:00:00.000Z")
+
+  </td>
+
+  <td>
+
+    "birthday": "1977-06-09T04:49:12.977Z"
+
+  </td>
+</tr>
+
+<tr>
+  <td>created</td>
+
+  <td>
+
+    "created": ISODate("2021-04-08T08:35:12.988Z")
+
+  </td>
+
+  <td></td>
+</tr>
+
+<tr>
+  <td>updated</td>
+
+  <td>
+
+    "updated": ISODate("2021-04-08T08:35:23.233Z")
+
+  </td>
+
+  <td></td>
 </tr>
 
 <tr>
