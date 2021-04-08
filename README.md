@@ -270,3 +270,427 @@ All URIs are relative to *http://localhost:3007/masked*
 | POST | /policies/:policyId/status | headers: token<br> params: policyId<br> body: status |
 | DELETE | /policies/:policyId/ | headers: token<br> params: policyId |
 | GET | /amea/ | headers: token |
+
+## SafeAmea Masked API Output Example
+
+<ins>Request</ins>\
+Method: GET<br>
+Endpoint: http://localhost:3007/masked/amea/<br>
+Default Data Masking (User with no policies for the amea and clubs resources)
+
+
+<table>
+<tr>
+  <th>Field</th>
+  <th>amea MongoDB Collection</th>
+  <th>Masked API Output</th>
+</tr>
+
+<tr>
+  <td>_id</td>
+
+  <td>
+
+    "_id": ObjectId("606ec04bb61a55ca62ab87bd")
+
+  </td>
+
+  <td></td>
+</tr>
+
+<tr>
+  <td>email</td>
+
+  <td>
+  
+    "email": {
+      "value": "subscriber@subscriber.com",
+      "active": 1
+    }
+    
+  </td>
+
+  <td>
+  
+    "email": {
+      "value": "xxxxx@xxxxx.xxx",
+      "active": 1
+    }
+    
+  </td>
+</tr>
+
+<tr>
+  <td>phoneNumber</td>
+
+  <td>
+
+    "phoneNumber": {
+      "value": "6974038999",
+      "active": 1
+    }
+
+  </td>
+
+  <td>
+
+    "phoneNumber": {
+      "value": "69xxxxxxxx99",
+      "active": 1
+    }
+
+  </td>
+</tr>
+
+<tr>
+  <td>disabilities</td>
+
+  <td>
+
+    "disabilities": [
+      {
+        "name": "Mobility",
+        "sub": {
+          "name": "Partial",
+          "value": 1
+        }
+      },
+      {
+        "name": "Hearing",
+        "sub": {
+          "name": "HardHearing",
+          "value": 2
+        }
+      }
+    ]
+
+  </td>
+
+  <td>
+
+    "disabilities": [
+      {
+        "name": "Mobility",
+        "sub": {
+          "name": "Partial",
+          "value": 1
+        }
+      },
+      {
+        "name": "Hearing",
+        "sub": {
+          "name": "HardHearing",
+          "value": 2
+        }
+      }
+    ]
+
+  </td>
+</tr>
+
+<tr>
+  <td>owner</td>
+
+  <td>
+
+    "owner": [
+      ObjectId("606ec04bb61a5574b9ab87be")
+    ]
+
+  </td>
+
+  <td></td>
+</tr>
+
+<tr>
+  <td>club</td>
+
+  <td>
+
+    "club": [
+      {
+        "_id" : ObjectId("606ec04ab61a552b02ab87b5"),
+        "loc" : {
+          "coordinates" : [ 
+            21.7401209, 
+            38.2478087
+          ],
+          "type" : "Point"
+        },
+        "created" : ISODate("2021-04-08T08:35:12.906Z"),
+        "updated" : ISODate("2021-04-08T08:35:12.906Z"),
+        "name" : "Σύλλογος Μαχητές",
+        "phoneNumber" : "6974037899",
+        "region" : {
+          "administrative" : "ΔΥΤΙΚΗΣ ΕΛΛΑΔΑΣ",
+          "municipality" : "ΠΑΤΡΕΩΝ"
+        },
+        "address" : "Ρηγα Φεραίου 44, ΤΚ 26226",
+        "status" : "accepted",
+        "__v" : 0
+      }
+    ]
+
+  </td>
+
+  <td>
+
+    "club": [
+      {
+        "loc": {
+          "coordinates": [
+            21.7401209,
+            38.2478087
+          ],
+          "type": "Point"
+        },
+        "name": "Σύλλογος Μαχητές",
+        "phoneNumber": "6974037899",
+        "region": {
+          "administrative": "ΔΥΤΙΚΗΣ ΕΛΛΑΔΑΣ",
+          "municipality": "ΠΑΤΡΕΩΝ"
+        },
+        "address": "Ρηγα Φεραίου 44, ΤΚ 26226",
+        "status": "accepted"
+      }
+    ]
+
+  </td>
+</tr>
+
+<tr>
+  <td>created</td>
+
+  <td>
+
+    "created": ISODate("2021-04-08T08:35:12.988Z")
+
+  </td>
+
+  <td></td>
+</tr>
+
+<tr>
+  <td>name</td>
+
+  <td>
+
+    "name": "Δημήτρης"
+
+  </td>
+
+  <td>
+
+    "name": "Δ"
+
+  </td>
+</tr>
+
+<tr>
+  <td>surname</td>
+
+  <td>
+
+    "surname": "4710474e81a1230e54269c77c4
+      92eea6:e2c7c8153764488d11d0fe457dce7
+      8b2c5a34f76b93f5bff085b4a0e8c537fef"
+
+  </td>
+
+  <td>
+
+    "surname": "4"
+
+  </td>
+</tr>
+
+<tr>
+  <td>loc</td>
+
+  <td>
+
+    "loc": {
+      "coordinates": [
+        21.7401209, 
+        38.2478087
+      ],
+      "type": "Point"
+    }
+
+  </td>
+
+  <td>
+
+    "loc": {
+      "coordinates": [
+        21.7425005,
+        38.2494451
+      ],
+      "type": "Point"
+    }
+
+  </td>
+</tr>
+
+<tr>
+  <td>region</td>
+
+  <td>
+
+    "region": {
+      "administrative": "ΔΥΤΙΚΗΣ ΕΛΛΑΔΑΣ",
+      "municipality": "ΠΑΤΡΕΩΝ"
+    }
+
+  </td>
+
+  <td>
+
+    "region": {
+      "administrative": "ΔΥΤΙΚΗΣ ΕΛΛΑΔΑΣ",
+      "municipality": "ΠΑΤΡΕΩΝ"
+    }
+
+  </td>
+</tr>
+
+<tr>
+  <td>disabilitiesDesc</td>
+
+  <td>
+
+    "disabilitiesDesc": "Description text"
+
+  </td>
+
+  <td></td>
+</tr>
+
+<tr>
+  <td>floor</td>
+
+  <td>
+
+    "floor": 4
+
+  </td>
+
+  <td>
+
+    "floor": 4
+
+  </td>
+</tr>
+
+<tr>
+  <td>birthday</td>
+
+  <td>
+
+    "birthday": ISODate("1979-05-15T00:00:00.000Z")
+
+  </td>
+
+  <td>
+
+    "birthday": "1977-06-09T04:49:12.977Z"
+
+  </td>
+</tr>
+
+<tr>
+  <td>updated</td>
+
+  <td>
+
+    "updated": ISODate("2021-04-08T08:35:23.233Z")
+
+  </td>
+
+  <td></td>
+</tr>
+
+<tr>
+  <td>address</td>
+
+  <td>
+
+    "address": "Αρτης 44"
+
+  </td>
+
+  <td>
+
+    "address": "xxxxxxxxxx"
+
+  </td>
+</tr>
+
+<tr>
+  <td>caretaker</td>
+
+  <td>
+
+    "caretaker": {
+      "carename": "Βαγγελης",
+      "caresurname": "Παπακης",
+      "careemail": "vagpap@email.gr",
+      "carephone": "6974558996",
+      "caredescription": "some extra information"
+    }
+
+  </td>
+
+  <td>
+
+    "caretaker": {
+      "carename": "Β",
+      "caresurname": "Π",
+      "careemail": "xxxxx@xxxxx.xxx",
+      "carephone": "69xxxxxxxx96"
+    }
+
+  </td>
+</tr>
+
+<tr>
+  <td>status</td>
+
+  <td>
+
+    "status": "accepted"
+
+  </td>
+
+  <td>
+
+    "status": "accepted"
+
+  </td>
+</tr>
+
+<tr>
+  <td>__enc_surname</td>
+
+  <td>
+
+    "__enc_surname": true
+
+  </td>
+
+  <td></td>
+</tr>
+
+<tr>
+  <td>__v</td>
+
+  <td>
+
+    "__v": 0
+
+  </td>
+
+  <td></td>
+</tr>
+
+</table>
