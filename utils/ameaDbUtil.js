@@ -9,33 +9,40 @@ const clubMasking = require('./clubMasking');
 const { policyStatus } = require('../models/policy');
 
 exports.getAll = async (policies) => {
-  const ameaPolicy = policies.find(policy => ((policy.resource === "amea") && (policy.status === policyStatus.ACTIVE))); 
-  const clubPolicy = policies.find(policy => ((policy.resource === "club") && (policy.status === policyStatus.ACTIVE))); 
+  const ameaPolicy = policies.find(policy => ((policy.resource === "amea") && (policy.status === policyStatus.ACTIVE)));
+  const clubPolicy = policies.find(policy => ((policy.resource === "club") && (policy.status === policyStatus.ACTIVE)));
 
-  const ameaPipeline = ameaMasking.buildPipeline(ameaPolicy);
-  const clubPipeline = clubMasking.buildPipeline(clubPolicy);
+  let ameaPipeline = [];
+  let clubPipeline = [];
 
-  let amea;
-  /*
-  ameaPipeline and clubPipeline are [] only if the role has policies for the amea and clubs resources
-  with both excluded and masked array fields set to []. That means that the user can access the resources without any constraint.
-  If the role does not have a policy for the resource, the buildPipeline function will apply the default data masking.
-  */
-  if ((ameaPipeline.length === 0) && (clubPipeline.length === 0)) {
-    amea = await Amea.find().populate('club').exec();
+  clubPipeline.push({
+    $match: {
+      $expr: {
+        $in: [ "$_id", "$$club_id" ]
+      }
+    }
+  });
 
-    return amea;
-  }
+  clubPipeline = [
+    ...clubPipeline,
+    ...clubMasking.buildPipeline(clubPolicy)
+  ];
 
   ameaPipeline.push({
     $lookup: {
       from: "clubs",
+      let: { club_id: "$club" },
       pipeline: clubPipeline,
       as: "club"
     }
-  })
+  });
 
-  amea = await Amea.aggregate(ameaPipeline);
+  ameaPipeline = [
+    ...ameaPipeline,
+    ...ameaMasking.buildPipeline(ameaPolicy)
+  ];
+
+  const amea = await Amea.aggregate(ameaPipeline);
   
   return amea;
 };

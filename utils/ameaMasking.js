@@ -181,18 +181,18 @@ exports.buildPipeline = (policy) => {
 
   if (!policy) {
     pipeline = [
-      { "$set": nameMask },
-      { "$set": surnameMask },
-      { "$set": emailValueMask },
-      { "$set": phoneNumberValueMask },
-      { "$set": locCoordinatesMask },
-      { "$set": birthdayMask },
-      { "$set": addressMask },
-      { "$set": careNameMask },
-      { "$set": careSurnameMask },
-      { "$set": careEmailMask },
-      { "$set": carePhoneMask },
-      { "$unset": ["owner", "updated", "created", "_id", "disabilitiesDesc",
+      { $set: nameMask },
+      { $set: surnameMask },
+      { $set: emailValueMask },
+      { $set: phoneNumberValueMask },
+      { $set: locCoordinatesMask },
+      { $set: birthdayMask },
+      { $set: addressMask },
+      { $set: careNameMask },
+      { $set: careSurnameMask },
+      { $set: careEmailMask },
+      { $set: carePhoneMask },
+      { $unset: ["owner", "updated", "created", "_id", "disabilitiesDesc",
         "caretaker.caredescription", "__enc_surname", "__v"]
       }
     ];
@@ -200,61 +200,61 @@ exports.buildPipeline = (policy) => {
     return pipeline;
   }
 
-  if (policy.excluded.length !== 0) {
-    pipeline.push({ "$unset": policy.excluded });
-  }
-
   policy.masked.forEach(maskedField => {
     switch (maskedField) {
       case "name":
-        pipeline.push({ "$set": nameMask });
+        pipeline.push({ $set: nameMask });
         break;
       case "surname":
-        pipeline.push({ "$set": surnameMask });
+        pipeline.push({ $set: surnameMask });
         break;
       case "email.value":
-        pipeline.push({ "$set": emailValueMask });
+        pipeline.push({ $set: emailValueMask });
         break;
       case "phoneNumber.value":
-        pipeline.push({ "$set": phoneNumberValueMask });
+        pipeline.push({ $set: phoneNumberValueMask });
         break;
       case "loc.coordinates":
-        pipeline.push({ "$set": locCoordinatesMask });
+        pipeline.push({ $set: locCoordinatesMask });
         break;
       case "disabilitiesDesc":
-        pipeline.push({ "$set": disabilitiesDescMask });
+        pipeline.push({ $set: disabilitiesDescMask });
         break
       case "birthday":
-        pipeline.push({ "$set": birthdayMask });
+        pipeline.push({ $set: birthdayMask });
         break;
       case "created":
-        pipeline.push({ "$set": createdMask });
+        pipeline.push({ $set: createdMask });
         break;
       case "updated":
-        pipeline.push({ "$set": updatedMask });
+        pipeline.push({ $set: updatedMask });
         break;
       case "address":
-        pipeline.push({ "$set": addressMask });
+        pipeline.push({ $set: addressMask });
         break;
       case "caretaker.carename":
-        pipeline.push({ "$set": careNameMask });
+        pipeline.push({ $set: careNameMask });
         break;
       case "caretaker.caresurname":
-        pipeline.push({ "$set": careSurnameMask });
+        pipeline.push({ $set: careSurnameMask });
         break;
       case "caretaker.careemail":
-        pipeline.push({ "$set": careEmailMask });
+        pipeline.push({ $set: careEmailMask });
         break;
       case "caretaker.carephone":
-        pipeline.push({ "$set": carePhoneMask });
+        pipeline.push({ $set: carePhoneMask });
         break;
       case "caretaker.caredescription":
-        pipeline.push({ "$set": careDescriptionMask });
+        pipeline.push({ $set: careDescriptionMask });
         break;
       default:
         break;
     }
   });
+
+  if (policy.excluded.length !== 0) {
+    pipeline.push({ $unset: policy.excluded });
+  }
 
   return pipeline;
 };
