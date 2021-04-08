@@ -278,7 +278,6 @@ Method: GET<br>
 Endpoint: http://localhost:3007/masked/amea/<br>
 Default Data Masking (User with no policies for the amea and clubs resources)
 
-
 <table>
 <tr>
   <th>Field</th>
