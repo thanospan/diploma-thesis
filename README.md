@@ -239,6 +239,8 @@ SafeAmea Masked API: http://localhost:3007/masked/
 
 ## SafeAmea Masked API Endpoints
 
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/b5480264e768a84c9976)
+
 All URIs are relative to *http://localhost:3007/masked*
     
 | HTTP Method | Endpoint | Parameters |
