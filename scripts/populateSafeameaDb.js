@@ -5,6 +5,7 @@ require('dotenv').config({ path: './config/.env' });
 const mongoose = require('mongoose');
 
 const safeameaConn = require('../connections/safeameaDb');
+const loader = require('../utils/loader');
 const { Club } = require('../models/club');
 const { Amea } = require('../models/amea');
 
@@ -236,19 +237,9 @@ const subtractFromDate = (min, max) => {
   return date;
 };
 
-const startLoader = (() => {
-  const dots = ["", ".", "..", "..."];
-  let i = 0;
-  return setInterval(() => {
-    process.stdout.clearLine();
-    process.stdout.write("\r---Populating safeamea database" + dots[i++]);
-    i = i % dots.length;
-  }, 250);
-})();
-
 (async () => {
   await safeameaConn;
-  const loaderId = startLoader;
+  const loaderId = loader.start("---Populating safeamea database");
 
   let newClub;
   let savedClubs = [];

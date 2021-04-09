@@ -6,6 +6,7 @@ const safeameaMaskedConn = require('../connections/safeameaMaskedDb');
 const safeameaConn = require('../connections/safeameaDb');
 const hashUtil = require('../utils/hash');
 const tokenUtil = require('../utils/token');
+const loader = require('../utils/loader');
 const { policyStatus, Policy } = require('../models/policy');
 const { permissionStatus, permissionMethods, Permission } = require('../models/permission');
 const { roleStatus, Role } = require('../models/role');
@@ -14,20 +15,10 @@ const { EmailToken } = require('../models/emailToken');
 const { Club } = require('../models/club');
 const { Amea } = require('../models/amea');
 
-const startLoader = (() => {
-  const dots = ["", ".", "..", "..."];
-  let i = 0;
-  return setInterval(() => {
-    process.stdout.clearLine();
-    process.stdout.write("\r---Populating safeameaMasked database" + dots[i++]);
-    i = i % dots.length;
-  }, 250);
-})();
-
 (async () => {
   await safeameaMaskedConn;
   await safeameaConn;
-  const loaderId = startLoader;
+  const loaderId = loader.start("---Populating safeameaMasked database");
 
   // Permissions
   const newPermission1 = new Permission({
