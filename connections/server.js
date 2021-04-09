@@ -5,6 +5,7 @@ const express = require('express');
 const app = express();
 
 const setup = () => {
+  const indexRouter = require('../routes/index');
   const permissionsRouter = require('../routes/permissions');
   const policiesRouter = require('../routes/policies');
   const rolesRouter = require('../routes/roles');
@@ -15,6 +16,7 @@ const setup = () => {
   app.use(express.json());
 
   // Routes
+  app.use('/masked', indexRouter);
   app.use('/masked/permissions', permissionsRouter);
   app.use('/masked/policies', policiesRouter);
   app.use('/masked/roles', rolesRouter);
