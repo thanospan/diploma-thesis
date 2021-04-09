@@ -14,9 +14,20 @@ const { EmailToken } = require('../models/emailToken');
 const { Club } = require('../models/club');
 const { Amea } = require('../models/amea');
 
+const startLoader = (() => {
+  const dots = ["", ".", "..", "..."];
+  let i = 0;
+  return setInterval(() => {
+    process.stdout.clearLine();
+    process.stdout.write("\r---Populating safeameaMasked database" + dots[i++]);
+    i = i % dots.length;
+  }, 250);
+})();
+
 (async () => {
   await safeameaMaskedConn;
   await safeameaConn;
+  const loaderId = startLoader;
 
   // Permissions
   const newPermission1 = new Permission({
@@ -25,7 +36,7 @@ const { Amea } = require('../models/amea');
     "status": permissionStatus.ACTIVE
   });
   const savedPermission1 = await newPermission1.save();
-  console.log(JSON.stringify(savedPermission1, null, 2));
+  // console.log(JSON.stringify(savedPermission1, null, 2));
 
   const newPermission2 = new Permission({
     "endpoint": "/masked/users/:userId",
@@ -33,7 +44,7 @@ const { Amea } = require('../models/amea');
     "status": permissionStatus.ACTIVE
   });
   const savedPermission2 = await newPermission2.save();
-  console.log(JSON.stringify(savedPermission2, null, 2));
+  // console.log(JSON.stringify(savedPermission2, null, 2));
 
   const newPermission3 = new Permission({
     "endpoint": "/masked/users/:userId/roles",
@@ -41,7 +52,7 @@ const { Amea } = require('../models/amea');
     "status": permissionStatus.ACTIVE
   });
   const savedPermission3 = await newPermission3.save();
-  console.log(JSON.stringify(savedPermission3, null, 2));
+  // console.log(JSON.stringify(savedPermission3, null, 2));
 
   const newPermission4 = new Permission({
     "endpoint": "/masked/permissions",
@@ -49,7 +60,7 @@ const { Amea } = require('../models/amea');
     "status": permissionStatus.ACTIVE
   });
   const savedPermission4 = await newPermission4.save();
-  console.log(JSON.stringify(savedPermission4, null, 2));
+  // console.log(JSON.stringify(savedPermission4, null, 2));
 
   const newPermission5 = new Permission({
     "endpoint": "/masked/permissions/:permissionId",
@@ -57,7 +68,7 @@ const { Amea } = require('../models/amea');
     "status": permissionStatus.ACTIVE
   });
   const savedPermission5 = await newPermission5.save();
-  console.log(JSON.stringify(savedPermission5, null, 2));
+  // console.log(JSON.stringify(savedPermission5, null, 2));
 
   const newPermission6 = new Permission({
     "endpoint": "/masked/permissions/:permissionId/status",
@@ -65,7 +76,7 @@ const { Amea } = require('../models/amea');
     "status": permissionStatus.ACTIVE
   });
   const savedPermission6 = await newPermission6.save();
-  console.log(JSON.stringify(savedPermission6, null, 2));
+  // console.log(JSON.stringify(savedPermission6, null, 2));
 
   const newPermission7 = new Permission({
     "endpoint": "/masked/permissions/:permissionId/methods",
@@ -73,7 +84,7 @@ const { Amea } = require('../models/amea');
     "status": permissionStatus.ACTIVE
   });
   const savedPermission7 = await newPermission7.save();
-  console.log(JSON.stringify(savedPermission7, null, 2));
+  // console.log(JSON.stringify(savedPermission7, null, 2));
 
   const newPermission8 = new Permission({
     "endpoint": "/masked/policies",
@@ -81,7 +92,7 @@ const { Amea } = require('../models/amea');
     "status": permissionStatus.ACTIVE
   });
   const savedPermission8 = await newPermission8.save();
-  console.log(JSON.stringify(savedPermission8, null, 2));
+  // console.log(JSON.stringify(savedPermission8, null, 2));
 
   const newPermission9 = new Permission({
     "endpoint": "/masked/policies/:policyId",
@@ -89,7 +100,7 @@ const { Amea } = require('../models/amea');
     "status": permissionStatus.ACTIVE
   });
   const savedPermission9 = await newPermission9.save();
-  console.log(JSON.stringify(savedPermission9, null, 2));
+  // console.log(JSON.stringify(savedPermission9, null, 2));
 
   const newPermission10 = new Permission({
     "endpoint": "/masked/policies/:policyId/status",
@@ -97,7 +108,7 @@ const { Amea } = require('../models/amea');
     "status": permissionStatus.ACTIVE
   });
   const savedPermission10 = await newPermission10.save();
-  console.log(JSON.stringify(savedPermission10, null, 2));
+  // console.log(JSON.stringify(savedPermission10, null, 2));
 
   const newPermission11 = new Permission({
     "endpoint": "/masked/policies/:policyId/excluded",
@@ -105,7 +116,7 @@ const { Amea } = require('../models/amea');
     "status": permissionStatus.ACTIVE
   });
   const savedPermission11 = await newPermission11.save();
-  console.log(JSON.stringify(savedPermission11, null, 2));
+  // console.log(JSON.stringify(savedPermission11, null, 2));
 
   const newPermission12 = new Permission({
     "endpoint": "/masked/policies/:policyId/masked",
@@ -113,7 +124,7 @@ const { Amea } = require('../models/amea');
     "status": permissionStatus.ACTIVE
   });
   const savedPermission12 = await newPermission12.save();
-  console.log(JSON.stringify(savedPermission12, null, 2));
+  // console.log(JSON.stringify(savedPermission12, null, 2));
 
   const newPermission13 = new Permission({
     "endpoint": "/masked/roles",
@@ -121,7 +132,7 @@ const { Amea } = require('../models/amea');
     "status": permissionStatus.ACTIVE
   });
   const savedPermission13 = await newPermission13.save();
-  console.log(JSON.stringify(savedPermission13, null, 2));
+  // console.log(JSON.stringify(savedPermission13, null, 2));
 
   const newPermission14 = new Permission({
     "endpoint": "/masked/roles/:roleId",
@@ -129,7 +140,7 @@ const { Amea } = require('../models/amea');
     "status": permissionStatus.ACTIVE
   });
   const savedPermission14 = await newPermission14.save();
-  console.log(JSON.stringify(savedPermission14, null, 2));
+  // console.log(JSON.stringify(savedPermission14, null, 2));
 
   const newPermission15 = new Permission({
     "endpoint": "/masked/roles/:roleId/status",
@@ -137,7 +148,7 @@ const { Amea } = require('../models/amea');
     "status": permissionStatus.ACTIVE
   });
   const savedPermission15 = await newPermission15.save();
-  console.log(JSON.stringify(savedPermission15, null, 2));
+  // console.log(JSON.stringify(savedPermission15, null, 2));
 
   const newPermission16 = new Permission({
     "endpoint": "/masked/roles/:roleId/permissions",
@@ -145,7 +156,7 @@ const { Amea } = require('../models/amea');
     "status": permissionStatus.ACTIVE
   });
   const savedPermission16 = await newPermission16.save();
-  console.log(JSON.stringify(savedPermission16, null, 2));
+  // console.log(JSON.stringify(savedPermission16, null, 2));
 
   const newPermission17 = new Permission({
     "endpoint": "/masked/roles/:roleId/policies",
@@ -153,7 +164,7 @@ const { Amea } = require('../models/amea');
     "status": permissionStatus.ACTIVE
   });
   const savedPermission17 = await newPermission17.save();
-  console.log(JSON.stringify(savedPermission17, null, 2));
+  // console.log(JSON.stringify(savedPermission17, null, 2));
 
   const newPermission18 = new Permission({
     "endpoint": "/masked/amea",
@@ -161,7 +172,7 @@ const { Amea } = require('../models/amea');
     "status": permissionStatus.ACTIVE
   });
   const savedPermission18 = await newPermission18.save();
-  console.log(JSON.stringify(savedPermission18, null, 2));
+  // console.log(JSON.stringify(savedPermission18, null, 2));
 
   // Policies
   const newPolicy1 = new Policy({
@@ -171,7 +182,7 @@ const { Amea } = require('../models/amea');
     "status": policyStatus.ACTIVE
   })
   const savedPolicy1 = await newPolicy1.save();
-  console.log(JSON.stringify(savedPolicy1, null, 2));
+  // console.log(JSON.stringify(savedPolicy1, null, 2));
 
   const newPolicy2 = new Policy({
     "resource": "club",
@@ -180,7 +191,7 @@ const { Amea } = require('../models/amea');
     "status": policyStatus.ACTIVE
   })
   const savedPolicy2 = await newPolicy2.save();
-  console.log(JSON.stringify(savedPolicy2, null, 2));
+  // console.log(JSON.stringify(savedPolicy2, null, 2));
 
   const newPolicy3 = new Policy({
     "resource": "amea",
@@ -193,7 +204,7 @@ const { Amea } = require('../models/amea');
     "status": policyStatus.ACTIVE
   })
   const savedPolicy3 = await newPolicy3.save();
-  console.log(JSON.stringify(savedPolicy3, null, 2));
+  // console.log(JSON.stringify(savedPolicy3, null, 2));
 
   const newPolicy4 = new Policy({
     "resource": "club",
@@ -202,7 +213,7 @@ const { Amea } = require('../models/amea');
     "status": policyStatus.ACTIVE
   })
   const savedPolicy4 = await newPolicy4.save();
-  console.log(JSON.stringify(savedPolicy4, null, 2));
+  // console.log(JSON.stringify(savedPolicy4, null, 2));
 
   // Roles
   const adminRole = new Role({
@@ -216,7 +227,7 @@ const { Amea } = require('../models/amea');
     "status": roleStatus.ACTIVE
   });
   const savedAdminRole = await adminRole.save();
-  console.log(JSON.stringify(savedAdminRole, null, 2));
+  // console.log(JSON.stringify(savedAdminRole, null, 2));
 
   // Users
   const adminUser = new User({
@@ -229,5 +240,8 @@ const { Amea } = require('../models/amea');
     "roles": [savedAdminRole]
   });
   const savedAdminUser = await adminUser.save();
-  console.log(JSON.stringify(savedAdminUser, null, 2));
+  // console.log(JSON.stringify(savedAdminUser, null, 2));
+
+  clearInterval(loaderId);
+  console.log('\n---Done');
 })();
