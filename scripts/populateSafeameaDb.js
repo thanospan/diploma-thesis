@@ -1,6 +1,6 @@
 'use strict';
 
-require('dotenv').config({ path: './config/.env' });
+require('dotenv').config({ path: './config/.env.admin' });
 
 const mongoose = require('mongoose');
 
