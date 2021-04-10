@@ -1,5 +1,9 @@
 'use strict';
 
+const idMask = {
+  "_id": "xxxxxx"
+};
+
 const nameMask = {
   "name": {
     $substrCP: [ "$name", 0, 1 ]
@@ -9,6 +13,18 @@ const nameMask = {
 const surnameMask = {
   "surname": {
     $substrCP: [ "$surname", 0, 1 ]
+  }
+};
+
+const ownerMask = {
+  "owner": {
+    $map: {
+      input: "$owner",
+      as: "owner",
+      in: {
+        $concat: [ "xxxxxx" ]
+      }
+    }
   }
 };
 
@@ -24,6 +40,15 @@ const emailValueMask = {
   }
 };
 
+const emailActiveMask = {
+  "email.active": "xxxxxx"
+};
+
+const emailMask = {
+  "email.value": emailValueMask["email.value"],
+  "email.active": emailActiveMask["email.active"]
+};
+
 const phoneNumberValueMask = {
   "phoneNumber.value": {
     $concat: [
@@ -36,6 +61,19 @@ const phoneNumberValueMask = {
       ]}
     ]
   }
+};
+
+const phoneNumberActiveMask = {
+  "phoneNumber.active": "xxxxxx"
+};
+
+const phoneNumberMask = {
+  "phoneNumber.value": phoneNumberValueMask["phoneNumber.value"],
+  "phoneNumber.active": phoneNumberActiveMask["phoneNumber.active"],
+};
+
+const locTypeMask = {
+  "loc.type": "xxxxxx"
 };
 
 /*
@@ -71,13 +109,59 @@ const locCoordinatesMask = {
   }
 };
 
+const locMask = {
+  "loc.type": locTypeMask["loc.type"],
+  "loc.coordinates": locCoordinatesMask["loc.coordinates"]
+};
+
+const regionAdministrativeMask = {
+  "region.administrative": "xxxxxx"
+};
+
+const regionMunicipalityMask = {
+  "region.municipality": "xxxxxx"
+};
+
+const regionMask = {
+  "region.administrative": regionAdministrativeMask["region.administrative"],
+  "region.municipality": regionMunicipalityMask["region.municipality"]
+};
+
+const disabilitiesMask = {
+  "disabilities.name": "xxxxxx",
+  "disabilities.sub.name": "xxxxxx",
+  "disabilities.sub.value": "xxxxxx"
+};
+
 const disabilitiesDescMask = {
-  "disabilitiesDesc": "xxxxxxxxxx"
+  "disabilitiesDesc": "xxxxxx"
+};
+
+/*
+Floor Mask
+Random integer within a specific range
+floor(rand * (max - min + 1) + min)
+min: 0
+max: 8
+rand: random float between 0 and 1
+*/
+const floorMask = {
+  "floor": {
+    $floor: {
+      $add: [
+        { $multiply: [
+          { $rand: {} },
+          8 - 0 + 1
+        ]},
+        0
+      ]
+    }
+  }
 };
 
 /*
 Birthday Mask
-Subtract a random integer within a specific range
+Subtract a random integer (milliseconds) within a specific range
 floor(rand * (max - min) + min)
 min: 1*365*24*60*60*1000 (1 year)
 max: 3*365*24*60*60*1000 (3 years)
@@ -102,7 +186,7 @@ const birthdayMask = {
 
 /*
 Created Mask
-Subtract a random integer within a specific range
+Subtract a random integer (milliseconds) within a specific range
 floor(rand * (max - min) + min)
 min: 0.5*365*24*60*60*1000 (0.5 year)
 max: 1*365*24*60*60*1000 (1 years)
@@ -127,7 +211,7 @@ const createdMask = {
 
 /*
 Updated Mask
-Subtract a random integer within a specific range
+Subtract a random integer (milliseconds) within a specific range
 floor(rand * (max - min) + min)
 min: 0.5*365*24*60*60*1000 (0.5 year)
 max: 1*365*24*60*60*1000 (1 years)
@@ -151,7 +235,7 @@ const updatedMask = {
 };
 
 const addressMask = {
-  "address": "xxxxxxxxxx"
+  "address": "xxxxxx"
 };
 
 const careNameMask = {
@@ -189,7 +273,19 @@ const carePhoneMask = {
 };
 
 const careDescriptionMask = {
-  "caretaker.caredescription": "xxxxxxxxxx"
+  "caretaker.caredescription": "xxxxxx"
+};
+
+const caretakerMask = {
+  "caretaker.carename": careNameMask["caretaker.carename"],
+  "caretaker.caresurname": careSurnameMask["caretaker.caresurname"],
+  "caretaker.careemail": careEmailMask["caretaker.careemail"],
+  "caretaker.carephone": carePhoneMask["caretaker.carephone"],
+  "caretaker.caredescription": careDescriptionMask["caretaker.caredescription"]
+};
+
+const statusMask = {
+  "status": "xxxxxx"
 };
 
 exports.buildPipeline = (policy) => {
@@ -218,24 +314,63 @@ exports.buildPipeline = (policy) => {
 
   policy.masked.forEach(maskedField => {
     switch (maskedField) {
+      case "_id":
+        pipeline.push({ $set: idMask });
+        break;
       case "name":
         pipeline.push({ $set: nameMask });
         break;
       case "surname":
         pipeline.push({ $set: surnameMask });
         break;
+      case "owner":
+        pipeline.push({ $set: ownerMask });
+        break;
+      case "email":
+        pipeline.push({ $set: emailMask });
+        break;
       case "email.value":
         pipeline.push({ $set: emailValueMask });
+        break;
+      case "email.active":
+        pipeline.push({ $set: emailActiveMask });
+        break;
+      case "phoneNumber":
+        pipeline.push({ $set: phoneNumberMask });
         break;
       case "phoneNumber.value":
         pipeline.push({ $set: phoneNumberValueMask });
         break;
+      case "phoneNumber.active":
+        pipeline.push({ $set: phoneNumberActiveMask });
+        break;
+      case "loc":
+        pipeline.push({ $set: locMask });
+        break;
+      case "loc.type":
+        pipeline.push({ $set: locTypeMask });
+        break;
       case "loc.coordinates":
         pipeline.push({ $set: locCoordinatesMask });
         break;
+      case "region":
+        pipeline.push({ $set: regionMask });
+        break;
+      case "region.administrative":
+        pipeline.push({ $set: regionAdministrativeMask });
+        break;
+      case "region.municipality":
+        pipeline.push({ $set: regionMunicipalityMask });
+        break;
+      case "disabilities":
+        pipeline.push({ $set: disabilitiesMask });
+        break;
       case "disabilitiesDesc":
         pipeline.push({ $set: disabilitiesDescMask });
-        break
+        break;
+      case "floor":
+        pipeline.push({ $set: floorMask });
+        break;
       case "birthday":
         pipeline.push({ $set: birthdayMask });
         break;
@@ -247,6 +382,9 @@ exports.buildPipeline = (policy) => {
         break;
       case "address":
         pipeline.push({ $set: addressMask });
+        break;
+      case "caretaker":
+        pipeline.push({ $set: caretakerMask });
         break;
       case "caretaker.carename":
         pipeline.push({ $set: careNameMask });
@@ -262,6 +400,9 @@ exports.buildPipeline = (policy) => {
         break;
       case "caretaker.caredescription":
         pipeline.push({ $set: careDescriptionMask });
+        break;
+      case "status":
+        pipeline.push({ $set: statusMask });
         break;
       default:
         break;
