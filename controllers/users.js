@@ -215,7 +215,8 @@ exports.getAll = async (req, res, next) => {
       "statusCode": 200,
       "message": users
     };
-    console.log(JSON.stringify(response, null, 2));
+    // console.log(JSON.stringify(response, null, 2));
+    console.log({ statusCode: response.statusCode, message: "Retrieved all users successfully" });
     res.status(response.statusCode).json(response.message);
     return;
   } catch (err) {

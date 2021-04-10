@@ -14,7 +14,8 @@ exports.getAll = async (req, res, next) => {
       "statusCode": 200,
       "message": roles
     };
-    console.log(JSON.stringify(response, null, 2));
+    // console.log(JSON.stringify(response, null, 2));
+    console.log({ statusCode: response.statusCode, message: "Retrieved all roles successfully" });
     res.status(response.statusCode).json(response.message);
     return;
   } catch (err) {
