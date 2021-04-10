@@ -5,9 +5,9 @@ require('dotenv').config({ path: './config/.env' });
 const mongoose = require('mongoose');
 
 const safeameaConn = require('../connections/safeameaDb');
-const loader = require('../utils/loader');
 const { Club } = require('../models/club');
 const { Amea } = require('../models/amea');
+const { Loader } = require('../utils/loader');
 
 const clubs = [
   {
@@ -221,13 +221,30 @@ const getRandomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min); // Inclusive
 };
 
-const getRandomCoords = (center) => {
-  const min = 0.03;
-  const max = 0.05;
-  return [
-    Math.random() * (max - min) + min + center.lat,
-    Math.random() * (max - min) + min + center.lng
-  ]
+/*
+References:
+https://gis.stackexchange.com/a/25883
+https://gist.github.com/mkhatib/5641004
+https://en.wikipedia.org/wiki/Decimal_degrees
+*/
+const getRandomCoords = (center, radius) => {
+  const x0 = center.lng;
+  const y0 = center.lat;
+
+  const u = Math.random();
+  const v = Math.random();
+
+  const r = radius / 111320;
+
+  const w = r * Math.sqrt(u);
+  const t = 2 * Math.PI * v;
+  const x = (w * Math.cos(t)) / Math.cos(y0);
+  const y = w * Math.sin(t);
+
+  const lat = +(y + y0).toFixed(6);
+  const lng = +(x + x0).toFixed(6);
+
+  return { lat, lng };
 };
 
 const subtractFromDate = (min, max) => {
@@ -237,77 +254,91 @@ const subtractFromDate = (min, max) => {
   return date;
 };
 
+const loader = new Loader();
+
 (async () => {
-  await safeameaConn;
-  const loaderId = loader.start("---Populating safeamea database");
+  try {
+    await safeameaConn;
 
-  let newClub;
-  let savedClubs = [];
+    loader.start("---Populating safeamea database");
 
-  for (const club of clubs) {
-    newClub = new Club(club);
-    savedClubs.push(await newClub.save());
+    let newClub;
+    let savedClubs = [];
+
+    for (const club of clubs) {
+      newClub = new Club(club);
+      savedClubs.push(await newClub.save());
+    }
+    // console.log(JSON.stringify(savedClubs, null, 2));
+
+    let name, surname, carename, caresurname, coords;
+    let newAmea;
+    let savedAmea = [];
+
+    for (let i = 0; i < 5000; i++) {
+      name = names[getRandomInt(0, 49)];
+      surname = surnames[getRandomInt(0, 14)];
+      carename = names[getRandomInt(0, 49)];
+      caresurname = surnames[getRandomInt(0, 14)];
+      coords = getRandomCoords({ lat: 38.234809, lng: 21.748981 }, 2000);
+
+      newAmea = new Amea({
+        name,
+        surname,
+        owner: [new mongoose.Types.ObjectId()],
+        email: {
+          value: name.toLowerCase() + '.' + surname.toLowerCase() + '@example.com',
+          active: getRandomInt(0, 1)
+        },
+        phoneNumber: {
+          value: '69' + getRandomInt(11111111, 99999999),
+          active: getRandomInt(0, 1)
+        },
+        loc: {
+          coordinates: [
+            coords.lat,
+            coords.lng
+          ],
+          type: "Point"
+        },
+        address: "Address",
+        region: {
+          administrative: "Western Greece",
+          municipality: "Patras"
+        },
+        disabilities: [
+          disabilities.mobility[getRandomInt(0, 2)],
+          disabilities.hearing[getRandomInt(0, 1)],
+          disabilities.vision[getRandomInt(0, 2)],
+          disabilities.mental[getRandomInt(0, 2)]
+        ],
+        disabilitiesDesc: "Disabilities description text",
+        floor: getRandomInt(0, 6),
+        club: [savedClubs[getRandomInt(0, 1)]._id],
+        birthday: subtractFromDate(18*365, 100*365),
+        created: subtractFromDate(1, 365),
+        updated: subtractFromDate(0, 0),
+        caretaker: {
+          carename,
+          caresurname,
+          careemail: carename.toLowerCase() + '.' + caresurname.toLowerCase() + '@example.com',
+          carephone: '69' + getRandomInt(11111111, 99999999),
+          caredescription: "Caretaker description"
+        },
+        status: status[getRandomInt(0, 2)],
+        __enc_surname: false,
+        __v: 0
+      });
+      savedAmea.push(await newAmea.save());
+    }
+    // console.log(JSON.stringify(savedAmea, null, 2));
+
+    loader.stop();
+    console.log('\n---Done');
+    process.exit();
+  } catch (err) {
+    loader.stop();
+    console.log(err);
+    process.exit();
   }
-  // console.log(JSON.stringify(savedClubs, null, 2));
-
-  let name, surname, carename, caresurname;
-  let newAmea;
-  let savedAmea = [];
-
-  for (let i = 0; i < 500; i++) {
-    name = names[getRandomInt(0, 49)];
-    surname = surnames[getRandomInt(0, 14)];
-    carename = names[getRandomInt(0, 49)];
-    caresurname = surnames[getRandomInt(0, 14)];
-
-    newAmea = new Amea({
-      name,
-      surname,
-      owner: [new mongoose.Types.ObjectId()],
-      email: {
-        value: name.toLowerCase() + '.' + surname.toLowerCase() + '@example.com',
-        active: getRandomInt(0, 1)
-      },
-      phoneNumber: {
-        value: '69' + getRandomInt(11111111, 99999999),
-        active: getRandomInt(0, 1)
-      },
-      loc: {
-        coordinates: getRandomCoords({'lat': 38.240116, 'lng': 21.745262 }),
-        type: "Point"
-      },
-      address: "Address",
-      region: {
-        administrative: "Western Greece",
-        municipality: "Patras"
-      },
-      disabilities: [
-        disabilities.mobility[getRandomInt(0, 2)],
-        disabilities.hearing[getRandomInt(0, 1)],
-        disabilities.vision[getRandomInt(0, 2)],
-        disabilities.mental[getRandomInt(0, 2)]
-      ],
-      disabilitiesDesc: "Disabilities description text",
-      floor: getRandomInt(0, 6),
-      club: [savedClubs[getRandomInt(0, 1)]._id],
-      birthday: subtractFromDate(18*365, 100*365),
-      created: subtractFromDate(1, 365),
-      updated: subtractFromDate(0, 0),
-      caretaker: {
-        carename,
-        caresurname,
-        careemail: carename.toLowerCase() + '.' + caresurname.toLowerCase() + '@example.com',
-        carephone: '69' + getRandomInt(11111111, 99999999),
-        caredescription: "Caretaker description"
-      },
-      status: status[getRandomInt(0, 2)],
-      __enc_surname: false,
-      __v: 0
-    });
-    savedAmea.push(await newAmea.save());
-  }
-  // console.log(JSON.stringify(savedAmea, null, 2));
-
-  clearInterval(loaderId);
-  console.log('\n---Done');
 })();
