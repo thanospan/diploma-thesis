@@ -290,7 +290,7 @@ Default Data Masking (User with no policies for the amea and clubs resources)
   <td>
   
     "email": {
-      "value": "xxxxx@xxxxx.xxx",
+      "value": "xxxxxx@subscriber.com",
       "active": 1
     }
     
@@ -416,7 +416,7 @@ Default Data Masking (User with no policies for the amea and clubs resources)
 
   <td>
 
-    "address": "xxxxxxxxxx"
+    "address": "xxxxxx"
 
   </td>
 </tr>
@@ -515,7 +515,7 @@ Default Data Masking (User with no policies for the amea and clubs resources)
     "caretaker": {
       "carename": "Β",
       "caresurname": "Π",
-      "careemail": "xxxxx@xxxxx.xxx",
+      "careemail": "xxxxxx@email.gr",
       "carephone": "69xxxxxxxx96"
     }
 
