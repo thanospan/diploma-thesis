@@ -2,38 +2,14 @@
 
 ## Setup
 
-- Make a parent directory for all of the repositories:
+- Make a parent directory for the project:
 ```
 mkdir ~/Documents/SafeAmea
-```
-
-- Clone the SafeAmea API repository:
-```
-git clone git@github.com:kostistr/UoP-Thesis-Panagiotidis-API.git ~/Documents/SafeAmea/SafeAmea-API
-```
-
-- Clone the SafeAmea Webapp repository:
-```
-git clone git@github.com:kostistr/UoP-Thesis-Panagiotidis-Webapp.git ~/Documents/SafeAmea/SafeAmea-Webapp
 ```
 
 - Clone the SafeAmea Masked API repository:
 ```
 git clone git@github.com:thanospan/SafeAmea-Masked-API.git ~/Documents/SafeAmea/SafeAmea-Masked-API
-```
-
-- Build the SafeAmea API Docker image:
-```
-cd ~/Documents/SafeAmea/SafeAmea-API
-git checkout dev-secure-mongo
-docker build -t safeamea-api .
-```
-
-- Build the SafeAmea Webapp Docker image:
-```
-cd ~/Documents/SafeAmea/SafeAmea-Webapp
-git checkout dev
-docker build -t safeamea-webapp .
 ```
 
 - Create a Docker network:
@@ -51,96 +27,9 @@ docker run -d -p 1025:1025 -p 8025:8025 --name safeamea-mailhog --network safeam
 docker run -d -v ~/Documents/SafeAmea/SafeAmea-DB-Data:/data/db -p 27017:27017 --name safeamea-mongo --network safeamea -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=123456 mongo
 ```
 
-- Run the SafeAmea API Docker container:
-```
-docker run -d -p 3006:3006 --name safeamea-api --network safeamea safeamea-api
-```
-
-- Run the SafeAmea Webapp Docker container:
-```
-docker run -d -p 4200:4200 --name safeamea-webapp --network safeamea safeamea-webapp
-```
-
 - Check if all containers are running:
 ```
 docker ps
-```
-
-- Populate the safeamea MongoDB:
-
-Make the following HTTP POST request:
-```
-curl -X POST 'http://localhost:3006/api/v1.0/users/initAcounts'
-```
-
-Check if the SafeAmea API Docker container is still running:
-```
-docker ps
-```
-If the container has stopped, start it again using:
-```
-docker start safeamea-api
-```
-Check if the database is populated correctly:
-
-Using MongoDB Shell:
-```
-docker exec -it safeamea-mongo /bin/bash
-mongo
-use admin
-db.auth("mongoadmin", passwordPrompt())
-Enter password: 123456 (Set while running the MongoDB container)
-show dbs
-use safeamea
-show collections
-db.account.find().pretty()
-db.amea.find().pretty()
-db.cityAdmin.find().pretty()
-db.clubs.find().pretty()
-db.disabilities.find().pretty()
-db.operators.find().pretty()
-db.roles.find().pretty()
-exit
-exit
-```
-
-or
-
-Using Robo3T:
-```
-Address: localhost
-Port: 27017
-Authentication database: admin
-User Name: mongoadmin
-Password: 123456
-```
-
-If the database is not populated correctly, make the HTTP POST request again.
-```
-curl -X POST 'http://localhost:3006/api/v1.0/users/initAcounts'
-Server response: OK
-```
-
-- Verify that everything is set up properly:
-```
-MailHog: http://localhost:8025
-SafeAmea Webapp: http://localhost:4200
-```
-
-Login using the accounts created above:
-```
-subscriber@subscriber.com
-manager@manager.com
-operator@operator.com
-cityAdmin@cityAdmin.com
-
-Password: 123456
-```
-
-Create a new account to test MailHog.
-```
-Email: testAccount@testAccount.com
-Password: 123456
 ```
 
 - Create the maskedApi MongoDB user to control access to the database (Role-Based Access Control - RBAC):
@@ -221,11 +110,51 @@ Install dependencies:
 ```
 npm install
 ```
+Populate the safeamea MongoDB:
+```
+node scripts/populateSafeameaDb.js
+```
 Populate the safeameaMasked MongoDB:
 ```
 node scripts/init.js
-(Ctrl+C)
 ```
+
+Check if the database is populated correctly:
+
+Using MongoDB Shell:
+```
+docker exec -it safeamea-mongo /bin/bash
+mongo
+use admin
+db.auth("mongoadmin", passwordPrompt())
+Enter password: 123456 (Set while running the MongoDB container)
+show dbs
+use safeamea
+show collections
+db.amea.find().pretty()
+db.clubs.find().pretty()
+use safeameaMasked
+show collections
+db.emailTokens.find().pretty()
+db.users.find().pretty()
+db.roles.find().pretty()
+db.permissions.find().pretty()
+db.policies.find().pretty()
+exit
+exit
+```
+
+or
+
+Using Robo3T:
+```
+Address: localhost
+Port: 27017
+Authentication database: admin
+User Name: mongoadmin
+Password: 123456
+```
+
 Run the SafeAmea Masked API:
 ```
 node app.js
