@@ -13,7 +13,15 @@ const surnameMask = {
 };
 
 const emailValueMask = {
-  "email.value": "xxxxx@xxxxx.xxx"
+  "email.value": {
+    $concat: [
+      "xxxxxx@",
+      { $arrayElemAt: [
+        { $split: [ "$email.value", "@" ] },
+        1
+      ]}
+    ]
+  }
 };
 
 const phoneNumberValueMask = {
@@ -155,7 +163,15 @@ const careSurnameMask = {
 };
 
 const careEmailMask = {
-  "caretaker.careemail": "xxxxx@xxxxx.xxx"
+  "caretaker.careemail": {
+    $concat: [
+      "xxxxxx@",
+      { $arrayElemAt: [
+        { $split: [ "$caretaker.careemail", "@" ] },
+        1
+      ]}
+    ]
+  }
 };
 
 const carePhoneMask = {
