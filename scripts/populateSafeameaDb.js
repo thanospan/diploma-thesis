@@ -275,7 +275,7 @@ const loader = new Loader();
     let newAmea;
     let savedAmea = [];
 
-    for (let i = 0; i < 5000; i++) {
+    for (let i = 0; i < 1000; i++) {
       name = names[getRandomInt(0, 49)];
       surname = surnames[getRandomInt(0, 14)];
       carename = names[getRandomInt(0, 49)];
