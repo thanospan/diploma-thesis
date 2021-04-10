@@ -245,6 +245,7 @@ All URIs are relative to *http://localhost:3007/masked*
     
 | HTTP Method | Endpoint | Parameters |
 | ----------- | -------- | ---------- |
+| GET | / | |
 | GET | /users/ | headers: token |
 | POST | /users/signup | body: email, password |
 | POST | /users/email-verification | headers: emailToken<br> query: userId |
