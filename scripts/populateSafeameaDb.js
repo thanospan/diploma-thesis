@@ -8,6 +8,7 @@ const safeameaConn = require('../connections/safeameaDb');
 const { Club } = require('../models/club');
 const { Amea } = require('../models/amea');
 const { Loader } = require('../utils/loader');
+const coordsUtil = require('../utils/coords');
 
 const clubs = [
   {
@@ -221,32 +222,6 @@ const getRandomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min); // Inclusive
 };
 
-/*
-References:
-https://gis.stackexchange.com/a/25883
-https://gist.github.com/mkhatib/5641004
-https://en.wikipedia.org/wiki/Decimal_degrees
-*/
-const getRandomCoords = (center, radius) => {
-  const x0 = center.lng;
-  const y0 = center.lat;
-
-  const u = Math.random();
-  const v = Math.random();
-
-  const r = radius / 111320;
-
-  const w = r * Math.sqrt(u);
-  const t = 2 * Math.PI * v;
-  const x = (w * Math.cos(t)) / Math.cos(y0);
-  const y = w * Math.sin(t);
-
-  const lat = +(y + y0).toFixed(6);
-  const lng = +(x + x0).toFixed(6);
-
-  return { lat, lng };
-};
-
 const subtractFromDate = (min, max) => {
   let date = new Date();
   date.setDate(date.getDate() - getRandomInt(min, max));
@@ -274,13 +249,15 @@ const loader = new Loader();
     let name, surname, carename, caresurname, coords;
     let newAmea;
     let savedAmea = [];
+    const center = { lat: 38.234809, lng: 21.748981 };
+    const radius = 2000; // meters
 
     for (let i = 0; i < 1000; i++) {
       name = names[getRandomInt(0, 49)];
       surname = surnames[getRandomInt(0, 14)];
       carename = names[getRandomInt(0, 49)];
       caresurname = surnames[getRandomInt(0, 14)];
-      coords = getRandomCoords({ lat: 38.234809, lng: 21.748981 }, 2000);
+      coords = coordsUtil.getCoordsWithinRadius(center, radius);
 
       newAmea = new Amea({
         name,
