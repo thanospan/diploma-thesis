@@ -34,6 +34,12 @@ const setup = () => {
 
   // Error-handling middleware
   app.use((err, req, res, next) => {
+    // Invalid JSON in req.body
+    if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+        console.error(err);
+        return res.status(400).send({ statusCode: 400, message: err.message });
+    }
+    // Internal Server Error
     console.log(err);
     res.status(500).json({ "message": "Internal Server Error" });
   });
