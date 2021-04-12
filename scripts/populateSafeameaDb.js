@@ -8,7 +8,7 @@ const safeameaConn = require('../connections/safeameaDb');
 const { Club } = require('../models/club');
 const { Amea } = require('../models/amea');
 const { Loader } = require('../utils/loader');
-const coordsUtil = require('../utils/coords');
+const geo = require('../utils/geo');
 
 const clubs = [
   {
@@ -257,7 +257,7 @@ const loader = new Loader();
       surname = surnames[getRandomInt(0, 14)];
       carename = names[getRandomInt(0, 49)];
       caresurname = surnames[getRandomInt(0, 14)];
-      coords = coordsUtil.getCoordsWithinRadius(center, radius);
+      coords = geo.getCoordsWithinRadius(center, radius);
 
       newAmea = new Amea({
         name,

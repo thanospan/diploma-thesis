@@ -2,7 +2,7 @@
 
 const fs = require('fs').promises;
 
-const coordsUtil = require('../utils/coords');
+const geo = require('../utils/geo');
 const { Loader } = require('../utils/loader');
 
 const center = { lat: 38.234809, lng: 21.748981 };
@@ -16,7 +16,7 @@ const loader = new Loader();
     loader.start("---Saving coordinates to coords.csv");
 
     for (let i = 0; i < 5000; i++) {
-      coords.push(coordsUtil.getCoordsWithinRadius(center, radius));
+      coords.push(geo.getCoordsWithinRadius(center, radius));
       // console.log(coords[i].lat + ', ' + coords[i].lng);
     }
 
