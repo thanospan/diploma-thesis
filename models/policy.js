@@ -17,7 +17,7 @@ const policySchema = new Schema({
   excluded: { type: [String], required: true },
   masked: { type: [String], required: true },
   status: { type: String, default: policyStatus.ACTIVE }
-});
+}, { timestamps: true });
 
 policySchema.pre('save', function(next) {
   if (!resources.getAllNames().includes(this.resource)) {
