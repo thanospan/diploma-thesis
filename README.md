@@ -201,7 +201,7 @@ All URIs are relative to *http://localhost:3007/masked*
 | DELETE | /policies/:policyId/ | headers: token<br> params: policyId |
 | GET | /amea/ | headers: token |
 
-## SafeAmea Masked API Output Example
+## SafeAmea Masked API Response Example
 
 <ins>Request</ins>\
 Method: GET<br>
@@ -212,7 +212,7 @@ Default Data Masking (User with no policies for the amea and clubs resources)
 <tr>
   <th>Field</th>
   <th>amea MongoDB Collection</th>
-  <th>Masked API Output</th>
+  <th>Masked API Response</th>
 </tr>
 
 <tr>
