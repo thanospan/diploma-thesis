@@ -10,51 +10,6 @@ const { Amea } = require('../models/amea');
 const { Loader } = require('../utils/loader');
 const geo = require('../utils/geo');
 
-const clubs = [
-  {
-    _id: new mongoose.Types.ObjectId(),
-    loc: {
-      coordinates: [ 
-        21.7401209, 
-        38.2478087
-      ],
-      type: "Point"
-    },
-    created: new Date(),
-    updated: new Date(),
-    name: "Σύλλογος Μαχητές",
-    phoneNumber: "6974037899",
-    region: {
-      administrative: "ΔΥΤΙΚΗΣ ΕΛΛΑΔΑΣ",
-      municipality: "ΠΑΤΡΕΩΝ"
-    },
-    address: "Ρηγα Φεραίου 44, ΤΚ 26226",
-    status: "accepted",
-    __v: 0
-  },
-  {
-    _id: new mongoose.Types.ObjectId(),
-    loc: {
-      coordinates: [ 
-        21.7403209, 
-        38.2470087
-      ],
-      type: "Point"
-    },
-    created: new Date(),
-    updated: new Date(),
-    name: "Σύλλογος Δήμος Πατρέων",
-    phoneNumber: "6974044499",
-    region: {
-      administrative: "ΔΥΤΙΚΗΣ ΕΛΛΑΔΑΣ",
-      municipality: "ΠΑΤΡΕΩΝ"
-    },
-    address: "Ρηγα Φεραίου 123, ΤΚ 26226",
-    status: "accepted",
-    __v: 0
-  }
-];
-
 const names = [
   "Giorgos",
   "Dimitris",
@@ -237,20 +192,43 @@ const loader = new Loader();
 
     loader.start("---Populating safeamea database");
 
+    let coords;
+    const center = { lat: 38.234809, lng: 21.748981 };
+    const radius = 2000; // meters
+
     let newClub;
     let savedClubs = [];
 
-    for (const club of clubs) {
-      newClub = new Club(club);
+    for (let i = 0; i < 20; i++) {
+      coords = geo.getCoordsWithinRadius(center, radius);
+
+      newClub = new Club({
+        name: 'Club ' + (i + 1),
+        phoneNumber: '69' + getRandomInt(11111111, 99999999),
+        loc: {
+          coordinates: [
+            coords.lat,
+            coords.lng
+          ],
+          type: "Point"
+        },
+        region: {
+          administrative: "Western Greece",
+          municipality: "Patras"
+        },
+        address: "Address",
+        status: status[getRandomInt(0, 2)],
+        created: subtractFromDate(1, 365),
+        updated: subtractFromDate(0, 0),
+        __v: 0
+      });
       savedClubs.push(await newClub.save());
     }
     // console.log(JSON.stringify(savedClubs, null, 2));
 
-    let name, surname, carename, caresurname, coords;
+    let name, surname, carename, caresurname;
     let newAmea;
     let savedAmea = [];
-    const center = { lat: 38.234809, lng: 21.748981 };
-    const radius = 2000; // meters
 
     for (let i = 0; i < 1000; i++) {
       name = names[getRandomInt(0, 49)];
@@ -291,7 +269,7 @@ const loader = new Loader();
         ],
         disabilitiesDesc: "Disabilities description text",
         floor: getRandomInt(0, 6),
-        club: [savedClubs[getRandomInt(0, 1)]._id],
+        club: [savedClubs[getRandomInt(0, savedClubs.length - 1)]._id],
         birthday: subtractFromDate(18*365, 100*365),
         created: subtractFromDate(1, 365),
         updated: subtractFromDate(0, 0),
