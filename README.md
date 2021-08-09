@@ -203,10 +203,17 @@ All URIs are relative to *http://localhost:3007/masked*
 
 ## SafeAmea Masked API Response Example
 
-<ins>Request</ins>\
 Method: GET<br>
 Endpoint: http://localhost:3007/masked/amea/<br>
-Default Data Masking (User with no policies for the amea and clubs resources)
+Masking policies:
+
+- Resource: Club\
+Excluded: [_id, __v, updated, created]\
+Masked: []
+
+- Resource: Amea\
+Excluded: [owner, __enc_surname, updated, created, disabilitiesDesc, caretaker.caredescription, __v,  _id]\
+Masked: [name, surname, caretaker.carename, caretaker.caresurname, email.value, caretaker.careemail, phoneNumber.value, caretaker.carephone, address, loc.coordinates, birthday]
 
 <table>
 <tr>
@@ -220,7 +227,7 @@ Default Data Masking (User with no policies for the amea and clubs resources)
 
   <td>
 
-    "_id": ObjectId("606ec04bb61a55ca62ab87bd")
+    "_id": ObjectId("610ffd1dc81eab4df7ea66c3")
 
   </td>
 
@@ -232,8 +239,8 @@ Default Data Masking (User with no policies for the amea and clubs resources)
 
   <td>
 
-    "owner": [
-      ObjectId("606ec04bb61a5574b9ab87be")
+    "owner": [ 
+      ObjectId("610ffd1dc81eab4df7ea66c2")
     ]
 
   </td>
@@ -246,13 +253,13 @@ Default Data Masking (User with no policies for the amea and clubs resources)
 
   <td>
 
-    "name": "Δημήτρης"
+    "name": "Nikos"
 
   </td>
 
   <td>
 
-    "name": "Δ"
+    "name": "N"
 
   </td>
 </tr>
@@ -262,15 +269,13 @@ Default Data Masking (User with no policies for the amea and clubs resources)
 
   <td>
 
-    "surname": "4710474e81a1230e54269c77c4
-      92eea6:e2c7c8153764488d11d0fe457dce7
-      8b2c5a34f76b93f5bff085b4a0e8c537fef"
+    "surname": "Alexandrou"
 
   </td>
 
   <td>
 
-    "surname": "4"
+    "surname": "A"
 
   </td>
 </tr>
@@ -281,7 +286,7 @@ Default Data Masking (User with no policies for the amea and clubs resources)
   <td>
   
     "email": {
-      "value": "subscriber@subscriber.com",
+      "value": "nikos.alexandrou@example.com",
       "active": 1
     }
     
@@ -290,7 +295,7 @@ Default Data Masking (User with no policies for the amea and clubs resources)
   <td>
   
     "email": {
-      "value": "xxxxxx@subscriber.com",
+      "value": "xxxxxx@example.com",
       "active": 1
     }
     
@@ -303,7 +308,7 @@ Default Data Masking (User with no policies for the amea and clubs resources)
   <td>
 
     "phoneNumber": {
-      "value": "6974038999",
+      "value": "6918154734",
       "active": 1
     }
 
@@ -312,7 +317,7 @@ Default Data Masking (User with no policies for the amea and clubs resources)
   <td>
 
     "phoneNumber": {
-      "value": "69xxxxxxxx99",
+      "value": "69xxxxxxxx34",
       "active": 1
     }
 
@@ -324,18 +329,32 @@ Default Data Masking (User with no policies for the amea and clubs resources)
 
   <td>
 
-    "disabilities": [
+    "disabilities": [ 
       {
         "name": "Mobility",
         "sub": {
-          "name": "Partial",
-          "value": 1
+          "name": "PartialSupport",
+          "value": 2
         }
-      },
+      }, 
       {
         "name": "Hearing",
         "sub": {
-          "name": "HardHearing",
+          "name": "Deaf",
+          "value": 3
+        }
+      }, 
+      {
+        "name": "Vision",
+        "sub": {
+          "name": "Amblyopia",
+          "value": 2
+        }
+      }, 
+      {
+        "name": "Mental",
+        "sub": {
+          "name": "ExtendedSupport",
           "value": 2
         }
       }
@@ -349,14 +368,28 @@ Default Data Masking (User with no policies for the amea and clubs resources)
       {
         "name": "Mobility",
         "sub": {
-          "name": "Partial",
-          "value": 1
+          "name": "PartialSupport",
+          "value": 2
         }
       },
       {
         "name": "Hearing",
         "sub": {
-          "name": "HardHearing",
+          "name": "Deaf",
+          "value": 3
+        }
+      },
+      {
+        "name": "Vision",
+        "sub": {
+          "name": "Amblyopia",
+          "value": 2
+        }
+      },
+      {
+        "name": "Mental",
+        "sub": {
+          "name": "ExtendedSupport",
           "value": 2
         }
       }
@@ -370,7 +403,7 @@ Default Data Masking (User with no policies for the amea and clubs resources)
 
   <td>
 
-    "disabilitiesDesc": "Description text"
+    "disabilitiesDesc": "Disabilities description text"
 
   </td>
 
@@ -383,9 +416,9 @@ Default Data Masking (User with no policies for the amea and clubs resources)
   <td>
 
     "loc": {
-      "coordinates": [
-        21.7401209, 
-        38.2478087
+      "coordinates": [ 
+        38.246022, 
+        21.739842
       ],
       "type": "Point"
     }
@@ -396,8 +429,8 @@ Default Data Masking (User with no policies for the amea and clubs resources)
 
     "loc": {
       "coordinates": [
-        21.7425005,
-        38.2494451
+        38.2483324,
+        21.7413914
       ],
       "type": "Point"
     }
@@ -410,7 +443,7 @@ Default Data Masking (User with no policies for the amea and clubs resources)
 
   <td>
 
-    "address": "Αρτης 44"
+    "address": "Address"
 
   </td>
 
@@ -426,13 +459,13 @@ Default Data Masking (User with no policies for the amea and clubs resources)
 
   <td>
 
-    "floor": 4
+    "floor": 5
 
   </td>
 
   <td>
 
-    "floor": 4
+    "floor": 5
 
   </td>
 </tr>
@@ -443,8 +476,8 @@ Default Data Masking (User with no policies for the amea and clubs resources)
   <td>
 
     "region": {
-      "administrative": "ΔΥΤΙΚΗΣ ΕΛΛΑΔΑΣ",
-      "municipality": "ΠΑΤΡΕΩΝ"
+      "administrative": "Western Greece",
+      "municipality": "Patras"
     }
 
   </td>
@@ -452,8 +485,8 @@ Default Data Masking (User with no policies for the amea and clubs resources)
   <td>
 
     "region": {
-      "administrative": "ΔΥΤΙΚΗΣ ΕΛΛΑΔΑΣ",
-      "municipality": "ΠΑΤΡΕΩΝ"
+      "administrative": "Western Greece",
+      "municipality": "Patras"
     }
 
   </td>
@@ -464,8 +497,8 @@ Default Data Masking (User with no policies for the amea and clubs resources)
 
   <td>
 
-    "club": [
-      ObjectId("606ec04ab61a552b02ab87b5")
+    "club": [ 
+      ObjectId("610ffd1dc81eab4df7ea66a4")
     ]
 
   </td>
@@ -476,19 +509,19 @@ Default Data Masking (User with no policies for the amea and clubs resources)
       {
         "loc": {
           "coordinates": [
-            21.7401209,
-            38.2478087
+            38.22398,
+            21.757794
           ],
           "type": "Point"
         },
-        "name": "Σύλλογος Μαχητές",
-        "phoneNumber": "6974037899",
+        "name": "Club 6",
+        "phoneNumber": "6974305162",
         "region": {
-          "administrative": "ΔΥΤΙΚΗΣ ΕΛΛΑΔΑΣ",
-          "municipality": "ΠΑΤΡΕΩΝ"
+          "administrative": "Western Greece",
+          "municipality": "Patras"
         },
-        "address": "Ρηγα Φεραίου 44, ΤΚ 26226",
-        "status": "accepted"
+        "address": "Address",
+        "status": "rejected"
       }
     ]
 
@@ -501,11 +534,11 @@ Default Data Masking (User with no policies for the amea and clubs resources)
   <td>
 
     "caretaker": {
-      "carename": "Βαγγελης",
-      "caresurname": "Παπακης",
-      "careemail": "vagpap@email.gr",
-      "carephone": "6974558996",
-      "caredescription": "some extra information"
+      "carename": "Antonis",
+      "caresurname": "Eleftheriou",
+      "careemail": "antonis.eleftheriou@example.com",
+      "carephone": "6958632653",
+      "caredescription": "Caretaker description"
     }
 
   </td>
@@ -513,10 +546,10 @@ Default Data Masking (User with no policies for the amea and clubs resources)
   <td>
 
     "caretaker": {
-      "carename": "Β",
-      "caresurname": "Π",
-      "careemail": "xxxxxx@email.gr",
-      "carephone": "69xxxxxxxx96"
+      "carename": "A",
+      "caresurname": "E",
+      "careemail": "xxxxxx@example.com",
+      "carephone": "69xxxxxxxx53"
     }
 
   </td>
@@ -527,13 +560,13 @@ Default Data Masking (User with no policies for the amea and clubs resources)
 
   <td>
 
-    "birthday": ISODate("1979-05-15T00:00:00.000Z")
+    "birthday": ISODate("1981-02-10T16:49:49.101Z")
 
   </td>
 
   <td>
 
-    "birthday": "1977-06-09T04:49:12.977Z"
+    "birthday": "1979-06-02T03:55:35.466Z"
 
   </td>
 </tr>
@@ -543,7 +576,7 @@ Default Data Masking (User with no policies for the amea and clubs resources)
 
   <td>
 
-    "created": ISODate("2021-04-08T08:35:12.988Z")
+    "created": ISODate("2021-06-17T15:49:49.101Z")
 
   </td>
 
@@ -555,7 +588,7 @@ Default Data Masking (User with no policies for the amea and clubs resources)
 
   <td>
 
-    "updated": ISODate("2021-04-08T08:35:23.233Z")
+    "updated": ISODate("2021-08-08T15:49:49.101Z")
 
   </td>
 
@@ -567,27 +600,15 @@ Default Data Masking (User with no policies for the amea and clubs resources)
 
   <td>
 
-    "status": "accepted"
+    "status": "pending"
 
   </td>
 
   <td>
 
-    "status": "accepted"
+    "status": "pending"
 
   </td>
-</tr>
-
-<tr>
-  <td>__enc_surname</td>
-
-  <td>
-
-    "__enc_surname": true
-
-  </td>
-
-  <td></td>
 </tr>
 
 <tr>
