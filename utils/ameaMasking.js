@@ -139,7 +139,7 @@ const disabilitiesDescMask = {
 
 /*
 Floor Mask
-Random integer within a specific range
+Replace with a random integer within a specific range
 floor(rand * (max - min + 1) + min)
 min: 0
 max: 8
