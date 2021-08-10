@@ -189,7 +189,7 @@ Created Mask
 Subtract a random integer (milliseconds) within a specific range
 floor(rand * (max - min) + min)
 min: 0.5*365*24*60*60*1000 (0.5 year)
-max: 1*365*24*60*60*1000 (1 years)
+max: 1*365*24*60*60*1000 (1 year)
 rand: random float between 0 and 1
 */
 const createdMask = {
@@ -214,7 +214,7 @@ Updated Mask
 Subtract a random integer (milliseconds) within a specific range
 floor(rand * (max - min) + min)
 min: 0.5*365*24*60*60*1000 (0.5 year)
-max: 1*365*24*60*60*1000 (1 years)
+max: 1*365*24*60*60*1000 (1 year)
 rand: random float between 0 and 1
 */
 const updatedMask = {
