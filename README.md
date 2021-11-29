@@ -1,5 +1,14 @@
 # SafeAmea-Masked-API
 
+## Requirements
+- [Ubuntu 20.04.3 LTS](https://ubuntu.com/)
+- [Docker 20.10.11, build dea9396](https://www.docker.com/)
+- [Docker Compose 2.0.1](https://docs.docker.com/compose/cli-command/)
+- [Node.js 16.13.0 LTS](https://nodejs.org/)
+- [npm 8.1.4](https://www.npmjs.com/)
+- [Postman 9.2.0](https://www.postman.com/)
+- [Robo 3T 1.4.4](https://robomongo.org/)
+
 ## Setup
 
 - Make a parent directory for the project:
