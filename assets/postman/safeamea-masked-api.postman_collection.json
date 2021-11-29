@@ -1,0 +1,845 @@
+{
+  "info": {
+    "_postman_id": "fc83859c-cc27-444b-9106-ed57a3629598",
+    "name": "SafeAmea Masked API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "/",
+      "item": [
+        {
+          "name": "/",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{maskedApi}}/",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "/users",
+      "item": [
+        {
+          "name": "/",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{maskedApi}}/users/",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "users",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/signup",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"aA1!a\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{maskedApi}}/users/signup",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "users",
+                "signup"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/email-verification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "emailToken",
+                "value": "715f6ac5-a3cb-4542-a645-e8a78c5cfdf2",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{maskedApi}}/users/email-verification?userId={{userId}}",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "users",
+                "email-verification"
+              ],
+              "query": [
+                {
+                  "key": "userId",
+                  "value": "{{userId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"aA1!a\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{maskedApi}}/users/login",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "users",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{userToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{maskedApi}}/users/logout",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "users",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/:userId/roles",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"roles\": [\"61a5461d224c0b4dc44c4fa0\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{maskedApi}}/users/{{userId}}/roles",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "users",
+                "{{userId}}",
+                "roles"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/:userId/",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{maskedApi}}/users/{{userId}}/",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "users",
+                "{{userId}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "/roles",
+      "item": [
+        {
+          "name": "/",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{maskedApi}}/roles/",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "roles",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"cityPlanner\",\n    \"permissions\": [],\n    \"policies\": [],\n    \"status\": \"active\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{maskedApi}}/roles/",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "roles",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/:roleId/permissions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"permissions\": [\"61a5410d9c993d4d635a5272\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{maskedApi}}/roles/{{roleId}}/permissions",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "roles",
+                "{{roleId}}",
+                "permissions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/:roleId/policies",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"policies\": [\"61a5410d9c993d4d635a527a\", \"61a5410d9c993d4d635a5278\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{maskedApi}}/roles/{{roleId}}/policies",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "roles",
+                "{{roleId}}",
+                "policies"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/:roleId/status",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"status\": \"inactive\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{maskedApi}}/roles/{{roleId}}/status",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "roles",
+                "{{roleId}}",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/:roleId/",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{maskedApi}}/roles/{{roleId}}/",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "roles",
+                "{{roleId}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "/permissions",
+      "item": [
+        {
+          "name": "/",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{maskedApi}}/permissions/",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "permissions",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"endpoint\": \"/masked/amea\",\n    \"methods\": [\"GET\"],\n    \"status\": \"active\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{maskedApi}}/permissions/",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "permissions",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/:permissionId/methods",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"methods\": [\"GET\", \"POST\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{maskedApi}}/permissions/{{permissionId}}/methods",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "permissions",
+                "{{permissionId}}",
+                "methods"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/:permissionId/status",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"status\": \"inactive\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{maskedApi}}/permissions/{{permissionId}}/status",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "permissions",
+                "{{permissionId}}",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/:permissionId/",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{maskedApi}}/permissions/{{permissionId}}/",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "permissions",
+                "{{permissionId}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "/policies",
+      "item": [
+        {
+          "name": "/",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{maskedApi}}/policies/",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "policies",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"resource\": \"amea\",\n    \"excluded\": [\"owner\", \"surname\", \"__enc_surname\", \"__v\"],\n    \"masked\": [\"name\"],\n    \"status\": \"active\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{maskedApi}}/policies/",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "policies",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/:policyId/excluded",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"excluded\": [\"__v\", \"__enc_surname\", \"_id\", \"owner\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{maskedApi}}/policies/{{policyId}}/excluded",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "policies",
+                "{{policyId}}",
+                "excluded"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/:policyId/masked",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"masked\": [\"name\", \"email.value\", \"phoneNumber.value\", \"loc.coordinates\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{maskedApi}}/policies/{{policyId}}/masked",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "policies",
+                "{{policyId}}",
+                "masked"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/:policyId/status",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"status\": \"inactive\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{maskedApi}}/policies/{{policyId}}/status",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "policies",
+                "{{policyId}}",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/:policyId",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{maskedApi}}/policies/{{policyId}}/",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "policies",
+                "{{policyId}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "/amea",
+      "item": [
+        {
+          "name": "/",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "token",
+                "value": "{{adminToken}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "token",
+                "value": "{{userToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{maskedApi}}/amea/",
+              "host": [
+                "{{maskedApi}}"
+              ],
+              "path": [
+                "amea",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "maskedApi",
+      "value": "http://192.168.1.5:3007/masked"
+    },
+    {
+      "key": "adminToken",
+      "value": "93e0263c-6275-4d65-8831-71e02c3cbc28"
+    },
+    {
+      "key": "userToken",
+      "value": "38f4415e-c177-452a-8790-fb4a813c5091"
+    },
+    {
+      "key": "userId",
+      "value": "61a54481224c0b4dc44c4f84"
+    },
+    {
+      "key": "roleId",
+      "value": "61a5461d224c0b4dc44c4fa0"
+    },
+    {
+      "key": "permissionId",
+      "value": "61a5410d9c993d4d635a5272"
+    },
+    {
+      "key": "policyId",
+      "value": "61a5493e224c0b4dc44c4fee"
+    }
+  ]
+}
