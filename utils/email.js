@@ -18,7 +18,7 @@ exports.sendVerificationEmail = async (userId, emailToken, emailAddress) => {
     from: 'no-reply@safeamea.gr',
     to: emailAddress,
     subject: 'Verify email address',
-    text: `Please click on the following link to verify your email address: http://masked-api-frontend/email-verification?userId=${userId}&emailToken=${emailToken}`
+    text: `Please click on the following link to verify your email address: \nhttp://masked-api-frontend/email-verification?userId=${userId}&emailToken=${emailToken}`
   };
   const response = await sendMail(mailOptions);
 
