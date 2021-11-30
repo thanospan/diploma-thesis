@@ -125,7 +125,7 @@ node scripts/populateSafeameaDb.js
 ```
 Populate the safeameaMasked MongoDB:
 ```
-node scripts/init.js
+node scripts/populateSafeameaMaskedDb.js
 ```
 
 Check if the database is populated correctly:
