@@ -9,6 +9,7 @@ const { Club } = require('../models/club');
 const { Amea } = require('../models/amea');
 const { Loader } = require('../utils/loader');
 const geo = require('../utils/geo');
+const arrayUtil = require('../utils/array');
 
 const names = [
   "Giorgos",
@@ -226,7 +227,7 @@ const loader = new Loader();
     }
     // console.log(JSON.stringify(savedClubs, null, 2));
 
-    let name, surname, carename, caresurname;
+    let name, surname, carename, caresurname, randDisabilities;
     let newAmea;
     let savedAmea = [];
 
@@ -236,6 +237,17 @@ const loader = new Loader();
       carename = names[getRandomInt(0, 49)];
       caresurname = surnames[getRandomInt(0, 14)];
       coords = geo.getCoordsWithinRadius(center, radius);
+      // Create an array with 1 random disability for each type
+      // (Mobility, Hearing, Vision, Mental)
+      // Keep 1-4 of these random disabilities
+      randDisabilities = [
+        disabilities.mobility[getRandomInt(0, 2)],
+        disabilities.hearing[getRandomInt(0, 1)],
+        disabilities.vision[getRandomInt(0, 2)],
+        disabilities.mental[getRandomInt(0, 2)]
+      ].slice(0, getRandomInt(1, 4));
+      // Shuffle the array
+      arrayUtil.shuffle(randDisabilities);
 
       newAmea = new Amea({
         name,
@@ -261,12 +273,7 @@ const loader = new Loader();
           administrative: "Western Greece",
           municipality: "Patras"
         },
-        disabilities: [
-          disabilities.mobility[getRandomInt(0, 2)],
-          disabilities.hearing[getRandomInt(0, 1)],
-          disabilities.vision[getRandomInt(0, 2)],
-          disabilities.mental[getRandomInt(0, 2)]
-        ],
+        disabilities: randDisabilities,
         disabilitiesDesc: "Disabilities description text",
         floor: getRandomInt(0, 6),
         club: [savedClubs[getRandomInt(0, savedClubs.length - 1)]._id],
