@@ -6,15 +6,17 @@ const crypto = require('crypto');
 
 const { encrypt, decrypt } = require('../utils/crypto');
 
+const pass = process.env.ENCRYPTION_PASS;
+
 const key = process.env.ENCRYPTION_KEY;
 // OR
-// const key = crypto.createHash('sha256').update(String(process.env.ENCRYPTION_PASS)).digest('hex').substr(0, 32);
+// const key = crypto.createHash('sha256').update(String(pass)).digest('hex').substr(0, 32);
 
-const plaintext = 'Παπαδόπουλος';
+const plaintext = 'Papadopoulos';
 
 const encryptedSurname = encrypt(plaintext, key);
 // OR
-// const encryptedSurname = "f53fd1067d8d2fa2e6e24806d6614370:2101cc277f7df6c9ef278dcf73ecd383bee3ca310b611eed8abe1f3196c06911"; // Παπαδόπουλος
+// const encryptedSurname = "258c2440a3d90d990bec0d3470c11326:bd96338b9bd9595fa982e35e2d38729d"; // Papadopoulos
 
 const decryptedSurname = decrypt(encryptedSurname, key);
 
