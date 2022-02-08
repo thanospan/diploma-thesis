@@ -2,11 +2,11 @@
 
 ## Requirements
 - [Ubuntu 20.04.3 LTS](https://ubuntu.com/)
-- [Docker 20.10.11, build dea9396](https://www.docker.com/)
-- [Docker Compose 2.0.1](https://docs.docker.com/compose/cli-command/)
-- [Node.js 16.13.0 LTS](https://nodejs.org/)
-- [npm 8.1.4](https://www.npmjs.com/)
-- [Postman 9.2.0](https://www.postman.com/)
+- [Docker 20.10.12, build e91ed57](https://www.docker.com/)
+- [Docker Compose 2.2.3](https://docs.docker.com/compose/cli-command/)
+- [Node.js 16.13.2 LTS](https://nodejs.org/)
+- [npm 8.4.1](https://www.npmjs.com/)
+- [Postman 9.13.1](https://www.postman.com/)
 - [Robo 3T 1.4.4](https://robomongo.org/)
 
 ## Setup
@@ -33,7 +33,7 @@ docker run -d -p 1025:1025 -p 8025:8025 --name safeamea-mailhog --network safeam
 
 - Run the MongoDB Docker container:
 ```
-docker run -d -v ~/Documents/SafeAmea/SafeAmea-DB-Data:/data/db -p 27017:27017 --name safeamea-mongo --network safeamea -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=123456 mongo:4.4.10
+docker run -d -v ~/Documents/SafeAmea/SafeAmea-DB-Data:/data/db -p 27017:27017 --name safeamea-mongo --network safeamea -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=123456 mongo:4.4.12
 ```
 
 - Check if all containers are running:
