@@ -33,7 +33,7 @@ docker run -d -p 1025:1025 -p 8025:8025 --name safeamea-mailhog --network safeam
 
 - Run the MongoDB Docker container:
 ```
-docker run -d -v ~/Documents/SafeAmea/SafeAmea-DB-Data:/data/db -p 27017:27017 --name safeamea-mongo --network safeamea -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=123456 mongo:4.4.12
+docker run -d -v ~/Documents/SafeAmea/SafeAmea-DB-Data:/data/db -p 27017:27017 --name safeamea-mongo --network safeamea -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=01234 mongo:4.4.12
 ```
 
 - Check if all containers are running:
@@ -44,7 +44,7 @@ docker ps
 - Create the maskedApi MongoDB user to control access to the database (Role-Based Access Control - RBAC):
 ```
 Username: maskedApi
-Password: 123456
+Password: 56789
 Authentication database: safeameaMasked
 Roles: findAmea on the safeamea database and dbOwner on the safeameaMasked database
 findAmea privileges: Find actions on the amea and clubs collections of the safeamea database
@@ -56,7 +56,7 @@ docker exec -it safeamea-mongo /bin/bash
 mongo
 use admin
 db.auth("mongoadmin", passwordPrompt())
-Enter password: 123456 (Set while running the MongoDB container)
+Enter password: 01234
 show dbs
 ```
 
@@ -87,7 +87,7 @@ use safeameaMasked
 db.createUser(
   {
     user: "maskedApi",
-    pwd: "123456",
+    pwd: "56789",
     roles: [
       { role: "findAmea", db: "safeamea" },
       { role: "dbOwner", db: "safeameaMasked" }
@@ -136,7 +136,7 @@ docker exec -it safeamea-mongo /bin/bash
 mongo
 use admin
 db.auth("mongoadmin", passwordPrompt())
-Enter password: 123456 (Set while running the MongoDB container)
+Enter password: 01234
 show dbs
 use safeamea
 show collections
@@ -161,7 +161,7 @@ Address: localhost
 Port: 27017
 Authentication database: admin
 User Name: mongoadmin
-Password: 123456
+Password: 01234
 ```
 
 Run the SafeAmea Masked API:
