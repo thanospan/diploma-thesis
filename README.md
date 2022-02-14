@@ -172,7 +172,7 @@ npm run dev
 ```
 - Verify that the SafeAmea Masked API is running:
 ```
-SafeAmea Masked API: http://localhost:3007/masked/
+curl -w '\n' http://localhost:3007/masked
 ```
 
 ## SafeAmea Masked API Endpoints
