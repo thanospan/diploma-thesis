@@ -88,7 +88,7 @@
             "header": [
               {
                 "key": "emailToken",
-                "value": "715f6ac5-a3cb-4542-a645-e8a78c5cfdf2",
+                "value": "6ac2aad8-74f8-4387-96d3-290c232b22c4",
                 "type": "text"
               }
             ],
@@ -175,7 +175,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"roles\": [\"61a5461d224c0b4dc44c4fa0\"]\n}",
+              "raw": "{\n    \"roles\": [\"620a45f1dbeba81a02958626\"]\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -296,7 +296,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"permissions\": [\"61a5410d9c993d4d635a5272\"]\n}",
+              "raw": "{\n    \"permissions\": [\"620a3948ac2a7d1985d3e9f8\"]\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -330,7 +330,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"policies\": [\"61a5410d9c993d4d635a527a\", \"61a5410d9c993d4d635a5278\"]\n}",
+              "raw": "{\n    \"policies\": [\"620a3948ac2a7d1985d3e9fe\", \"620a3948ac2a7d1985d3ea00\"]\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -607,7 +607,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"resource\": \"amea\",\n    \"excluded\": [\"owner\", \"surname\", \"__enc_surname\", \"__v\"],\n    \"masked\": [\"name\"],\n    \"status\": \"active\"\n}",
+              "raw": "{\n    \"resource\": \"club\",\n    \"excluded\": [\"_id\", \"updated\", \"created\", \"__v\"],\n    \"masked\": [],\n    \"status\": \"active\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -815,23 +815,23 @@
   "variable": [
     {
       "key": "maskedApi",
-      "value": "http://192.168.1.5:3007/masked"
+      "value": "http://localhost:3007/masked"
     },
     {
       "key": "adminToken",
-      "value": "93e0263c-6275-4d65-8831-71e02c3cbc28"
+      "value": "931a4f2b-ed30-4d26-a746-f491bb01bc2d"
     },
     {
       "key": "userToken",
-      "value": "38f4415e-c177-452a-8790-fb4a813c5091"
+      "value": "bf8539ef-6929-4f19-a3be-55c6f4bcc002"
     },
     {
       "key": "userId",
-      "value": "61a54481224c0b4dc44c4f84"
+      "value": "620a4564dbeba81a02958615"
     },
     {
       "key": "roleId",
-      "value": "61a5461d224c0b4dc44c4fa0"
+      "value": "620a45f1dbeba81a02958626"
     },
     {
       "key": "permissionId",
@@ -839,7 +839,7 @@
     },
     {
       "key": "policyId",
-      "value": "61a5493e224c0b4dc44c4fee"
+      "value": "61a6540219167d1bbae55531"
     }
   ]
 }
