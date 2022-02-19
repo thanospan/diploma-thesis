@@ -7,7 +7,7 @@ exports.getAll = async (req, res, next) => {
     const roles = res.locals.authorizedRoles;
     let response;
 
-    // Keep first role - This should be replaced with role priorities
+    // Keep first role - This should be replaced with role priorities or policy merging
     const role = roles[0];
 
     // Search for amea
