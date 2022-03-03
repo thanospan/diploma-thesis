@@ -176,12 +176,6 @@ User Name: mongoadmin
 Password: 01234
 ```
 
-Run the SafeAmea Masked API:
-```
-node app.js
-or
-npm run dev
-```
 - Verify that the SafeAmea Masked API is running:
 ```
 curl -w '\n' http://localhost:3007/masked
