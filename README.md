@@ -115,9 +115,17 @@ Copy .env.example to .env:
 ```
 cp config/.env.example config/.env
 ```
-Install dependencies:
+Build the safeamea-masked-api Docker image:
 ```
-npm install
+docker build -t safeamea-masked-api .
+```
+Run the SafeAmea Masked API Docker container:
+```
+docker run -d -p 3007:3007 --name safeamea-masked-api --network safeamea safeamea-masked-api
+```
+Execute an interactive bash shell on the container:
+```
+docker exec -it safeamea-masked-api /bin/bash
 ```
 Populate the safeamea MongoDB:
 ```
@@ -126,6 +134,10 @@ node scripts/populateSafeameaDb.js
 Populate the safeameaMasked MongoDB:
 ```
 node scripts/populateSafeameaMaskedDb.js
+```
+Exit the interactive bash shell:
+```
+exit
 ```
 
 Check if the database is populated correctly:
