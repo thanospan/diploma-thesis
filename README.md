@@ -3,9 +3,6 @@
 ## Requirements
 - [Ubuntu 20.04.3 LTS](https://ubuntu.com/)
 - [Docker 20.10.12, build e91ed57](https://www.docker.com/)
-- [Docker Compose 2.2.3](https://docs.docker.com/compose/cli-command/)
-- [Node.js 16.14.0 LTS](https://nodejs.org/)
-- [npm 8.4.1](https://www.npmjs.com/)
 - [Postman 9.13.1](https://www.postman.com/)
 - [Robo 3T 1.4.4](https://robomongo.org/)
 
