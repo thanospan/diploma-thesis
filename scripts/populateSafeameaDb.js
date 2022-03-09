@@ -205,7 +205,8 @@ const loader = new Loader();
 
       newClub = new Club({
         name: 'Club ' + (i + 1),
-        phoneNumber: '69' + getRandomInt(11111111, 99999999),
+        // phoneNumber: '69' + getRandomInt(11111111, 99999999),
+        phoneNumber: '1' + getRandomInt(111111111, 999999999),
         loc: {
           coordinates: [
             coords.lat,
@@ -258,7 +259,8 @@ const loader = new Loader();
           active: getRandomInt(0, 1)
         },
         phoneNumber: {
-          value: '69' + getRandomInt(11111111, 99999999),
+          // value: '69' + getRandomInt(11111111, 99999999),
+          value: '1' + getRandomInt(111111111, 999999999),
           active: getRandomInt(0, 1)
         },
         loc: {
@@ -284,7 +286,8 @@ const loader = new Loader();
           carename,
           caresurname,
           careemail: carename.toLowerCase() + '.' + caresurname.toLowerCase() + '@example.com',
-          carephone: '69' + getRandomInt(11111111, 99999999),
+          // carephone: '69' + getRandomInt(11111111, 99999999),
+          carephone: '1' + getRandomInt(111111111, 999999999),
           caredescription: "Caretaker description"
         },
         status: status[getRandomInt(0, 2)],
