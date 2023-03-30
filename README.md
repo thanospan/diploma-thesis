@@ -1,4 +1,7 @@
-# SafeAmea-Masked-API
+# Diploma thesis
+This repository contains the source code for my [diploma thesis](https://nemertes.library.upatras.gr/items/46e8452c-5d81-4b1c-940c-2346e1a48eba) which was submitted to the [Department of Electrical & Computer Engineering](https://www.ece.upatras.gr/index.php/el/) at the [University of Patras](https://www.upatras.gr/).
+
+Title: Design and development of a dynamic role management API for data protection in smart city applications<br>
 
 ## Requirements
 - [Ubuntu 20.04.3 LTS](https://ubuntu.com/)
