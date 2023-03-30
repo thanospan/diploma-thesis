@@ -18,7 +18,7 @@ mkdir ~/Documents/SafeAmea
 
 - Clone the SafeAmea Masked API repository:
 ```
-git clone git@github.com:thanospan/SafeAmea-Masked-API.git ~/Documents/SafeAmea/SafeAmea-Masked-API
+git clone https://github.com/thanospan/diploma-thesis.git ~/Documents/SafeAmea/SafeAmea-Masked-API
 ```
 
 - Create a Docker network:
