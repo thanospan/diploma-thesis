@@ -181,6 +181,8 @@ Password: 01234
 curl -w '\n' http://localhost:3007/masked
 ```
 
+- Import the provided [Postman collection](https://github.com/thanospan/diploma-thesis/tree/main/assets/postman).
+
 ## SafeAmea Masked API Endpoints
 
 All URIs are relative to *http://localhost:3007/masked*
@@ -214,19 +216,44 @@ All URIs are relative to *http://localhost:3007/masked*
 | DELETE | /policies/:policyId/ | headers: token<br> params: policyId |
 | GET | /amea/ | headers: token |
 
-## SafeAmea Masked API Response Example
+## Use case
 
-Method: GET<br>
-Endpoint: http://localhost:3007/masked/amea/<br>
-Masking policies:
+- User:
+  - email: user@example.com
+  - password: aA1!a
 
-- Resource: Club\
-Excluded: [_id, __v, updated, created]\
+- Role:
+  - name: cityPlanner
+
+- Permission:
+  - Method: GET<br>
+  - Endpoint: /masked/amea/
+
+- Masking policies:
+
+- Resource: Club<br>
+Excluded: [_id, __v, updated, created]<br>
 Masked: []
 
-- Resource: Amea\
-Excluded: [owner, __enc_surname, updated, created, disabilitiesDesc, caretaker.caredescription, __v,  _id]\
+- Resource: Amea<br>
+Excluded: [owner, __enc_surname, updated, created, disabilitiesDesc, caretaker.caredescription, __v,  _id]<br>
 Masked: [name, surname, caretaker.carename, caretaker.caresurname, email.value, caretaker.careemail, phoneNumber.value, caretaker.carephone, address, loc.coordinates, birthday]
+
+- Update the adminToken Postman collection variable.
+- Sign up by sending a POST request to the /users/signup endpoint.
+- Visit MailHog (http://localhost:8025/), open the verification email and copy the userId, emailToken values.
+- Update the userId Postman collection variable.
+- Verify the email address by sending a POST request to the /users/email-verification endpoint, providing the emailToken as a header and the userId as a query parameter.
+- Log in by sending a POST request to the /users/login endpoint. Copy the token header of the response and update the userToken Postman collection variable.
+- Create the cityPlanner role by sending a POST request to the /roles endpoint. Resend the request and copy the roleId. (TODO: Return the roleId as a header after role creation)
+- Create the permission by sending a POST request to the /permissions endpoint. Copy the permissionId. (TODO: Return the permissionId as a header after permission creation)
+- Create the policies by sending POST requests to the /policies endpoint. Copy the policyId. (TODO: Return the policyId as a header after policy creation)
+- Update the cityPlanner role's permissions by sending a POST request to the /roles/{roleId}/permissions endpoint.
+- Update the cityPlanner role's policies by sending a POST request to the /roles/{roleId}/policies endpoint.
+- Assign the cityPlanner role to the user by sending a POST request to the /users/{userId}/roles endpoint.
+- Send a GET request to the /amea endpoint, providing the userToken as a header.
+
+## SafeAmea Masked API Response Example
 
 <table>
 <tr>
