@@ -12,12 +12,12 @@ This repository contains the source code for my [diploma thesis](https://nemerte
 
 - Make a parent directory for the project:
 ```
-mkdir ./SafeAmea
+mkdir ${PWD}/SafeAmea
 ```
 
 - Clone this repository:
 ```
-git clone https://github.com/thanospan/diploma-thesis.git ./SafeAmea/SafeAmea-Masked-API
+git clone https://github.com/thanospan/diploma-thesis.git ${PWD}/SafeAmea/SafeAmea-Masked-API
 ```
 
 - Create a Docker network:
@@ -32,7 +32,7 @@ docker run -d -p 1025:1025 -p 8025:8025 --name safeamea-mailhog --network safeam
 
 - Run the MongoDB Docker container:
 ```
-docker run -d -v $(pwd)/SafeAmea/SafeAmea-DB-Data:/data/db -p 27017:27017 --name safeamea-mongo --network safeamea -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=01234 mongo:4.4.12
+docker run -d -v ${PWD}/SafeAmea/SafeAmea-DB-Data:/data/db -p 27017:27017 --name safeamea-mongo --network safeamea -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=01234 mongo:4.4.12
 ```
 
 - Check if all containers are running:
@@ -110,7 +110,7 @@ exit
 
 - Run the SafeAmea Masked API:
 ```
-cd ./SafeAmea/SafeAmea-Masked-API
+cd ${PWD}/SafeAmea/SafeAmea-Masked-API
 ```
 Copy .env.example to .env:
 ```
@@ -184,7 +184,7 @@ curl -w '\n' http://localhost:3007/masked
 
 - Import the provided [Postman collection](https://github.com/thanospan/diploma-thesis/tree/main/assets/postman).
 
-## SafeAmea Masked API Endpoints
+## Masked API endpoints
 
 All URIs are relative to *http://localhost:3007/masked*
 
@@ -254,7 +254,7 @@ Masked: [name, surname, caretaker.carename, caretaker.caresurname, email.value, 
 - Assign the cityPlanner role to the user by sending a POST request to the /users/{userId}/roles endpoint.
 - Send a GET request to the /amea endpoint, providing the userToken as a header.
 
-## SafeAmea Masked API Response Example
+## Masked API response example
 
 <table>
 <tr>
