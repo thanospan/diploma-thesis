@@ -11,12 +11,12 @@ This repository contains the source code for my [diploma thesis](https://nemerte
 
 - Make a parent directory for the project:
 ```
-mkdir ~/Documents/SafeAmea
+mkdir ./SafeAmea
 ```
 
-- Clone the SafeAmea Masked API repository:
+- Clone this repository:
 ```
-git clone https://github.com/thanospan/diploma-thesis.git ~/Documents/SafeAmea/SafeAmea-Masked-API
+git clone https://github.com/thanospan/diploma-thesis.git ./SafeAmea/SafeAmea-Masked-API
 ```
 
 - Create a Docker network:
@@ -31,7 +31,7 @@ docker run -d -p 1025:1025 -p 8025:8025 --name safeamea-mailhog --network safeam
 
 - Run the MongoDB Docker container:
 ```
-docker run -d -v ~/Documents/SafeAmea/SafeAmea-DB-Data:/data/db -p 27017:27017 --name safeamea-mongo --network safeamea -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=01234 mongo:4.4.12
+docker run -d -v $(pwd)/SafeAmea/SafeAmea-DB-Data:/data/db -p 27017:27017 --name safeamea-mongo --network safeamea -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=01234 mongo:4.4.12
 ```
 
 - Check if all containers are running:
@@ -61,7 +61,8 @@ show dbs
 Create the findAmea Role:
 ```
 use safeamea
-
+```
+```
 db.createRole(
   {
     role: "findAmea",
@@ -81,7 +82,8 @@ db.createRole(
 Create the maskedApi User:
 ```
 use safeameaMasked
-
+```
+```
 db.createUser(
   {
     user: "maskedApi",
@@ -107,7 +109,7 @@ exit
 
 - Run the SafeAmea Masked API:
 ```
-cd ~/Documents/SafeAmea/SafeAmea-Masked-API
+cd ./SafeAmea/SafeAmea-Masked-API
 ```
 Copy .env.example to .env:
 ```
