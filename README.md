@@ -6,7 +6,7 @@ This repository contains the source code for my [diploma thesis](https://nemerte
 - [Ubuntu 20.04.3 LTS](https://ubuntu.com/)
 - [Docker 20.10.12, build e91ed57](https://www.docker.com/)
 - [Postman 9.13.1](https://www.postman.com/)
-- [Robo 3T 1.4.4](https://robomongo.org/)
+- [Robo 3T 1.4.4](https://robomongo.org/) (optional)
 
 ## Setup
 
