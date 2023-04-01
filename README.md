@@ -232,13 +232,13 @@ All URIs are relative to *http://localhost:3007/masked*
 
 - Masking policies:
 
-- Resource: Club<br>
-Excluded: [_id, __v, updated, created]<br>
-Masked: []
+  - Resource: Club<br>
+  Excluded: [_id, __v, updated, created]<br>
+  Masked: []
 
-- Resource: Amea<br>
-Excluded: [owner, __enc_surname, updated, created, disabilitiesDesc, caretaker.caredescription, __v,  _id]<br>
-Masked: [name, surname, caretaker.carename, caretaker.caresurname, email.value, caretaker.careemail, phoneNumber.value, caretaker.carephone, address, loc.coordinates, birthday]
+  - Resource: Amea<br>
+  Excluded: [owner, __enc_surname, updated, created, disabilitiesDesc, caretaker.caredescription, __v,  _id]<br>
+  Masked: [name, surname, caretaker.carename, caretaker.caresurname, email.value, caretaker.careemail, phoneNumber.value, caretaker.carephone, address, loc.coordinates, birthday]
 
 - Update the adminToken Postman collection variable.
 - Sign up by sending a POST request to the /users/signup endpoint.
